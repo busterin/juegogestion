@@ -122,6 +122,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const mapEl = document.getElementById("map");
   const playerImg = document.getElementById("playerImg");
   const progressEl = document.getElementById("progress");
+
+  // ✅ HUD card del contador (para ocultar solo en HISTORIA)
   const missionsHudCard = progressEl?.closest(".hud-card");
 
   // ✅ barra inferior del equipo (6)
@@ -316,8 +318,6 @@ document.addEventListener("DOMContentLoaded", () => {
     startScreen.classList.remove("hidden");
     teamScreen.classList.add("hidden");
     gameRoot.classList.add("hidden");
-    if (missionsHudCard) {
-  missionsHudCard.style.display = (gameMode === "story") ? "none" : "";
   }
 
   function goToTeamScreen(){
@@ -580,6 +580,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function startGame(){
     teamScreen.classList.add("hidden");
     gameRoot.classList.remove("hidden");
+
+    // ✅ Solo en HISTORIA ocultamos el contador de misiones
+    if (missionsHudCard){
+      missionsHudCard.style.display = (gameMode === "story") ? "none" : "";
+    }
 
     specialUsed = false;
     specialArmed = false;
@@ -1048,13 +1053,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   playAgainBtn.addEventListener("click", ()=>{
     resetGame();
+
+    // ✅ por si venías de HISTORIA (contador oculto), lo restauramos
+    if (missionsHudCard) missionsHudCard.style.display = "";
+
     gameRoot.classList.add("hidden");
     introScreen.classList.remove("hidden");
     startScreen.classList.add("hidden");
     teamScreen.classList.add("hidden");
     avatarIndex = 0;
     renderAvatarCarousel(0);
-    if (missionsHudCard) missionsHudCard.style.display = "";
   });
 
   window.addEventListener("resize", ()=>{
