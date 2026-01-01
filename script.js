@@ -730,6 +730,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     missionTitleEl.textContent = st.mission.title;
     missionTextEl.textContent  = st.mission.text;
+    
+    if (missionImgEl){
+  missionImgEl.src = st.mission.img || "images/mision.png";
+  missionImgEl.alt = st.mission.title || "Misión";
 
     pickHint.textContent = "Selecciona al menos 1 personaje (máximo 2).";
     pickHint.style.opacity = "1";
