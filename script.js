@@ -65,26 +65,26 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: "c10", name: "Voby",    tags: ["Producción"] }
   ];
 
-  // ✅ Cartas (todas) - OJO: Dre ahora es dre.JPEG
+  // ✅ Cartas (todas) - Buster ahora usa Guerrera.png
   const CARDS = [
     { id: "card_buster", name: "Buster",  img: "images/Guerrera.png",  text: "Carta de apoyo: aporta claridad y estructura." },
-    { id: "card_castri", name: "Castri",  img: "images/castri.JPEG",  text: "Carta de apoyo: coordinación y ejecución con criterio." },
-    { id: "card_maider", name: "Maider",  img: "images/maider.JPEG",  text: "Carta de apoyo: mirada de sala y ajuste fino." },
-    { id: "card_celia",  name: "Celia",   img: "images/celia.JPEG",   text: "Carta de apoyo: resuelve operativa con rapidez." },
-    { id: "card_dre",    name: "Dre",     img: "images/dre.JPEG",     text: "Carta de apoyo: detecta fallos y los arregla." },
+    { id: "card_castri", name: "Castri",  img: "images/castri.JPEG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
+    { id: "card_maider", name: "Maider",  img: "images/maider.JPEG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
+    { id: "card_celia",  name: "Celia",   img: "images/celia.JPEG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
+    { id: "card_dre",    name: "Dre",     img: "images/dre.JPEG",      text: "Carta de apoyo: detecta fallos y los arregla." },
 
-    { id: "card_genio",  name: "Genio",   img: "images/genio.JPEG",   text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
-    { id: "card_lorena", name: "Lorena",  img: "images/lorena.JPEG",  text: "Carta de apoyo: mejora presentación, orden y estética." },
-    { id: "card_alba",   name: "Alba",    img: "images/alba.JPEG",    text: "Carta de apoyo: ejecución rápida y organizada." },
-    { id: "card_mariam", name: "María M", img: "images/mariam.JPEG",  text: "Carta de apoyo: coordina y aterriza lo pendiente." },
-    { id: "card_voby",   name: "Voby",    img: "images/voby.JPEG",    text: "Carta de apoyo: empuja producción y logística." }
+    { id: "card_genio",  name: "Genio",   img: "images/genio.JPEG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
+    { id: "card_lorena", name: "Lorena",  img: "images/lorena.JPEG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
+    { id: "card_alba",   name: "Alba",    img: "images/alba.JPEG",     text: "Carta de apoyo: ejecución rápida y organizada." },
+    { id: "card_mariam", name: "María M", img: "images/mariam.JPEG",   text: "Carta de apoyo: coordina y aterriza lo pendiente." },
+    { id: "card_voby",   name: "Voby",    img: "images/voby.JPEG",     text: "Carta de apoyo: empuja producción y logística." }
   ];
 
   // -------------------------
   // Tiempos
   // -------------------------
   const MISSION_LIFETIME_MS = 2 * 60 * 1000;  // rojo antes de perderse
-  const EXECUTION_TIME_MS   = 30 * 1000;      // ✅ CAMBIO: 30 segundos en amarillo
+  const EXECUTION_TIME_MS   = 30 * 1000;      // ✅ 30 segundos en amarillo
 
   const MATCH_ADD = 0.8;
   const NO_MATCH_ADD = 0.1;
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const playerImg = document.getElementById("playerImg");
   const progressEl = document.getElementById("progress");
 
-  // ✅ barra de equipo bajo el mapa
+  // ✅ barra inferior del equipo
   const teamBar = document.getElementById("teamBar");
 
   const missionModal = document.getElementById("missionModal");
@@ -145,14 +145,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const finalScoreEl = document.getElementById("finalScore");
   const playAgainBtn = document.getElementById("playAgainBtn");
 
-  const deckBtn = document.getElementById("deckBtn");
-  const deckModal = document.getElementById("deckModal");
-  const closeDeckBtn = document.getElementById("closeDeckBtn");
-  const deckGrid = document.getElementById("deckGrid");
-
   const cardInfoModal = document.getElementById("cardInfoModal");
   const cardInfoTitle = document.getElementById("cardInfoTitle");
   const cardInfoText = document.getElementById("cardInfoText");
+  const cardInfoImg = document.getElementById("cardInfoImg");
   const closeCardInfoBtn = document.getElementById("closeCardInfoBtn");
 
   const specialModal = document.getElementById("specialModal");
@@ -208,7 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
       missionModal.classList.contains("show") ||
       rouletteModal.classList.contains("show") ||
       finalModal.classList.contains("show") ||
-      deckModal.classList.contains("show") ||
       cardInfoModal.classList.contains("show") ||
       specialModal.classList.contains("show") ||
       infoModal.classList.contains("show")
@@ -275,7 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // -------------------------
-  // ✅ Equipo bajo el mapa: render + estado ocupado
+  // ✅ Barra de equipo (debajo del mapa)
   // -------------------------
   function updateTeamBarAvailability(){
     if (!teamBar) return;
@@ -295,6 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     availableCards.forEach(cardData=>{
       const ch = availableCharacters.find(x => x.name === cardData.name);
+
       const item = document.createElement("button");
       item.type = "button";
       item.className = "teambar-item";
@@ -304,6 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <img class="teambar-img" src="${cardData.img}" alt="${cardData.name}" />
         <div class="teambar-name">${cardData.name}</div>
       `;
+
       item.addEventListener("click", ()=>openCardInfo(cardData));
       teamBar.appendChild(item);
     });
@@ -544,7 +541,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     hideModal(missionModal);
     hideModal(rouletteModal);
-    hideModal(deckModal);
     hideModal(cardInfoModal);
     hideModal(specialModal);
 
@@ -650,7 +646,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const st = activePoints.get(missionId);
     if (!st) return;
     for (const cid of (st.assignedCharIds || [])) lockedCharIds.delete(cid);
-    updateTeamBarAvailability(); // ✅ CAMBIO: refrescar descolorido
+    updateTeamBarAvailability(); // ✅ refrescar descolorido
   }
 
   function failMission(missionId){
@@ -802,8 +798,7 @@ document.addEventListener("DOMContentLoaded", () => {
     st.chance = computeChance(st.mission, st.assignedCharIds);
 
     for (const cid of st.assignedCharIds) lockedCharIds.add(cid);
-
-    updateTeamBarAvailability(); // ✅ CAMBIO: descolorir ocupados
+    updateTeamBarAvailability(); // ✅ descolorir ocupados
 
     st.phase = "executing";
     st.execRemainingMs = EXECUTION_TIME_MS;
@@ -881,37 +876,17 @@ document.addEventListener("DOMContentLoaded", () => {
     setGlobalPause(true);
     cardInfoTitle.textContent = cardData.name;
     cardInfoText.textContent = cardData.text;
+
+    if (cardInfoImg){
+      cardInfoImg.src = cardData.img;
+      cardInfoImg.alt = cardData.name;
+    }
+
     showModal(cardInfoModal);
   }
+
   function closeCardInfo(){
     hideModal(cardInfoModal);
-    if (!isAnyModalOpen()) setGlobalPause(false);
-  }
-
-  function openDeck(){
-    setGlobalPause(true);
-    deckGrid.innerHTML = "";
-
-    availableCards.forEach(cardData=>{
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = "deck-card";
-      card.innerHTML = `
-        <img src="${cardData.img}" alt="${cardData.name}" />
-        <div class="deck-card-name">
-          <span>${cardData.name}</span>
-          <span class="pill">Ver</span>
-        </div>
-      `;
-      card.addEventListener("click", ()=>openCardInfo(cardData));
-      deckGrid.appendChild(card);
-    });
-
-    showModal(deckModal);
-  }
-
-  function closeDeck(){
-    hideModal(deckModal);
     if (!isAnyModalOpen()) setGlobalPause(false);
   }
 
@@ -951,7 +926,6 @@ document.addEventListener("DOMContentLoaded", () => {
     hideModal(missionModal);
     hideModal(rouletteModal);
     hideModal(finalModal);
-    hideModal(deckModal);
     hideModal(cardInfoModal);
     hideModal(specialModal);
     hideModal(infoModal);
@@ -989,6 +963,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   introStartBtn.addEventListener("click", goToStartScreen);
 
+  // Info modal
   introInfoBtn?.addEventListener("click", ()=>showModal(infoModal));
   closeInfoBtn?.addEventListener("click", ()=>hideModal(infoModal));
   infoModal?.addEventListener("click", (e)=>{ if (e.target === infoModal) hideModal(infoModal); });
@@ -1007,6 +982,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Avatar -> Team
   startBtn.addEventListener("click", ()=>{
     selectedTeamCardIds = new Set();
     teamConfirmBtn.disabled = true;
@@ -1015,21 +991,19 @@ document.addEventListener("DOMContentLoaded", () => {
     goToTeamScreen();
   });
 
+  // Confirm team -> Start game
   teamConfirmBtn.addEventListener("click", ()=>{
     if (selectedTeamCardIds.size !== 6) return;
     if (!commitTeam()) return;
     startGame();
   });
 
+  // Habilidad avatar
   playerImg.addEventListener("click", openSpecialModal);
 
   closeModalBtn.addEventListener("click", closeMissionModal);
   missionModal.addEventListener("click", (e)=>{ if (e.target === missionModal) closeMissionModal(); });
   confirmBtn.addEventListener("click", confirmMission);
-
-  deckBtn.addEventListener("click", openDeck);
-  closeDeckBtn.addEventListener("click", closeDeck);
-  deckModal.addEventListener("click", (e)=>{ if (e.target === deckModal) closeDeck(); });
 
   closeCardInfoBtn.addEventListener("click", closeCardInfo);
   cardInfoModal.addEventListener("click", (e)=>{ if (e.target === cardInfoModal) closeCardInfo(); });
@@ -1054,8 +1028,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!gameRoot.classList.contains("hidden")) computeNoSpawnRect();
   });
 
+  // init
   renderAvatarCarousel(0);
 
+  // referencia tamaño sprite
   if (playerImg?.getAttribute("src")){
     const src = playerImg.getAttribute("src");
     playerImg.addEventListener("load", async ()=>{
