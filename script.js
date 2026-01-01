@@ -316,6 +316,8 @@ document.addEventListener("DOMContentLoaded", () => {
     startScreen.classList.remove("hidden");
     teamScreen.classList.add("hidden");
     gameRoot.classList.add("hidden");
+    if (missionsHudCard) {
+  missionsHudCard.style.display = (gameMode === "story") ? "none" : "";
   }
 
   function goToTeamScreen(){
@@ -1052,6 +1054,7 @@ document.addEventListener("DOMContentLoaded", () => {
     teamScreen.classList.add("hidden");
     avatarIndex = 0;
     renderAvatarCarousel(0);
+    if (missionsHudCard) missionsHudCard.style.display = "";
   });
 
   window.addEventListener("resize", ()=>{
