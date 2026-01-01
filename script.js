@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ✅ Cartas (todas) - OJO: Dre ahora es dre.JPEG
   const CARDS = [
-    { id: "card_buster", name: "Buster",  img: "images/buster.JPEG",  text: "Carta de apoyo: aporta claridad y estructura." },
+    { id: "card_buster", name: "Buster",  img: "images/Guerrera.png",  text: "Carta de apoyo: aporta claridad y estructura." },
     { id: "card_castri", name: "Castri",  img: "images/castri.JPEG",  text: "Carta de apoyo: coordinación y ejecución con criterio." },
     { id: "card_maider", name: "Maider",  img: "images/maider.JPEG",  text: "Carta de apoyo: mirada de sala y ajuste fino." },
     { id: "card_celia",  name: "Celia",   img: "images/celia.JPEG",   text: "Carta de apoyo: resuelve operativa con rapidez." },
