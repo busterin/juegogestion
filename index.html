@@ -78,6 +78,7 @@
         </div>
 
         <div class="hud">
+          <!-- La baraja se mantiene en HTML para no romper JS, pero se oculta por CSS -->
           <button id="deckBtn" class="hud-icon-btn" type="button" aria-label="Ver cartas">
             <span class="deck-icon" aria-hidden="true">🃏</span>
           </button>
@@ -94,6 +95,9 @@
           <img id="playerImg" class="buster-img" src="images/buster1.PNG" alt="Personaje seleccionado" />
         </div>
       </main>
+
+      <!-- ✅ NUEVO: fila de equipo bajo la cuadrícula -->
+      <div id="teamBar" class="team-bar" aria-label="Equipo seleccionado"></div>
     </div>
   </div>
 
@@ -196,7 +200,7 @@
     </div>
   </div>
 
-  <!-- MODAL BARAJA / CARTAS -->
+  <!-- MODAL BARAJA / CARTAS (se mantiene por seguridad, aunque ya no se usa) -->
   <div id="deckModal" class="modal" aria-hidden="true">
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deckTitle">
       <div class="modal-head">
