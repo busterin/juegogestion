@@ -122,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const mapEl = document.getElementById("map");
   const playerImg = document.getElementById("playerImg");
   const progressEl = document.getElementById("progress");
+  const missionsHudCard = progressEl?.closest(".hud-card");
 
   // ✅ barra inferior del equipo (6)
   const teamBar = document.getElementById("teamBar");
