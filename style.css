@@ -724,3 +724,26 @@ img{ max-width:100%; height:auto; }
   opacity: .42;
   filter: grayscale(1) saturate(.2);
 }
+/* ====== TEAM BAR: más grande y solo ilustración ====== */
+.teambar-item{
+  padding: 0;                 /* más limpio */
+  width: 56px;                /* ✅ más grande */
+  height: 56px;               /* ✅ más grande */
+  border-radius: 16px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+/* ocultar nombre */
+.teambar-name{
+  display: none !important;   /* ✅ sin nombre */
+}
+
+/* imagen ocupando todo el botón */
+.teambar-img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* rellena bien */
+  display: block;
+}
