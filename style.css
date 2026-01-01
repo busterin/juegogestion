@@ -719,3 +719,8 @@ img{ max-width:100%; height:auto; }
     max-height: calc(100dvh - 28px);
   }
 }
+/* ✅ ocupado: descolorido en la barra de equipo */
+.teambar-item.busy{
+  opacity: .42;
+  filter: grayscale(1) saturate(.2);
+}
