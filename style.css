@@ -679,3 +679,12 @@ img{ max-width:100%; height:auto; }
     max-height: calc(100dvh - 28px);
   }
 }
+/* ✅ Imagen en el modal de misión */
+.mission-img{
+  width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  border-radius: 12px;
+  margin-top: 10px;
+  display: block;
+}
