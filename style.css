@@ -648,7 +648,8 @@ img{ max-width:100%; height:auto; }
 .team-card img{
   width: 100%;
   height: 95px;
-  object-fit: cover;
+  object-fit: contain;   /* ✅ se ve entera */
+  object-position: center;
   display:block;
 }
 
