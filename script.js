@@ -23,29 +23,29 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   const MISSIONS = [
     // EDUCACIÓN (3)
-    { id: "m1", title: "Taller Exprés", internalTag: "Educación", text: "Hay un grupo listo para empezar y falta ajustar la dinámica. Envía a alguien que domine actividades educativas y manejo de tiempos." },
-    { id: "m2", title: "Guía de Actividad", internalTag: "Educación", text: "Necesitamos una mini-guía clara para que cualquiera pueda dirigir la sesión. Envía a quien sepa convertir ideas en instrucciones sencillas." },
+    { id: "m1", title: "Taller Exprés", internalTag: "Educación", img: "images/mision.png", text: "Hay un grupo listo para empezar y falta ajustar la dinámica. Envía a alguien que domine actividades educativas y manejo de tiempos." },
+    { id: "m2", title: "Guía de Actividad", internalTag: "Educación", img: "images/mision.png", text: "Necesitamos una mini-guía clara para que cualquiera pueda dirigir la sesión. Envía a quien sepa convertir ideas en instrucciones sencillas." },
     { id: "m3", title: "Plan de Aula", internalTag: "Educación", text: "Han cambiado el perfil del público a última hora. Envía a alguien que sepa adaptar contenidos y mantener a la gente enganchada." },
 
     // PICOFINO (3)
-    { id: "m4", title: "Incidencia de Operativa", internalTag: "Picofino", text: "Se ha bloqueado una tarea del día a día y hay que desbloquearla sin montar lío. Envía a quien conozca bien cómo se mueve Picofino." },
-    { id: "m5", title: "Pedido Descuadrado", internalTag: "Picofino", text: "Un pedido no cuadra con lo esperado y el equipo necesita una mano para reordenar prioridades y resolverlo rápido." },
-    { id: "m6", title: "Turno Improvisado", internalTag: "Picofino", text: "Falta gente en un turno clave. Envía a quien sepa reorganizar recursos y apagar fuegos sin que se note." },
+    { id: "m4", title: "Incidencia de Operativa", internalTag: "Picofino", img: "images/mision.png", text: "Se ha bloqueado una tarea del día a día y hay que desbloquearla sin montar lío. Envía a quien conozca bien cómo se mueve Picofino." },
+    { id: "m5", title: "Pedido Descuadrado", internalTag: "Picofino", img: "images/mision.png", text: "Un pedido no cuadra con lo esperado y el equipo necesita una mano para reordenar prioridades y resolverlo rápido." },
+    { id: "m6", title: "Turno Improvisado", internalTag: "Picofino", img: "images/mision.png", text: "Falta gente en un turno clave. Envía a quien sepa reorganizar recursos y apagar fuegos sin que se note." },
 
     // PRODUCCIÓN (3)
-    { id: "m7", title: "Montaje a Contrarreloj", internalTag: "Producción", text: "Hay que montar algo rápido y bien, cuidando detalles y materiales. Envía a quien sepa de logística, montaje y ejecución." },
-    { id: "m8", title: "Materiales Perdidos", internalTag: "Producción", text: "Falta material y nadie sabe dónde está. Envía a quien tenga control de inventario y sepa coordinar búsquedas sin caos." },
-    { id: "m9", title: "Plan B de Producción", internalTag: "Producción", text: "El plan inicial se ha caído. Necesitamos a alguien que replantee el paso a paso y saque la tarea adelante con recursos limitados." },
+    { id: "m7", title: "Montaje a Contrarreloj", internalTag: "Producción", img: "images/mision.png", text: "Hay que montar algo rápido y bien, cuidando detalles y materiales. Envía a quien sepa de logística, montaje y ejecución." },
+    { id: "m8", title: "Materiales Perdidos", internalTag: "Producción", img: "images/mision.png", text: "Falta material y nadie sabe dónde está. Envía a quien tenga control de inventario y sepa coordinar búsquedas sin caos." },
+    { id: "m9", title: "Plan B de Producción", internalTag: "Producción", img: "images/mision.png", text: "El plan inicial se ha caído. Necesitamos a alguien que replantee el paso a paso y saque la tarea adelante con recursos limitados." },
 
     // MUSEOS (1)
-    { id: "m10", title: "Ajuste de Sala", internalTag: "Museos", text: "La sala necesita un cambio fino: recorrido, cartelas y flujo de personas. Envía a quien sepa de exposición y criterios de museo." },
+    { id: "m10", title: "Ajuste de Sala", internalTag: "Museos", img: "images/mision.png", text: "La sala necesita un cambio fino: recorrido, cartelas y flujo de personas. Envía a quien sepa de exposición y criterios de museo." },
 
     // PROGRAMACIÓN (5)
-    { id: "m11", title: "Bug Fantasma", internalTag: "Programación", text: "Algo falla solo a veces y nadie logra reproducirlo. Envía a quien sepa investigar errores raros y aislar la causa." },
-    { id: "m12", title: "Integración Rápida", internalTag: "Programación", text: "Hay que conectar dos piezas que no se hablan bien. Envía a quien se maneje con integraciones y soluciones limpias." },
-    { id: "m13", title: "Optimizar Carga", internalTag: "Programación", text: "En móviles tarda demasiado en cargar. Envía a quien sepa mejorar rendimiento sin romper nada." },
-    { id: "m14", title: "Botón Rebelde", internalTag: "Programación", text: "Un botón deja de responder en ciertos casos. Envía a quien tenga mano con eventos, estados y depuración." },
-    { id: "m15", title: "Refactor Discreto", internalTag: "Programación", text: "Hay código que funciona pero es un lío. Envía a quien sepa ordenar y dejarlo mantenible sin cambiar el comportamiento." }
+    { id: "m11", title: "Bug Fantasma", internalTag: "Programación", img: "images/mision.png", text: "Algo falla solo a veces y nadie logra reproducirlo. Envía a quien sepa investigar errores raros y aislar la causa." },
+    { id: "m12", title: "Integración Rápida", internalTag: "Programación", img: "images/mision.png", text: "Hay que conectar dos piezas que no se hablan bien. Envía a quien se maneje con integraciones y soluciones limpias." },
+    { id: "m13", title: "Optimizar Carga", internalTag: "Programación", img: "images/mision.png", text: "En móviles tarda demasiado en cargar. Envía a quien sepa mejorar rendimiento sin romper nada." },
+    { id: "m14", title: "Botón Rebelde", internalTag: "Programación", img: "images/mision.png", text: "Un botón deja de responder en ciertos casos. Envía a quien tenga mano con eventos, estados y depuración." },
+    { id: "m15", title: "Refactor Discreto", internalTag: "Programación", img: "images/mision.png", text: "Hay código que funciona pero es un lío. Envía a quien sepa ordenar y dejarlo mantenible sin cambiar el comportamiento." }
   ];
 
   // -------------------------
@@ -131,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const missionModal = document.getElementById("missionModal");
   const missionTitleEl = document.getElementById("missionTitle");
   const missionTextEl = document.getElementById("missionText");
+  const missionImgEl = document.getElementById("missionImg");
   const closeModalBtn = document.getElementById("closeModalBtn");
   const charactersGrid = document.getElementById("charactersGrid");
   const pickHint = document.getElementById("pickHint");
