@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Tiempos
   // -------------------------
   const MISSION_LIFETIME_MS = 2 * 60 * 1000;  // rojo antes de perderse
-  const EXECUTION_TIME_MS   = 60 * 1000;      // ✅ 1 minuto en amarillo
+  const EXECUTION_TIME_MS   = 30 * 1000;      // ✅ CAMBIO: 30 segundos en amarillo
 
   const MATCH_ADD = 0.8;
   const NO_MATCH_ADD = 0.1;
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const playerImg = document.getElementById("playerImg");
   const progressEl = document.getElementById("progress");
 
-  // ✅ NUEVO: barra de equipo bajo el mapa
+  // ✅ barra de equipo bajo el mapa
   const teamBar = document.getElementById("teamBar");
 
   const missionModal = document.getElementById("missionModal");
@@ -275,27 +275,40 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // -------------------------
-  // ✅ NUEVO: render de equipo en fila bajo el mapa
+  // ✅ Equipo bajo el mapa: render + estado ocupado
   // -------------------------
+  function updateTeamBarAvailability(){
+    if (!teamBar) return;
+    const items = teamBar.querySelectorAll(".teambar-item");
+    items.forEach((item)=>{
+      const cid = item.getAttribute("data-char-id");
+      const busy = cid && lockedCharIds.has(cid);
+      item.classList.toggle("busy", !!busy);
+    });
+  }
+
   function renderTeamBar(){
     if (!teamBar) return;
     teamBar.innerHTML = "";
 
-    // Si por lo que sea no hay 6, no pintamos nada.
     if (!Array.isArray(availableCards) || availableCards.length !== 6) return;
 
     availableCards.forEach(cardData=>{
+      const ch = availableCharacters.find(x => x.name === cardData.name);
       const item = document.createElement("button");
       item.type = "button";
       item.className = "teambar-item";
+      if (ch?.id) item.setAttribute("data-char-id", ch.id);
+
       item.innerHTML = `
         <img class="teambar-img" src="${cardData.img}" alt="${cardData.name}" />
         <div class="teambar-name">${cardData.name}</div>
       `;
-      // Mantengo utilidad: al tocar uno, abre su info (ya existe)
       item.addEventListener("click", ()=>openCardInfo(cardData));
       teamBar.appendChild(item);
     });
+
+    updateTeamBarAvailability();
   }
 
   // -------------------------
@@ -405,7 +418,6 @@ document.addEventListener("DOMContentLoaded", () => {
     availableCards = selectedCards;
     availableCharacters = CHARACTERS.filter(ch => selectedNames.has(ch.name));
 
-    // seguridad
     if (availableCards.length !== 6 || availableCharacters.length !== 6) return false;
     return true;
   }
@@ -556,9 +568,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (playerImg.complete) refreshNoSpawn();
     else playerImg.addEventListener("load", refreshNoSpawn, { once:true });
 
-    // ✅ NUEVO: pintar equipo bajo el mapa (mínimo)
     renderTeamBar();
-
     setProgress();
 
     startGameClock();
@@ -640,6 +650,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const st = activePoints.get(missionId);
     if (!st) return;
     for (const cid of (st.assignedCharIds || [])) lockedCharIds.delete(cid);
+    updateTeamBarAvailability(); // ✅ CAMBIO: refrescar descolorido
   }
 
   function failMission(missionId){
@@ -791,6 +802,8 @@ document.addEventListener("DOMContentLoaded", () => {
     st.chance = computeChance(st.mission, st.assignedCharIds);
 
     for (const cid of st.assignedCharIds) lockedCharIds.add(cid);
+
+    updateTeamBarAvailability(); // ✅ CAMBIO: descolorir ocupados
 
     st.phase = "executing";
     st.execRemainingMs = EXECUTION_TIME_MS;
@@ -965,7 +978,6 @@ document.addEventListener("DOMContentLoaded", () => {
     specialArmed = false;
     setSpecialArmedUI(false);
 
-    // ✅ NUEVO: limpiar barra equipo
     if (teamBar) teamBar.innerHTML = "";
 
     setProgress();
@@ -977,7 +989,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   introStartBtn.addEventListener("click", goToStartScreen);
 
-  // Info modal
   introInfoBtn?.addEventListener("click", ()=>showModal(infoModal));
   closeInfoBtn?.addEventListener("click", ()=>hideModal(infoModal));
   infoModal?.addEventListener("click", (e)=>{ if (e.target === infoModal) hideModal(infoModal); });
@@ -996,7 +1007,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Avatar -> Team
   startBtn.addEventListener("click", ()=>{
     selectedTeamCardIds = new Set();
     teamConfirmBtn.disabled = true;
@@ -1005,21 +1015,18 @@ document.addEventListener("DOMContentLoaded", () => {
     goToTeamScreen();
   });
 
-  // Confirm team -> Start game
   teamConfirmBtn.addEventListener("click", ()=>{
     if (selectedTeamCardIds.size !== 6) return;
     if (!commitTeam()) return;
     startGame();
   });
 
-  // Habilidad avatar
   playerImg.addEventListener("click", openSpecialModal);
 
   closeModalBtn.addEventListener("click", closeMissionModal);
   missionModal.addEventListener("click", (e)=>{ if (e.target === missionModal) closeMissionModal(); });
   confirmBtn.addEventListener("click", confirmMission);
 
-  // Deck (queda intacto, aunque el botón está oculto por CSS)
   deckBtn.addEventListener("click", openDeck);
   closeDeckBtn.addEventListener("click", closeDeck);
   deckModal.addEventListener("click", (e)=>{ if (e.target === deckModal) closeDeck(); });
@@ -1047,10 +1054,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!gameRoot.classList.contains("hidden")) computeNoSpawnRect();
   });
 
-  // init
   renderAvatarCarousel(0);
 
-  // referencia tamaño sprite
   if (playerImg?.getAttribute("src")){
     const src = playerImg.getAttribute("src");
     playerImg.addEventListener("load", async ()=>{
