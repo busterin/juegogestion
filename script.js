@@ -125,6 +125,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const playerImg = document.getElementById("playerImg");
   const progressEl = document.getElementById("progress");
 
+  // ✅ NUEVO: barra de equipo bajo el mapa
+  const teamBar = document.getElementById("teamBar");
+
   const missionModal = document.getElementById("missionModal");
   const missionTitleEl = document.getElementById("missionTitle");
   const missionTextEl = document.getElementById("missionText");
@@ -269,6 +272,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const r = 14;
     const left = xPx - r, right = xPx + r, top = yPx - r, bottom = yPx + r;
     return !(right < noSpawnRect.left || left > noSpawnRect.right || bottom < noSpawnRect.top || top > noSpawnRect.bottom);
+  }
+
+  // -------------------------
+  // ✅ NUEVO: render de equipo en fila bajo el mapa
+  // -------------------------
+  function renderTeamBar(){
+    if (!teamBar) return;
+    teamBar.innerHTML = "";
+
+    // Si por lo que sea no hay 6, no pintamos nada.
+    if (!Array.isArray(availableCards) || availableCards.length !== 6) return;
+
+    availableCards.forEach(cardData=>{
+      const item = document.createElement("button");
+      item.type = "button";
+      item.className = "teambar-item";
+      item.innerHTML = `
+        <img class="teambar-img" src="${cardData.img}" alt="${cardData.name}" />
+        <div class="teambar-name">${cardData.name}</div>
+      `;
+      // Mantengo utilidad: al tocar uno, abre su info (ya existe)
+      item.addEventListener("click", ()=>openCardInfo(cardData));
+      teamBar.appendChild(item);
+    });
   }
 
   // -------------------------
@@ -528,6 +555,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const refreshNoSpawn = () => computeNoSpawnRect();
     if (playerImg.complete) refreshNoSpawn();
     else playerImg.addEventListener("load", refreshNoSpawn, { once:true });
+
+    // ✅ NUEVO: pintar equipo bajo el mapa (mínimo)
+    renderTeamBar();
 
     setProgress();
 
@@ -935,6 +965,9 @@ document.addEventListener("DOMContentLoaded", () => {
     specialArmed = false;
     setSpecialArmedUI(false);
 
+    // ✅ NUEVO: limpiar barra equipo
+    if (teamBar) teamBar.innerHTML = "";
+
     setProgress();
     setGlobalPause(false);
   }
@@ -986,6 +1019,7 @@ document.addEventListener("DOMContentLoaded", () => {
   missionModal.addEventListener("click", (e)=>{ if (e.target === missionModal) closeMissionModal(); });
   confirmBtn.addEventListener("click", confirmMission);
 
+  // Deck (queda intacto, aunque el botón está oculto por CSS)
   deckBtn.addEventListener("click", openDeck);
   closeDeckBtn.addEventListener("click", closeDeck);
   deckModal.addEventListener("click", (e)=>{ if (e.target === deckModal) closeDeck(); });
