@@ -581,6 +581,9 @@ document.addEventListener("DOMContentLoaded", () => {
     teamScreen.classList.add("hidden");
     gameRoot.classList.remove("hidden");
 
+    // ✅ Fondo solo en HISTORIA (usa CSS .map.story-bg)
+    mapEl.classList.toggle("story-bg", gameMode === "story");
+
     // ✅ Solo en HISTORIA ocultamos el contador de misiones
     if (missionsHudCard){
       missionsHudCard.style.display = (gameMode === "story") ? "none" : "";
@@ -1056,6 +1059,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ✅ por si venías de HISTORIA (contador oculto), lo restauramos
     if (missionsHudCard) missionsHudCard.style.display = "";
+
+    // ✅ limpiar fondo historia al salir
+    mapEl.classList.remove("story-bg");
 
     gameRoot.classList.add("hidden");
     introScreen.classList.remove("hidden");
