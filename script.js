@@ -19,13 +19,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const MAX_ACTIVE_POINTS = 10;
 
   // -------------------------
-  // ✅ MISIONES (15 total)
+  // ✅ MISIONES (15 total) + imagen provisional
   // -------------------------
   const MISSIONS = [
     // EDUCACIÓN (3)
     { id: "m1", title: "Taller Exprés", internalTag: "Educación", img: "images/mision.png", text: "Hay un grupo listo para empezar y falta ajustar la dinámica. Envía a alguien que domine actividades educativas y manejo de tiempos." },
     { id: "m2", title: "Guía de Actividad", internalTag: "Educación", img: "images/mision.png", text: "Necesitamos una mini-guía clara para que cualquiera pueda dirigir la sesión. Envía a quien sepa convertir ideas en instrucciones sencillas." },
-    { id: "m3", title: "Plan de Aula", internalTag: "Educación", text: "Han cambiado el perfil del público a última hora. Envía a alguien que sepa adaptar contenidos y mantener a la gente enganchada." },
+    { id: "m3", title: "Plan de Aula", internalTag: "Educación", img: "images/mision.png", text: "Han cambiado el perfil del público a última hora. Envía a alguien que sepa adaptar contenidos y mantener a la gente enganchada." },
 
     // PICOFINO (3)
     { id: "m4", title: "Incidencia de Operativa", internalTag: "Picofino", img: "images/mision.png", text: "Se ha bloqueado una tarea del día a día y hay que desbloquearla sin montar lío. Envía a quien conozca bien cómo se mueve Picofino." },
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: "c10", name: "Voby",    tags: ["Producción"] }
   ];
 
-  // ✅ Cartas (todas) - Buster ahora usa Guerrera.png
+  // ✅ Cartas (todas) - Buster cambiado a Guerrera.png
   const CARDS = [
     { id: "card_buster", name: "Buster",  img: "images/Guerrera.png",  text: "Carta de apoyo: aporta claridad y estructura." },
     { id: "card_castri", name: "Castri",  img: "images/castri.JPEG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
@@ -83,8 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   // Tiempos
   // -------------------------
-  const MISSION_LIFETIME_MS = 2 * 60 * 1000;  // rojo antes de perderse
-  const EXECUTION_TIME_MS   = 30 * 1000;      // ✅ 30 segundos en amarillo
+  const MISSION_LIFETIME_MS = 2 * 60 * 1000; // rojo antes de perderse
+  const EXECUTION_TIME_MS   = 30 * 1000;     // ✅ 30s en amarillo
 
   const MATCH_ADD = 0.8;
   const NO_MATCH_ADD = 0.1;
@@ -100,9 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   const introScreen = document.getElementById("introScreen");
   const introStartBtn = document.getElementById("introStartBtn");
-  const introInfoBtn = document.getElementById("introInfoBtn");
-  const infoModal = document.getElementById("infoModal");
-  const closeInfoBtn = document.getElementById("closeInfoBtn");
+  const introStoryBtn = document.getElementById("introStoryBtn");
 
   const startScreen = document.getElementById("startScreen");
   const startBtn = document.getElementById("startBtn");
@@ -125,13 +123,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const playerImg = document.getElementById("playerImg");
   const progressEl = document.getElementById("progress");
 
-  // ✅ barra inferior del equipo
+  // ✅ barra inferior del equipo (6)
   const teamBar = document.getElementById("teamBar");
 
   const missionModal = document.getElementById("missionModal");
   const missionTitleEl = document.getElementById("missionTitle");
-  const missionTextEl = document.getElementById("missionText");
   const missionImgEl = document.getElementById("missionImg");
+  const missionTextEl = document.getElementById("missionText");
   const closeModalBtn = document.getElementById("closeModalBtn");
   const charactersGrid = document.getElementById("charactersGrid");
   const pickHint = document.getElementById("pickHint");
@@ -160,6 +158,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   // Estado
   // -------------------------
+  let gameMode = "arcade"; // ✅ "arcade" | "story"
+
   let score = 0;
   let pendingMissions = [...MISSIONS];
   let activePoints = new Map();
@@ -206,8 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
       rouletteModal.classList.contains("show") ||
       finalModal.classList.contains("show") ||
       cardInfoModal.classList.contains("show") ||
-      specialModal.classList.contains("show") ||
-      infoModal.classList.contains("show")
+      specialModal.classList.contains("show")
     );
   }
 
@@ -271,7 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // -------------------------
-  // ✅ Barra de equipo (debajo del mapa)
+  // ✅ Barra inferior (6) - disponibilidad (descolorido si ocupado)
   // -------------------------
   function updateTeamBarAvailability(){
     if (!teamBar) return;
@@ -299,7 +298,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       item.innerHTML = `
         <img class="teambar-img" src="${cardData.img}" alt="${cardData.name}" />
-        <div class="teambar-name">${cardData.name}</div>
       `;
 
       item.addEventListener("click", ()=>openCardInfo(cardData));
@@ -323,6 +321,32 @@ document.addEventListener("DOMContentLoaded", () => {
     startScreen.classList.add("hidden");
     teamScreen.classList.remove("hidden");
     renderTeamSelection();
+  }
+
+  // ✅ HISTORIA: arranca directo al juego, sin afectar a ARCADE
+  function startStoryMode(){
+    gameMode = "story";
+
+    // Avatar por defecto: Buster
+    const busterIdx = AVATARS.findIndex(a => a.name === "Buster");
+    if (busterIdx >= 0) avatarIndex = busterIdx;
+
+    // Equipo por defecto (incluye Maider, Celia, Castri) + 3 extras para completar 6
+    selectedTeamCardIds = new Set([
+      "card_maider",
+      "card_celia",
+      "card_castri",
+      "card_buster",
+      "card_dre",
+      "card_lorena"
+    ]);
+
+    introScreen.classList.add("hidden");
+    startScreen.classList.add("hidden");
+    teamScreen.classList.add("hidden");
+
+    if (!commitTeam()) return;
+    startGame();
   }
 
   // -------------------------
@@ -383,7 +407,6 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.innerHTML = `
         <img src="${cardData.img}" alt="${cardData.name}" />
         <div class="team-card-name">
-          <span>${cardData.name}</span>
           <span class="pill">${selectedTeamCardIds.has(cardData.id) ? "Elegido" : "Elegir"}</span>
         </div>
       `;
@@ -647,7 +670,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const st = activePoints.get(missionId);
     if (!st) return;
     for (const cid of (st.assignedCharIds || [])) lockedCharIds.delete(cid);
-    updateTeamBarAvailability(); // ✅ refrescar descolorido
+    updateTeamBarAvailability();
   }
 
   function failMission(missionId){
@@ -729,12 +752,11 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedCharIds = new Set();
 
     missionTitleEl.textContent = st.mission.title;
-    missionTextEl.textContent  = st.mission.text;
-    
     if (missionImgEl){
-  missionImgEl.src = st.mission.img || "images/mision.png";
-  missionImgEl.alt = st.mission.title || "Misión";
-}
+      missionImgEl.src = st.mission.img || "images/mision.png";
+      missionImgEl.alt = st.mission.title || "Misión";
+    }
+    missionTextEl.textContent  = st.mission.text;
 
     pickHint.textContent = "Selecciona al menos 1 personaje (máximo 2).";
     pickHint.style.opacity = "1";
@@ -804,7 +826,7 @@ document.addEventListener("DOMContentLoaded", () => {
     st.chance = computeChance(st.mission, st.assignedCharIds);
 
     for (const cid of st.assignedCharIds) lockedCharIds.add(cid);
-    updateTeamBarAvailability(); // ✅ descolorir ocupados
+    updateTeamBarAvailability();
 
     st.phase = "executing";
     st.execRemainingMs = EXECUTION_TIME_MS;
@@ -934,7 +956,6 @@ document.addEventListener("DOMContentLoaded", () => {
     hideModal(finalModal);
     hideModal(cardInfoModal);
     hideModal(specialModal);
-    hideModal(infoModal);
 
     clearInterval(lifeTicker);
     clearTimeout(spawnTimer);
@@ -967,19 +988,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   // EVENTS
   // -------------------------
-  introStartBtn.addEventListener("click", goToStartScreen);
+  introStartBtn.addEventListener("click", ()=>{
+    gameMode = "arcade";
+    goToStartScreen();
+  });
 
-  // Info modal
-  introInfoBtn?.addEventListener("click", ()=>showModal(infoModal));
-  closeInfoBtn?.addEventListener("click", ()=>hideModal(infoModal));
-  infoModal?.addEventListener("click", (e)=>{ if (e.target === infoModal) hideModal(infoModal); });
+  introStoryBtn?.addEventListener("click", startStoryMode);
 
   prevAvatarBtn.addEventListener("click", prevAvatar);
   nextAvatarBtn.addEventListener("click", nextAvatar);
 
   document.addEventListener("keydown", (e)=>{
     if (!introScreen.classList.contains("hidden")){
-      if (e.key === "Enter") goToStartScreen();
+      if (e.key === "Enter") {
+        gameMode = "arcade";
+        goToStartScreen();
+      }
       return;
     }
     if (!startScreen.classList.contains("hidden")){
