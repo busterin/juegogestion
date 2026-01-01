@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: "c1",  name: "Castri",  tags: ["Producción", "Museos"] },
     { id: "c2",  name: "Maider",  tags: ["Museos", "Producción"] },
     { id: "c3",  name: "Celia",   tags: ["Picofino"] },
-    { id: "c4",  name: "Risko",  tags: ["Educación"] },
+    { id: "c4",  name: "Buster",  tags: ["Educación"] },
     { id: "c5",  name: "Dre",     tags: ["Programación"] },
 
     { id: "c6",  name: "Genio",   tags: ["Producción"] },
@@ -65,9 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: "c10", name: "Voby",    tags: ["Producción"] }
   ];
 
-  // ✅ Cartas (todas)
+  // ✅ Cartas (todas) - Buster cambiado a Guerrera.png
   const CARDS = [
-    { id: "card_risko", name: "Risko",  img: "images/Guerrera.png",  text: "Carta de apoyo: aporta claridad y estructura." },
+    { id: "card_buster", name: "Buster",  img: "images/Guerrera.png",  text: "Carta de apoyo: aporta claridad y estructura." },
     { id: "card_castri", name: "Castri",  img: "images/castri.JPEG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
     { id: "card_maider", name: "Maider",  img: "images/maider.JPEG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
     { id: "card_celia",  name: "Celia",   img: "images/celia.JPEG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
