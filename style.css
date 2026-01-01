@@ -688,3 +688,27 @@ img{ max-width:100%; height:auto; }
   margin-top: 10px;
   display: block;
 }
+/* ✅ SOLO HISTORIA: fondo fortaleza, traslúcido, con rejilla por encima */
+.map.story-bg{
+  background:
+    /* (1) brillo suave igual que antes */
+    radial-gradient(800px 500px at 70% 30%, rgba(85,214,255,.10), transparent 55%),
+
+    /* (2) capa suave */
+    linear-gradient(0deg, rgba(255,255,255,.06), rgba(255,255,255,.06)),
+
+    /* (3) REJILLA X (encima del fondo) */
+    repeating-linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.05) 1px, transparent 1px, transparent 56px),
+
+    /* (4) REJILLA Y (encima del fondo) */
+    repeating-linear-gradient(0deg, rgba(255,255,255,.05), rgba(255,255,255,.05) 1px, transparent 1px, transparent 56px),
+
+    /* (5) velo oscuro para que la imagen quede traslúcida */
+    linear-gradient(0deg, rgba(11,18,32,.45), rgba(11,18,32,.45)),
+
+    /* (6) imagen de fondo */
+    url("images/fortaleza.PNG");
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-position: center, center, center, center, center, center;
+  background-size: auto, auto, auto, auto, auto, cover;
+}
