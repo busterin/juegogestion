@@ -678,9 +678,9 @@ img{ max-width:100%; height:auto; }
 }
 
 /* Direcciones (left = flip del side) */
-.town-player.face-down{ background-image: url("images2/riskopueblo_down.PNG"); transform: translate(-50%,-50%) scaleX(1); }
-.town-player.face-right{ background-image: url("images2/riskopueblo_side.PNG"); transform: translate(-50%,-50%) scaleX(1); }
-.town-player.face-left{ background-image: url("images2/riskopueblo_side.PNG"); transform: translate(-50%,-50%) scaleX(-1); }
+background-image: url("images2/riskopueblo_down.jpg");
+background-image: url("images2/riskopueblo_up.jpg");
+background-image: url("images2/riskopueblo_side.jpg");
 .town-player.face-up{ background-image: url("images2/riskopueblo_up.PNG"); transform: translate(-50%,-50%) scaleX(1); }
 
 
