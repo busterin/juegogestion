@@ -277,7 +277,7 @@ img{ max-width:100%; height:auto; }
   box-shadow: var(--shadow);
 }
 
-/* ✅ SOLO HISTORIA: fortaleza traslúcida con rejilla por encima */
+/* ✅ SOLO HISTORIA: fortaleza traslúcida con rejilla encima */
 .map.story-bg{
   background:
     radial-gradient(800px 500px at 70% 30%, rgba(85,214,255,.10), transparent 55%),
@@ -506,7 +506,7 @@ img{ max-width:100%; height:auto; }
   box-shadow: none;
 }
 
-/* Imagen misión */
+/* ✅ Imagen misión */
 .mission-img{
   width: 100%;
   max-height: 180px;
@@ -517,7 +517,7 @@ img{ max-width:100%; height:auto; }
   box-shadow: 0 12px 26px rgba(0,0,0,.25);
 }
 
-/* Imagen carta ampliada */
+/* ✅ Imagen carta ampliada */
 .cardinfo-img{
   width: 100%;
   max-height: 260px;
@@ -527,35 +527,6 @@ img{ max-width:100%; height:auto; }
   border: 1px solid rgba(255,255,255,.10);
   box-shadow: 0 12px 26px rgba(0,0,0,.25);
 }
-
-/* ---------- ROULETTE ---------- */
-.roulette-card{ width:min(620px, 100%); }
-.roulette-wrap{ display:flex; flex-direction:column; align-items:center; gap:12px; padding: 6px 0 2px; }
-.roulette{ position:relative; width: 220px; height: 220px; }
-
-.roulette-pointer{
-  position:absolute;
-  top:-10px;
-  left:50%;
-  transform: translateX(-50%);
-  font-size:18px;
-  color: var(--text);
-  text-shadow: 0 10px 18px rgba(0,0,0,.5);
-}
-.roulette-wheel{
-  width: 220px; height: 220px;
-  border-radius:50%;
-  border: 1px solid rgba(255,255,255,.12);
-  background: conic-gradient(from 0deg, rgba(46,229,157,.85) 0 40%, rgba(255,59,59,.85) 40% 100%);
-  box-shadow: 0 18px 50px rgba(0,0,0,.35);
-  transform: rotate(0deg);
-}
-.roulette-outcome{ min-height: 22px; font-weight:900; letter-spacing:.2px; }
-
-/* ---------- FINAL ---------- */
-.final-score{ display:flex; align-items:baseline; justify-content:space-between; padding: 10px 4px; }
-.final-label{ color: var(--muted); font-weight:700; }
-.final-value{ font-size:42px; font-weight:1000; }
 
 /* ---------- TEAM SELECTION (6) ---------- */
 .team-top{
@@ -651,11 +622,6 @@ img{ max-width:100%; height:auto; }
   0%,100%{ opacity:1; }
   50%{ opacity:.35; }
 }
-@keyframes specialGlow{
-  0%{ transform: translateY(0) scale(1); }
-  50%{ transform: translateY(-2px) scale(1.04); }
-  100%{ transform: translateY(0) scale(1); }
-}
 
 /* =========================
    HISTORIA - PUEBLO (previo)
@@ -693,8 +659,9 @@ img{ max-width:100%; height:auto; }
 
 .town-player{
   position:absolute;
-  width: 96px;
-  height: 96px;
+  height: 120px;
+  aspect-ratio: 3 / 8; /* 384x1024 por frame (1536x1024 / 4) */
+  width: auto;
   left: 50%;
   top: 70%;
   transform: translate(-50%,-50%);
@@ -703,18 +670,20 @@ img{ max-width:100%; height:auto; }
   pointer-events:none;
   filter: drop-shadow(0 16px 24px rgba(0,0,0,.5));
 
-  /* Sprite sheet (1x4) */
+  /* Sprite sheet (1 archivo, 4 columnas) */
   background-image: url("images2/riskopueblo.PNG");
   background-repeat: no-repeat;
-  background-size: 400% 100%;
+  /* ✅ 401% reduce bleeding entre columnas por interpolación */
+  background-size: 401% 100%;
   background-position: 0% 50%;
 }
 
-/* down=col1, right=col3, up=col4, left = flip de right */
+/* Direcciones: down=col1, right=col3, up=col4. left = flip del right */
 .town-player.face-down{ background-position: 0% 50%; transform: translate(-50%,-50%) scaleX(1); }
-.town-player.face-right{ background-position: 66.666% 50%; transform: translate(-50%,-50%) scaleX(1); }
-.town-player.face-left{ background-position: 66.666% 50%; transform: translate(-50%,-50%) scaleX(-1); }
+.town-player.face-right{ background-position: 66.6667% 50%; transform: translate(-50%,-50%) scaleX(1); }
+.town-player.face-left{ background-position: 66.6667% 50%; transform: translate(-50%,-50%) scaleX(-1); }
 .town-player.face-up{ background-position: 100% 50%; transform: translate(-50%,-50%) scaleX(1); }
+
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 520px){
@@ -730,8 +699,14 @@ img{ max-width:100%; height:auto; }
   .carousel{ grid-template-columns: 48px 1fr 48px; }
   .carousel-btn{ width:48px; height:48px; border-radius: 14px; font-size: 30px; }
 
-  .carousel-img{ height: 150px; width: auto; }
+  .carousel-img{
+    height: 150px;
+    width: auto;
+  }
+
   .carousel-center{ min-height: 240px; }
+
+  .stage{ padding-bottom: 10px; }
 
   .team-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
@@ -743,6 +718,6 @@ img{ max-width:100%; height:auto; }
   .teambar-item{ width: 58px; height: 58px; border-radius: 14px; }
   .teambar-img{ border-radius: 14px; }
 
-  .town-player{ width: 96px; height: 96px; }
+  .town-player{ height: 110px; aspect-ratio: 3 / 8; width: auto; }
   .town-house{ width: 150px; }
 }
