@@ -1,3 +1,5 @@
+/* NOTE: This file contains all the accumulated styling changes. */
+
 :root{
   --bg:#0b1220;
   --panel:#0f1a33;
@@ -102,7 +104,6 @@ img{ max-width:100%; height:auto; }
   width: min(280px, 100%);
 }
 
-/* ✅ Intro actions + info */
 .intro-actions{
   display:flex;
   align-items:center;
@@ -110,14 +111,6 @@ img{ max-width:100%; height:auto; }
   gap: 10px;
   flex-wrap: wrap;
   width: min(520px, 100%);
-}
-.intro-info-btn{
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  display:grid;
-  place-items:center;
-  font-size: 18px;
 }
 
 /* ---------- START SCREEN ---------- */
@@ -183,7 +176,6 @@ img{ max-width:100%; height:auto; }
   overflow:hidden;
 }
 
-/* ✅ mantiene proporción/tamaño consistente en selector */
 .carousel-img{
   height: 170px;
   width: auto;
@@ -266,11 +258,9 @@ img{ max-width:100%; height:auto; }
 
 .stage{
   flex: 1 1 auto;
-  padding: 10px 14px 12px;
+  padding: 10px 14px 10px;
   display:flex;
-  flex-direction:column;
   min-height: 0;
-  gap: 10px;
 }
 
 /* ---------- MAP ---------- */
@@ -287,6 +277,20 @@ img{ max-width:100%; height:auto; }
   border: 1px solid rgba(255,255,255,.10);
   overflow:hidden;
   box-shadow: var(--shadow);
+}
+
+/* ✅ SOLO HISTORIA: fortaleza traslúcida con rejilla encima */
+.map.story-bg{
+  background:
+    radial-gradient(800px 500px at 70% 30%, rgba(85,214,255,.10), transparent 55%),
+    linear-gradient(0deg, rgba(255,255,255,.06), rgba(255,255,255,.06)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.05) 1px, transparent 1px, transparent 56px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.05), rgba(255,255,255,.05) 1px, transparent 1px, transparent 56px),
+    linear-gradient(0deg, rgba(11,18,32,.45), rgba(11,18,32,.45)),
+    url("images/fortaleza.PNG");
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-position: center, center, center, center, center, center;
+  background-size: auto, auto, auto, auto, auto, cover;
 }
 
 .buster-img{
@@ -320,50 +324,44 @@ img{ max-width:100%; height:auto; }
   100%{ transform: translateY(0) scale(1); }
 }
 
-/* ---------- TEAM BAR (debajo del mapa) ---------- */
+/* ---------- TEAM BAR (6) ---------- */
 .team-bar{
   flex: 0 0 auto;
+  padding: 0 14px 12px;
   display:flex;
   gap: 10px;
-  align-items:center;
   justify-content:center;
-  padding: 6px;
+  align-items:center;
 }
 
-/* ✅ más grande y solo ilustración */
 .teambar-item{
-  padding: 0;
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   border-radius: 16px;
-  overflow: hidden;
-  display:grid;
-  place-items:center;
-
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.06);
-  cursor:pointer;
   box-shadow: 0 10px 26px rgba(0,0,0,.18);
-  transition: transform .12s ease, border-color .12s ease, background .12s ease, opacity .12s ease, filter .12s ease;
+  padding: 0;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  transition: transform .12s ease, opacity .12s ease, filter .12s ease;
 }
 .teambar-item:hover{ transform: translateY(-1px); }
+.teambar-item:active{ transform: translateY(1px); }
 
 .teambar-img{
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 16px;
   display:block;
 }
 
-/* ocultar nombre */
-.teambar-name{
-  display:none !important;
-}
-
-/* ✅ ocupado: descolorido */
+/* ✅ Ocupado = descolorido */
 .teambar-item.busy{
-  opacity: .42;
-  filter: grayscale(1) saturate(.2);
+  filter: grayscale(1);
+  opacity: .45;
 }
 
 /* ---------- POINTS ---------- */
@@ -510,14 +508,26 @@ img{ max-width:100%; height:auto; }
   box-shadow: none;
 }
 
-/* ✅ Imagen ampliada en info de personaje */
-.card-info-img{
+/* ✅ Imagen misión */
+.mission-img{
   width: 100%;
-  max-height: 220px;
-  object-fit: contain;
-  margin: 10px 0 6px;
-  border-radius: 12px;
-  display: block;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-top: 10px;
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 12px 26px rgba(0,0,0,.25);
+}
+
+/* ✅ Imagen carta ampliada */
+.cardinfo-img{
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-top: 10px;
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 12px 26px rgba(0,0,0,.25);
 }
 
 /* ---------- ROULETTE ---------- */
@@ -598,13 +608,13 @@ img{ max-width:100%; height:auto; }
 }
 .team-card:hover{ transform: translateY(-1px); }
 
-/* ✅ imagen centrada sin recorte */
 .team-card img{
   width: 100%;
-  height: 95px;
-  object-fit: contain;
+  height: 110px;
+  object-fit: contain;     /* ✅ centrado, no recorta */
   object-position: center;
   display:block;
+  background: rgba(0,0,0,.12);
 }
 
 .team-card .team-card-name{
@@ -613,13 +623,8 @@ img{ max-width:100%; height:auto; }
   font-size: 12px;
   display:flex;
   align-items:center;
-  justify-content:space-between;
+  justify-content:flex-end;
   gap: 8px;
-}
-
-/* ✅ ocultar nombres en selección de equipo (mantiene la pill) */
-.team-card .team-card-name span:first-child{
-  display: none;
 }
 
 .team-card.selected{
@@ -647,6 +652,53 @@ img{ max-width:100%; height:auto; }
 @keyframes blink{
   0%,100%{ opacity:1; }
   50%{ opacity:.35; }
+}
+
+/* =========================
+   HISTORIA - PUEBLO (previo)
+========================= */
+
+.town-map{
+  flex:1;
+  min-height: 0;
+  position:relative;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,.10);
+  overflow:hidden;
+  box-shadow: var(--shadow);
+
+  background:
+    linear-gradient(0deg, rgba(11,18,32,.30), rgba(11,18,32,.30)),
+    url("images2/pueblo1.PNG");
+  background-repeat: no-repeat, repeat;
+  background-position: center, center;
+  background-size: auto, 320px 320px;
+}
+
+.town-house{
+  position:absolute;
+  width: 160px;
+  height: auto;
+  user-select:none;
+  pointer-events:none;
+  filter: drop-shadow(0 18px 26px rgba(0,0,0,.45));
+  opacity: .98;
+}
+.town-house.h1{ left: 12%; top: 14%; transform: translate(-50%,-50%); }
+.town-house.h2{ left: 58%; top: 22%; transform: translate(-50%,-50%); }
+.town-house.h3{ left: 78%; top: 62%; transform: translate(-50%,-50%); }
+
+.town-player{
+  position:absolute;
+  width: 86px;
+  height: auto;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%,-50%);
+  z-index: 5;
+  user-select:none;
+  pointer-events:none;
+  filter: drop-shadow(0 16px 24px rgba(0,0,0,.5));
 }
 
 /* ---------- RESPONSIVE ---------- */
@@ -678,37 +730,10 @@ img{ max-width:100%; height:auto; }
     max-height: calc(var(--appH) - 28px);
     max-height: calc(100dvh - 28px);
   }
-}
-/* ✅ Imagen en el modal de misión */
-.mission-img{
-  width: 100%;
-  max-height: 180px;
-  object-fit: contain;
-  border-radius: 12px;
-  margin-top: 10px;
-  display: block;
-}
-/* ✅ SOLO HISTORIA: fondo fortaleza, traslúcido, con rejilla por encima */
-.map.story-bg{
-  background:
-    /* (1) brillo suave igual que antes */
-    radial-gradient(800px 500px at 70% 30%, rgba(85,214,255,.10), transparent 55%),
 
-    /* (2) capa suave */
-    linear-gradient(0deg, rgba(255,255,255,.06), rgba(255,255,255,.06)),
+  .teambar-item{ width: 58px; height: 58px; border-radius: 14px; }
+  .teambar-img{ border-radius: 14px; }
 
-    /* (3) REJILLA X (encima del fondo) */
-    repeating-linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.05) 1px, transparent 1px, transparent 56px),
-
-    /* (4) REJILLA Y (encima del fondo) */
-    repeating-linear-gradient(0deg, rgba(255,255,255,.05), rgba(255,255,255,.05) 1px, transparent 1px, transparent 56px),
-
-    /* (5) velo oscuro para que la imagen quede traslúcida */
-    linear-gradient(0deg, rgba(11,18,32,.45), rgba(11,18,32,.45)),
-
-    /* (6) imagen de fondo */
-    url("images/fortaleza.PNG");
-  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
-  background-position: center, center, center, center, center, center;
-  background-size: auto, auto, auto, auto, auto, cover;
+  .town-player{ width: 96px; }
+  .town-house{ width: 150px; }
 }

@@ -99,8 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // DOM
   // -------------------------
   const introScreen = document.getElementById("introScreen");
-  const introStartBtn = document.getElementById("introStartBtn");
-  const introStoryBtn = document.getElementById("introStoryBtn");
+  const introStartBtn = document.getElementById("introStartBtn"); // ARCADE
+  const introStoryBtn = document.getElementById("introStoryBtn"); // HISTORIA
 
   const startScreen = document.getElementById("startScreen");
   const startBtn = document.getElementById("startBtn");
@@ -118,15 +118,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const teamHint = document.getElementById("teamHint");
   const teamConfirmBtn = document.getElementById("teamConfirmBtn");
 
+  // ✅ HISTORIA: PUEBLO
+  const storyTownScreen = document.getElementById("storyTownScreen");
+  const townMap = document.getElementById("townMap");
+  const townPlayer = document.getElementById("townPlayer");
+  const storyContinueBtn = document.getElementById("storyContinueBtn");
+
   const gameRoot = document.getElementById("gameRoot");
   const mapEl = document.getElementById("map");
   const playerImg = document.getElementById("playerImg");
   const progressEl = document.getElementById("progress");
-
-  // ✅ HUD card del contador (para ocultar solo en HISTORIA)
-  const missionsHudCard = progressEl?.closest(".hud-card");
-
-  // ✅ barra inferior del equipo (6)
+  const missionsHudCard = progressEl?.closest(".hud-card"); // ✅ ocultar solo en HISTORIA
   const teamBar = document.getElementById("teamBar");
 
   const missionModal = document.getElementById("missionModal");
@@ -291,7 +293,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!Array.isArray(availableCards) || availableCards.length !== 6) return;
 
-    availableCards.forEach(cardData=>{
+    const ordered = [...availableCards].sort((a,b)=>a.name.localeCompare(b.name,"es",{sensitivity:"base"}));
+
+    ordered.forEach(cardData=>{
       const ch = availableCharacters.find(x => x.name === cardData.name);
 
       const item = document.createElement("button");
@@ -299,10 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
       item.className = "teambar-item";
       if (ch?.id) item.setAttribute("data-char-id", ch.id);
 
-      item.innerHTML = `
-        <img class="teambar-img" src="${cardData.img}" alt="${cardData.name}" />
-      `;
-
+      item.innerHTML = `<img class="teambar-img" src="${cardData.img}" alt="${cardData.name}" />`;
       item.addEventListener("click", ()=>openCardInfo(cardData));
       teamBar.appendChild(item);
     });
@@ -317,6 +318,7 @@ document.addEventListener("DOMContentLoaded", () => {
     introScreen.classList.add("hidden");
     startScreen.classList.remove("hidden");
     teamScreen.classList.add("hidden");
+    storyTownScreen?.classList.add("hidden");
     gameRoot.classList.add("hidden");
   }
 
@@ -326,7 +328,90 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTeamSelection();
   }
 
-  // ✅ HISTORIA: arranca directo al juego, sin afectar a ARCADE
+  // -------------------------
+  // HISTORIA: Pueblo (movimiento)
+  // -------------------------
+  let townActive = false;
+  let townX = 0;
+  let townY = 0;
+  let townTargetX = null;
+  let townTargetY = null;
+  let townRaf = null;
+
+  const TOWN_SPEED_PX = 2.4;      // desktop
+  const TOWN_SPEED_TOUCH = 3.0;   // móvil (tap)
+
+  function clampTownToBounds(x, y){
+    if (!townMap || !townPlayer) return { x, y };
+    const r = townMap.getBoundingClientRect();
+    const p = townPlayer.getBoundingClientRect();
+    const halfW = p.width / 2;
+    const halfH = p.height / 2;
+
+    const cx = clamp(x, halfW, r.width - halfW);
+    const cy = clamp(y, halfH, r.height - halfH);
+    return { x: cx, y: cy };
+  }
+
+  function applyTownPos(){
+    if (!townPlayer) return;
+    townPlayer.style.left = `${townX}px`;
+    townPlayer.style.top  = `${townY}px`;
+  }
+
+  function initTownPosition(){
+    if (!townMap || !townPlayer) return;
+    const r = townMap.getBoundingClientRect();
+    townX = r.width * 0.50;
+    townY = r.height * 0.72;
+    const cl = clampTownToBounds(townX, townY);
+    townX = cl.x; townY = cl.y;
+    townTargetX = null;
+    townTargetY = null;
+    applyTownPos();
+  }
+
+  function startTownLoop(){
+    stopTownLoop();
+    townActive = true;
+
+    const step = ()=>{
+      if (!townActive) return;
+
+      if (townTargetX != null && townTargetY != null){
+        const dx = townTargetX - townX;
+        const dy = townTargetY - townY;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < 2){
+          townX = townTargetX;
+          townY = townTargetY;
+          townTargetX = null;
+          townTargetY = null;
+        } else {
+          const v = TOWN_SPEED_TOUCH;
+          townX += (dx / dist) * v;
+          townY += (dy / dist) * v;
+        }
+
+        const cl = clampTownToBounds(townX, townY);
+        townX = cl.x; townY = cl.y;
+        applyTownPos();
+      }
+
+      townRaf = requestAnimationFrame(step);
+    };
+
+    townRaf = requestAnimationFrame(step);
+  }
+
+  function stopTownLoop(){
+    townActive = false;
+    if (townRaf) cancelAnimationFrame(townRaf);
+    townRaf = null;
+  }
+
+  // ✅ HISTORIA: entra al pueblo (sin afectar ARCADE)
   function startStoryMode(){
     gameMode = "story";
 
@@ -347,9 +432,14 @@ document.addEventListener("DOMContentLoaded", () => {
     introScreen.classList.add("hidden");
     startScreen.classList.add("hidden");
     teamScreen.classList.add("hidden");
+    gameRoot.classList.add("hidden");
 
-    if (!commitTeam()) return;
-    startGame();
+    storyTownScreen.classList.remove("hidden");
+
+    requestAnimationFrame(()=>{
+      initTownPosition();
+      startTownLoop();
+    });
   }
 
   // -------------------------
@@ -579,9 +669,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   function startGame(){
     teamScreen.classList.add("hidden");
+    storyTownScreen?.classList.add("hidden");
     gameRoot.classList.remove("hidden");
 
-    // ✅ Fondo solo en HISTORIA (usa CSS .map.story-bg)
+    // ✅ Fondo solo en HISTORIA
     mapEl.classList.toggle("story-bg", gameMode === "story");
 
     // ✅ Solo en HISTORIA ocultamos el contador de misiones
@@ -1004,7 +1095,7 @@ document.addEventListener("DOMContentLoaded", () => {
     goToStartScreen();
   });
 
-  introStoryBtn?.addEventListener("click", startStoryMode);
+  introStoryBtn.addEventListener("click", startStoryMode);
 
   prevAvatarBtn.addEventListener("click", prevAvatar);
   nextAvatarBtn.addEventListener("click", nextAvatar);
@@ -1023,8 +1114,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Avatar -> Team
+  // Avatar -> Team (ARCADE)
   startBtn.addEventListener("click", ()=>{
+    gameMode = "arcade";
     selectedTeamCardIds = new Set();
     teamConfirmBtn.disabled = true;
     teamCountEl.textContent = "0";
@@ -1036,6 +1128,49 @@ document.addEventListener("DOMContentLoaded", () => {
   teamConfirmBtn.addEventListener("click", ()=>{
     if (selectedTeamCardIds.size !== 6) return;
     if (!commitTeam()) return;
+    startGame();
+  });
+
+  // HISTORIA: tap/click para moverse
+  townMap?.addEventListener("pointerdown", (e)=>{
+    if (storyTownScreen.classList.contains("hidden")) return;
+    const r = townMap.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+
+    const cl = clampTownToBounds(x, y);
+    townTargetX = cl.x;
+    townTargetY = cl.y;
+  });
+
+  // HISTORIA: teclado (PC)
+  document.addEventListener("keydown", (e)=>{
+    if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) return;
+
+    townTargetX = null;
+    townTargetY = null;
+
+    let dx = 0, dy = 0;
+    if (e.key === "ArrowUp") dy = -TOWN_SPEED_PX;
+    if (e.key === "ArrowDown") dy = +TOWN_SPEED_PX;
+    if (e.key === "ArrowLeft") dx = -TOWN_SPEED_PX;
+    if (e.key === "ArrowRight") dx = +TOWN_SPEED_PX;
+    if (!dx && !dy) return;
+
+    e.preventDefault();
+
+    townX += dx;
+    townY += dy;
+    const cl = clampTownToBounds(townX, townY);
+    townX = cl.x; townY = cl.y;
+    applyTownPos();
+  }, { passive:false });
+
+  // HISTORIA: continuar al juego
+  storyContinueBtn?.addEventListener("click", ()=>{
+    if (!commitTeam()) return;
+    stopTownLoop();
+    storyTownScreen.classList.add("hidden");
     startGame();
   });
 
@@ -1057,11 +1192,11 @@ document.addEventListener("DOMContentLoaded", () => {
   playAgainBtn.addEventListener("click", ()=>{
     resetGame();
 
-    // ✅ por si venías de HISTORIA (contador oculto), lo restauramos
     if (missionsHudCard) missionsHudCard.style.display = "";
-
-    // ✅ limpiar fondo historia al salir
     mapEl.classList.remove("story-bg");
+
+    storyTownScreen.classList.add("hidden");
+    stopTownLoop();
 
     gameRoot.classList.add("hidden");
     introScreen.classList.remove("hidden");
@@ -1074,19 +1209,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", ()=>{
     setAppHeightVar();
     if (!gameRoot.classList.contains("hidden")) computeNoSpawnRect();
+    if (!storyTownScreen.classList.contains("hidden")) initTownPosition();
   });
 
   // init
   renderAvatarCarousel(0);
-
-  // referencia tamaño sprite
-  if (playerImg?.getAttribute("src")){
-    const src = playerImg.getAttribute("src");
-    playerImg.addEventListener("load", async ()=>{
-      try{
-        referenceVisibleHeightPx = null;
-        await applyNormalizedMapSizeFor(src);
-      } catch {}
-    }, { once:true });
-  }
 });

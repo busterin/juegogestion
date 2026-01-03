@@ -11,18 +11,18 @@
 
     <!-- INTRO -->
     <section id="introScreen" class="intro">
-  <div class="intro-content">
-    <div class="intro-title">MONO GAME</div>
-    <img class="intro-logo" src="images/Mono.png" alt="Mono Gnomo" />
+      <div class="intro-content">
+        <div class="intro-title">MONO GAME</div>
+        <img class="intro-logo" src="images/Mono.png" alt="Mono Gnomo" />
 
-    <div class="intro-actions">
-      <button id="introStoryBtn" class="btn intro-btn" type="button">HISTORIA</button>
-      <button id="introStartBtn" class="btn intro-btn" type="button">ARCADE</button>
-    </div>
-  </div>
-</section>
+        <div class="intro-actions">
+          <button id="introStoryBtn" class="btn intro-btn" type="button">HISTORIA</button>
+          <button id="introStartBtn" class="btn intro-btn" type="button">ARCADE</button>
+        </div>
+      </div>
+    </section>
 
-    <!-- SELECTOR AVATAR -->
+    <!-- SELECTOR AVATAR (solo arcade) -->
     <section id="startScreen" class="start hidden">
       <div class="start-card">
         <div class="start-title">Elige tu avatar</div>
@@ -44,9 +44,8 @@
           <span id="dot1" class="dot-indicator"></span>
         </div>
 
-       <div class="intro-actions">
-  <button id="startBtn" class="btn start-btn" type="button">Comenzar</button>
-</div>
+        <button id="startBtn" class="btn start-btn" type="button">Comenzar</button>
+      </div>
     </section>
 
     <!-- SELECCIÓN EQUIPO (6) -->
@@ -65,6 +64,35 @@
           <button id="teamConfirmBtn" class="btn" type="button" disabled>Confirmar</button>
         </div>
       </div>
+    </section>
+
+    <!-- HISTORIA: PUEBLO (pantalla previa) -->
+    <section id="storyTownScreen" class="game hidden">
+      <header class="topbar">
+        <div class="brand">
+          <div class="dot"></div>
+          <div>
+            <div class="title">Historia</div>
+            <div class="subtitle">Muévete por el pueblo</div>
+          </div>
+        </div>
+
+        <div class="hud">
+          <button id="storyContinueBtn" class="btn" type="button">CONTINUAR</button>
+        </div>
+      </header>
+
+      <main class="stage">
+        <div id="townMap" class="town-map" aria-label="Pueblo">
+          <!-- Casas -->
+          <img class="town-house h1" src="images2/casa.PNG" alt="Casa" />
+          <img class="town-house h2" src="images2/casa.PNG" alt="Casa" />
+          <img class="town-house h3" src="images2/casa.PNG" alt="Casa" />
+
+          <!-- Personaje -->
+          <img id="townPlayer" class="town-player" src="images2/riskopueblo.PNG" alt="Personaje" />
+        </div>
+      </main>
     </section>
 
     <!-- JUEGO -->
@@ -90,29 +118,10 @@
         <div id="map" class="map" aria-label="Mapa del juego">
           <img id="playerImg" class="buster-img" src="images/buster1.PNG" alt="Personaje seleccionado" />
         </div>
-
-        <!-- ✅ Equipo visible bajo la cuadrícula -->
-        <div id="teamBar" class="team-bar" aria-label="Equipo"></div>
       </main>
-    </div>
-  </div>
 
-  <!-- MODAL INFO (inicio) -->
-  <div id="infoModal" class="modal" aria-hidden="true">
-    <div class="modal-card modal-card-small" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
-      <div class="modal-head">
-        <div>
-          <div id="infoTitle" class="modal-title">Cómo jugar</div>
-          <div class="modal-text">
-            Elige tu avatar y selecciona <b>6</b> personajes para tu equipo.<br/>
-            Durante <b>5 minutos</b> aparecerán misiones en el mapa.<br/>
-            Asigna <b>1 o 2</b> personajes: la misión se pondrá <b>amarilla</b> y se resolverá en <b>1 minuto</b>.<br/>
-            Cuantas más misiones completes, <b>mayor será tu puntuación</b>.<br/><br/>
-            <b>Habilidad especial:</b> puedes tocar tu avatar para activarla (solo 1 vez) y completar una misión automáticamente.
-          </div>
-        </div>
-        <button id="closeInfoBtn" class="icon-btn" type="button" aria-label="Cerrar">✕</button>
-      </div>
+      <!-- Equipo (6) debajo del mapa -->
+      <div id="teamBar" class="team-bar" aria-label="Equipo seleccionado"></div>
     </div>
   </div>
 
@@ -122,7 +131,10 @@
       <div class="modal-head">
         <div>
           <div id="missionTitle" class="modal-title">Misión</div>
-          <img id="missionImg" class="mission-img" alt="" />
+
+          <!-- ✅ Imagen misión -->
+          <img id="missionImg" class="mission-img" src="images/mision.png" alt="Misión" />
+
           <div id="missionText" class="modal-text">Texto de misión</div>
         </div>
         <button id="closeModalBtn" class="icon-btn" type="button" aria-label="Cerrar">✕</button>
@@ -203,8 +215,10 @@
       <div class="modal-head">
         <div>
           <div id="cardInfoTitle" class="modal-title">Carta</div>
-          <!-- ✅ imagen ampliada -->
-          <img id="cardInfoImg" class="card-info-img" alt="" />
+
+          <!-- ✅ Imagen ampliada -->
+          <img id="cardInfoImg" class="cardinfo-img" src="" alt="" />
+
           <div id="cardInfoText" class="modal-text">Prueba</div>
         </div>
         <button id="closeCardInfoBtn" class="icon-btn" type="button" aria-label="Cerrar">✕</button>
@@ -235,4 +249,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
