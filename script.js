@@ -342,7 +342,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const TOWN_SPEED_TOUCH = 3.0;   // móvil (tap)
 
   // ✅ Orientación (3 imágenes sueltas en images2): down/up/side (left = flip del side).
-  // En tu imagen (izq->der): frente, (extra), perfil derecha, espalda.
   let townFacing = "down";
   function setTownFacing(dir){
     if (!townPlayer) return;
@@ -395,6 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!townActive) return;
 
       if (townTargetX != null && townTargetY != null){
+        townPlayer?.classList.add("walking");
         const dx = townTargetX - townX;
         const dy = townTargetY - townY;
         const dist = Math.hypot(dx, dy);
@@ -412,6 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
           townY = townTargetY;
           townTargetX = null;
           townTargetY = null;
+          townPlayer?.classList.remove("walking");
         } else {
           const v = TOWN_SPEED_TOUCH;
           townX += (dx / dist) * v;
@@ -421,6 +422,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const cl = clampTownToBounds(townX, townY);
         townX = cl.x; townY = cl.y;
         applyTownPos();
+      } else {
+        townPlayer?.classList.remove("walking");
       }
 
       townRaf = requestAnimationFrame(step);
@@ -1193,6 +1196,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const cl = clampTownToBounds(townX, townY);
     townX = cl.x; townY = cl.y;
     applyTownPos();
+
+    townPlayer?.classList.add("walking");
+    clearTimeout(window.__townWalkT);
+    window.__townWalkT = setTimeout(()=>townPlayer?.classList.remove("walking"), 120);
   }, { passive:false });
 
   // HISTORIA: continuar al juego (fortaleza + partida)
