@@ -660,7 +660,7 @@ img{ max-width:100%; height:auto; }
 .town-player{
   position:absolute;
   height: 120px;
-  aspect-ratio: 3 / 8; /* 384x1024 por frame (1536x1024 / 4) */
+  aspect-ratio: 3 / 8; /* mantiene proporción del personaje */
   width: auto;
   left: 50%;
   top: 70%;
@@ -670,19 +670,18 @@ img{ max-width:100%; height:auto; }
   pointer-events:none;
   filter: drop-shadow(0 16px 24px rgba(0,0,0,.5));
 
-  /* Sprite sheet (1 archivo, 4 columnas) */
-  background-image: url("images2/riskopueblo.PNG");
+  /* ✅ ahora usamos 3 PNG sueltos (sin spritesheet) */
+  background-image: url("images2/riskopueblo_down.PNG");
   background-repeat: no-repeat;
-  /* ✅ 401% reduce bleeding entre columnas por interpolación */
-  background-size: 401% 100%;
-  background-position: 0% 50%;
+  background-size: contain;
+  background-position: center;
 }
 
-/* Direcciones: down=col1, right=col3, up=col4. left = flip del right */
-.town-player.face-down{ background-position: 0% 50%; transform: translate(-50%,-50%) scaleX(1); }
-.town-player.face-right{ background-position: 66.6667% 50%; transform: translate(-50%,-50%) scaleX(1); }
-.town-player.face-left{ background-position: 66.6667% 50%; transform: translate(-50%,-50%) scaleX(-1); }
-.town-player.face-up{ background-position: 100% 50%; transform: translate(-50%,-50%) scaleX(1); }
+/* Direcciones (left = flip del side) */
+.town-player.face-down{ background-image: url("images2/riskopueblo_down.PNG"); transform: translate(-50%,-50%) scaleX(1); }
+.town-player.face-right{ background-image: url("images2/riskopueblo_side.PNG"); transform: translate(-50%,-50%) scaleX(1); }
+.town-player.face-left{ background-image: url("images2/riskopueblo_side.PNG"); transform: translate(-50%,-50%) scaleX(-1); }
+.town-player.face-up{ background-image: url("images2/riskopueblo_up.PNG"); transform: translate(-50%,-50%) scaleX(1); }
 
 
 /* ---------- RESPONSIVE ---------- */

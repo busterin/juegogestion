@@ -22,20 +22,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // ✅ MISIONES (15 total) + imagen provisional
   // -------------------------
   const MISSIONS = [
+    // EDUCACIÓN (3)
     { id: "m1", title: "Taller Exprés", internalTag: "Educación", img: "images/mision.png", text: "Hay un grupo listo para empezar y falta ajustar la dinámica. Envía a alguien que domine actividades educativas y manejo de tiempos." },
     { id: "m2", title: "Guía de Actividad", internalTag: "Educación", img: "images/mision.png", text: "Necesitamos una mini-guía clara para que cualquiera pueda dirigir la sesión. Envía a quien sepa convertir ideas en instrucciones sencillas." },
     { id: "m3", title: "Plan de Aula", internalTag: "Educación", img: "images/mision.png", text: "Han cambiado el perfil del público a última hora. Envía a alguien que sepa adaptar contenidos y mantener a la gente enganchada." },
 
+    // PICOFINO (3)
     { id: "m4", title: "Incidencia de Operativa", internalTag: "Picofino", img: "images/mision.png", text: "Se ha bloqueado una tarea del día a día y hay que desbloquearla sin montar lío. Envía a quien conozca bien cómo se mueve Picofino." },
     { id: "m5", title: "Pedido Descuadrado", internalTag: "Picofino", img: "images/mision.png", text: "Un pedido no cuadra con lo esperado y el equipo necesita una mano para reordenar prioridades y resolverlo rápido." },
     { id: "m6", title: "Turno Improvisado", internalTag: "Picofino", img: "images/mision.png", text: "Falta gente en un turno clave. Envía a quien sepa reorganizar recursos y apagar fuegos sin que se note." },
 
+    // PRODUCCIÓN (3)
     { id: "m7", title: "Montaje a Contrarreloj", internalTag: "Producción", img: "images/mision.png", text: "Hay que montar algo rápido y bien, cuidando detalles y materiales. Envía a quien sepa de logística, montaje y ejecución." },
     { id: "m8", title: "Materiales Perdidos", internalTag: "Producción", img: "images/mision.png", text: "Falta material y nadie sabe dónde está. Envía a quien tenga control de inventario y sepa coordinar búsquedas sin caos." },
     { id: "m9", title: "Plan B de Producción", internalTag: "Producción", img: "images/mision.png", text: "El plan inicial se ha caído. Necesitamos a alguien que replantee el paso a paso y saque la tarea adelante con recursos limitados." },
 
+    // MUSEOS (1)
     { id: "m10", title: "Ajuste de Sala", internalTag: "Museos", img: "images/mision.png", text: "La sala necesita un cambio fino: recorrido, cartelas y flujo de personas. Envía a quien sepa de exposición y criterios de museo." },
 
+    // PROGRAMACIÓN (5)
     { id: "m11", title: "Bug Fantasma", internalTag: "Programación", img: "images/mision.png", text: "Algo falla solo a veces y nadie logra reproducirlo. Envía a quien sepa investigar errores raros y aislar la causa." },
     { id: "m12", title: "Integración Rápida", internalTag: "Programación", img: "images/mision.png", text: "Hay que conectar dos piezas que no se hablan bien. Envía a quien se maneje con integraciones y soluciones limpias." },
     { id: "m13", title: "Optimizar Carga", internalTag: "Programación", img: "images/mision.png", text: "En móviles tarda demasiado en cargar. Envía a quien sepa mejorar rendimiento sin romper nada." },
@@ -44,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   // -------------------------
-  // ✅ PERSONAJES
+  // ✅ PERSONAJES (múltiples etiquetas)
   // -------------------------
   const CHARACTERS = [
     { id: "c1",  name: "Castri",  tags: ["Producción", "Museos"] },
@@ -60,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: "c10", name: "Voby",    tags: ["Producción"] }
   ];
 
-  // ✅ Cartas - Buster cambiado a Guerrera.png
+  // ✅ Cartas (todas) - Buster cambiado a Guerrera.png
   const CARDS = [
     { id: "card_buster", name: "Buster",  img: "images/Guerrera.png",  text: "Carta de apoyo: aporta claridad y estructura." },
     { id: "card_castri", name: "Castri",  img: "images/castri.JPEG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
@@ -158,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   // Estado
   // -------------------------
-  let gameMode = "arcade"; // "arcade" | "story"
+  let gameMode = "arcade"; // ✅ "arcade" | "story"
 
   let score = 0;
   let pendingMissions = [...MISSIONS];
@@ -243,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const tags = Array.isArray(ch.tags) ? ch.tags : [ch.tags];
       const match = tags.map(normalizeTag).includes(missionTag);
-      p += match ? MATCH_ADD : NO_MATCH_ADD;
+      p += match ? 0.8 : 0.1;
     }
     return clamp(p, 0, 1);
   }
@@ -270,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // -------------------------
-  // ✅ Barra inferior (6)
+  // ✅ Barra inferior (6) - disponibilidad (descolorido si ocupado)
   // -------------------------
   function updateTeamBarAvailability(){
     if (!teamBar) return;
@@ -324,7 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // -------------------------
-  // HISTORIA: Pueblo (movimiento + orientación)
+  // HISTORIA: Pueblo (movimiento)
   // -------------------------
   let townActive = false;
   let townX = 0;
@@ -336,7 +341,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const TOWN_SPEED_PX = 2.4;      // desktop
   const TOWN_SPEED_TOUCH = 3.0;   // móvil (tap)
 
-  // ✅ Sprite sheet 1x4: (izq->der) frente, (extra), perfil, espalda
+  // ✅ Orientación (3 imágenes sueltas en images2): down/up/side (left = flip del side).
+  // En tu imagen (izq->der): frente, (extra), perfil derecha, espalda.
   let townFacing = "down";
   function setTownFacing(dir){
     if (!townPlayer) return;
@@ -391,13 +397,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (townTargetX != null && townTargetY != null){
         const dx = townTargetX - townX;
         const dy = townTargetY - townY;
+        const dist = Math.hypot(dx, dy);
 
         const ax = Math.abs(dx);
         const ay = Math.abs(dy);
-        if (ax > ay) setTownFacing(dx >= 0 ? "right" : "left");
-        else setTownFacing(dy >= 0 ? "down" : "up");
+        if (ax > ay){
+          setTownFacing(dx >= 0 ? "right" : "left");
+        } else {
+          setTownFacing(dy >= 0 ? "down" : "up");
+        }
 
-        const dist = Math.hypot(dx, dy);
         if (dist < 2){
           townX = townTargetX;
           townY = townTargetY;
@@ -426,6 +435,7 @@ document.addEventListener("DOMContentLoaded", () => {
     townRaf = null;
   }
 
+  // ✅ HISTORIA: entra al pueblo (sin afectar ARCADE)
   function startStoryMode(){
     gameMode = "story";
 
@@ -433,7 +443,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const busterIdx = AVATARS.findIndex(a => a.name === "Buster");
     if (busterIdx >= 0) avatarIndex = busterIdx;
 
-    // Equipo por defecto + 3 extras para completar 6
+    // Equipo por defecto (incluye Maider, Celia, Castri) + 3 extras para completar 6
     selectedTeamCardIds = new Set([
       "card_maider",
       "card_celia",
@@ -686,8 +696,10 @@ document.addEventListener("DOMContentLoaded", () => {
     storyTownScreen?.classList.add("hidden");
     gameRoot.classList.remove("hidden");
 
+    // ✅ Fondo solo en HISTORIA
     mapEl.classList.toggle("story-bg", gameMode === "story");
 
+    // ✅ Solo en HISTORIA ocultamos el contador de misiones
     if (missionsHudCard){
       missionsHudCard.style.display = (gameMode === "story") ? "none" : "";
     }
@@ -1191,7 +1203,7 @@ document.addEventListener("DOMContentLoaded", () => {
     startGame();
   });
 
-  // Habilidad avatar (juego)
+  // Habilidad avatar
   playerImg.addEventListener("click", openSpecialModal);
 
   closeModalBtn.addEventListener("click", closeMissionModal);
