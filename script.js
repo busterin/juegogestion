@@ -342,11 +342,46 @@ document.addEventListener("DOMContentLoaded", () => {
   const TOWN_SPEED_TOUCH = 3.0;   // móvil (tap)
 
   // ✅ Orientación (3 imágenes sueltas en images2): down/up/side (left = flip del side).
+  // En tu imagen (izq->der): frente, (extra), perfil derecha, espalda.
   let townFacing = "down";
+// ✅ Animación caminar (4 frames por dirección, PNG en images2)
+const TOWN_WALK_FRAMES = 4;
+const TOWN_WALK_FRAME_MS = 120; // velocidad de animación
+let townWalkFrame = 1;
+let townWalkLastAt = 0;
+let townIsWalking = false;
+
+function townSpriteKeyForFacing(dir){
+  if (dir === "up") return "up";
+  if (dir === "down") return "down";
+  return "side";
+}
+
+function applyTownSprite(){
+  if (!townPlayer) return;
+  const key = townSpriteKeyForFacing(townFacing);
+  townPlayer.style.backgroundImage = `url("images2/riskopueblo_${key}_${townWalkFrame}.png")`;
+}
+
+function setTownWalking(isWalking){
+  townIsWalking = !!isWalking;
+  if (!townPlayer) return;
+  // (sin bobbing) mantenemos solo frames
+  if (!townIsWalking){
+    townWalkFrame = 1;
+    townWalkLastAt = 0;
+    applyTownSprite();
+  } else {
+    // al empezar a andar, fuerza sprite actualizado
+    if (!townWalkLastAt) townWalkLastAt = performance.now();
+    applyTownSprite();
+  }
+}
   function setTownFacing(dir){
     if (!townPlayer) return;
     if (dir === townFacing) return;
     townFacing = dir;
+    applyTownSprite();
 
     townPlayer.classList.remove("face-up","face-down","face-left","face-right");
     if (dir === "up") townPlayer.classList.add("face-up");
@@ -383,7 +418,15 @@ document.addEventListener("DOMContentLoaded", () => {
     townTargetX = null;
     townTargetY = null;
     setTownFacing("down");
+    townWalkFrame = 1;
+    applyTownSprite();
     applyTownPos();
+
+    setTownWalking(true);
+    townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
+    applyTownSprite();
+    clearTimeout(window.__townWalkT);
+    window.__townWalkT = setTimeout(()=>setTownWalking(false), 140);
   }
 
   function startTownLoop(){
@@ -394,13 +437,20 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!townActive) return;
 
       if (townTargetX != null && townTargetY != null){
-        townPlayer?.classList.add("walking");
         const dx = townTargetX - townX;
         const dy = townTargetY - townY;
         const dist = Math.hypot(dx, dy);
 
         const ax = Math.abs(dx);
         const ay = Math.abs(dy);
+        const now = performance.now();
+        if (!townWalkLastAt) townWalkLastAt = now;
+        if (now - townWalkLastAt >= TOWN_WALK_FRAME_MS){
+          townWalkLastAt = now;
+          townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
+          applyTownSprite();
+        }
+
         if (ax > ay){
           setTownFacing(dx >= 0 ? "right" : "left");
         } else {
@@ -412,7 +462,6 @@ document.addEventListener("DOMContentLoaded", () => {
           townY = townTargetY;
           townTargetX = null;
           townTargetY = null;
-          townPlayer?.classList.remove("walking");
         } else {
           const v = TOWN_SPEED_TOUCH;
           townX += (dx / dist) * v;
@@ -422,8 +471,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const cl = clampTownToBounds(townX, townY);
         townX = cl.x; townY = cl.y;
         applyTownPos();
-      } else {
-        townPlayer?.classList.remove("walking");
+
+    setTownWalking(true);
+    townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
+    applyTownSprite();
+    clearTimeout(window.__townWalkT);
+    window.__townWalkT = setTimeout(()=>setTownWalking(false), 140);
       }
 
       townRaf = requestAnimationFrame(step);
@@ -1197,9 +1250,11 @@ document.addEventListener("DOMContentLoaded", () => {
     townX = cl.x; townY = cl.y;
     applyTownPos();
 
-    townPlayer?.classList.add("walking");
+    setTownWalking(true);
+    townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
+    applyTownSprite();
     clearTimeout(window.__townWalkT);
-    window.__townWalkT = setTimeout(()=>townPlayer?.classList.remove("walking"), 120);
+    window.__townWalkT = setTimeout(()=>setTownWalking(false), 140);
   }, { passive:false });
 
   // HISTORIA: continuar al juego (fortaleza + partida)

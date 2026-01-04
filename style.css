@@ -664,36 +664,27 @@ img{ max-width:100%; height:auto; }
   width: auto;
   left: 50%;
   top: 70%;
-  transform: translate(-50%,-50%) scaleX(var(--flip, 1));
-  --flip: 1;
+  transform: translate(-50%,-50%);
   z-index: 5;
   user-select:none;
   pointer-events:none;
   filter: drop-shadow(0 16px 24px rgba(0,0,0,.5));
 
-  /* ✅ ahora usamos 3 JPG sueltos (sin spritesheet) */
-  background-image: url("images2/riskopueblo_down.jpg");
-  background-repeat: no-repeat;
+  /* ✅ ahora usamos 3 PNG sueltos (sin spritesheet) */
+  background-image: url("images2/riskopueblo_down_1.png");
+background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
 }
 
 /* Direcciones (left = flip del side) */
-.town-player.face-down{ background-image: url("images2/riskopueblo_down.jpg"); --flip: 1; }
-.town-player.face-right{ background-image: url("images2/riskopueblo_side.jpg"); --flip: 1; }
-.town-player.face-left{ background-image: url("images2/riskopueblo_side.jpg"); --flip: -1; }
-.town-player.face-up{ background-image: url("images2/riskopueblo_up.jpg"); --flip: 1; }
+.town-player.face-down{ --flip: 1; }
+.town-player.face-right{ --flip: 1; }
+.town-player.face-left{ --flip: -1; }
+.town-player.face-up{ --flip: 1; }
 
-/* ✅ Animación de caminar (sin sprites) */
-.town-player.walking{
-  animation: townWalkBob .22s infinite steps(2);
-  transform-origin: 50% 90%;
-}
-@keyframes townWalkBob{
-  0%   { transform: translate(-50%,-50%) scaleX(var(--flip, 1)) translateY(0px); }
-  50%  { transform: translate(-50%,-50%) scaleX(var(--flip, 1)) translateY(-3px); }
-  100% { transform: translate(-50%,-50%) scaleX(var(--flip, 1)) translateY(0px); }
-}
+
+
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 520px){
