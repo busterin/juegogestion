@@ -841,3 +841,19 @@ background-repeat: no-repeat;
 
 .story-town #storyTownScreen .town-house.pozo{ left: 42%; top: 22%; }
 .story-town #storyTownScreen .town-house.puesto{ left: 50%; top: 68%; }
+
+
+/* === NPCs del pueblo (solo visuales) === */
+.story-town #storyTownScreen .town-npc{
+  position: absolute;
+  width: 140px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.story-town #storyTownScreen .town-npc.aldeana{ left: 22%; top: 20%; }
+.story-town #storyTownScreen .town-npc.aldeano{ left: 70%; top: 58%; }
+.story-town #storyTownScreen .town-npc.guardia{ left: 6%; bottom: 10%; }
+.story-town #storyTownScreen .town-npc.mercenario{ left: 40%; top: 42%; }
+.story-town #storyTownScreen .town-npc.sacerdotisa{ left: 58%; top: 14%; }
+.story-town #storyTownScreen .town-npc.vendedora{ left: 52%; top: 70%; }
