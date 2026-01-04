@@ -723,3 +723,8 @@ background-repeat: no-repeat;
   .town-player{ height: 135px; aspect-ratio: 3 / 8; width: auto; }
   .town-house{ width: 185px; }
 }
+
+/* ---------- INTRO BACKGROUND ---------- */
+.intro.intro-bg{
+  background: url("images/portadainicio.PNG") center center / cover no-repeat;
+}
