@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   const CHARACTERS = [
     { id: "c1",  name: "Albert",  tags: ["Producción", "Museos"] },
-    { id: "c2",  name: "Maider",  tags: ["Museos", "Producción"] },
+    { id: "c2",  name: "Friday",  tags: ["Museos", "Producción"] },
     { id: "c3",  name: "Eliot",   tags: ["Picofino"] },
     { id: "c4",  name: "Risko",  tags: ["Educación"] },
     { id: "c5",  name: "Pendergast",     tags: ["Programación"] },
@@ -61,24 +61,22 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: "c6",  name: "Jane",   tags: ["Producción"] },
     { id: "c7",  name: "Willard",  tags: ["Diseño"] },
     { id: "c8",  name: "Lisa",    tags: ["Producción"] },
-    { id: "c9",  name: "María M", tags: ["Producción"] },
-    { id: "c10", name: "Voby",    tags: ["Producción"] }
-  ];
+    { id: "c9",  name: "Camus", tags: ["Producción"] },
+    ];
 
   // ✅ Cartas (todas) - Buster cambiado a Guerrera.png
   const CARDS = [
     { id: "card_buster", name: "Risko",  img: "images/Risko.png",  text: "Carta de apoyo: aporta claridad y estructura." },
     { id: "card_castri", name: "Albert",  img: "images/Mistra.PNG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
-    { id: "card_maider", name: "Maider",  img: "images/maider.JPEG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
+    { id: "card_maider", name: "Friday",  img: "images/Friday.JPEG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
     { id: "card_celia",  name: "Eliot",   img: "images/Eliot.PNG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
     { id: "card_dre",    name: "Pendergast",     img: "images/Pendergast.PNG",      text: "Carta de apoyo: detecta fallos y los arregla." },
 
-    { id: "card_genio",  name: "Jane",   img: "images/Jane.PNG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
-    { id: "card_lorena", name: "Willard",  img: "images/Willard.PNG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
+    { id: "card_genio",  name: "Jane",   img: "images/Jane.JPEG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
+    { id: "card_lorena", name: "Willard",  img: "images/Willard.JPEG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
     { id: "card_alba",   name: "Lisa",    img: "images/Lisa.PNG",     text: "Carta de apoyo: ejecución rápida y organizada." },
-    { id: "card_mariam", name: "María M", img: "images/mariam.JPEG",   text: "Carta de apoyo: coordina y aterriza lo pendiente." },
-    { id: "card_voby",   name: "Voby",    img: "images/voby.JPEG",     text: "Carta de apoyo: empuja producción y logística." }
-  ];
+    { id: "card_mariam", name: "Camus", img: "images/Camus.JPEG",   text: "Carta de apoyo: coordina y aterriza lo pendiente." },
+    ];
 
   // -------------------------
   // Tiempos
