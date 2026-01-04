@@ -759,37 +759,3 @@ background-repeat: no-repeat;
   border-radius: 0;
   border: none;
 }
-
-
-/* =========================
-   HISTORIA – CÁMARA RPG (zoom + seguimiento)
-========================= */
-.story-town .town-viewport{
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-}
-
-.story-town .town-world{
-  position: absolute;
-  left: 0;
-  top: 0;
-  will-change: transform;
-}
-
-.story-town .town-map{
-  /* Mundo más grande que la pantalla para que haya exploración */
-  width: 2400px;
-  height: 1600px;
-  transform-origin: 0 0;
-  transform: scale(1.4); /* ✅ zoom */
-}
-
-/* En móvil: un poco menos de mundo y zoom similar para evitar recortes raros */
-@media (max-width: 520px){
-  .story-town .town-map{
-    width: 1800px;
-    height: 1200px;
-    transform: scale(1.35);
-  }
-}
