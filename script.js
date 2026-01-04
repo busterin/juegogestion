@@ -185,72 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Avatares (mapa)
   const AVATARS = [
-    { key: "evelyn", name: "Evelyn", src: "images/Evelyn.PNG", alt: "Evelyn" },
-    { key: "castri", name: "Castri", src: "images/castri1.PNG", alt: "Castri" },
-    { key: "celia",  name: "Celia",  src: "images/celia1.PNG",  alt: "Celia" },
-    { key: "maider", name: "Maider", src: "images/maider1.png", alt: "Maider" }
-  ].sort((a, b) => {
-    if (a.key === "evelyn") return -1;
-    if (b.key === "evelyn") return 1;
-    return a.name.localeCompare(b.name, "es", { sensitivity: "base" });
-  });
-
-  let avatarIndex = 0;
-  let specialUsed = false;
-  let specialArmed = false;
-
-  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
-  const rand = (min, max) => Math.random() * (max - min) + min;
-  const randInt = (min, max) => Math.floor(rand(min, max + 1));
-
-  function setScore(delta){ score += delta; }
-  function setProgress(){ progressEl.textContent = String(completedMissionIds.size); }
-
-  function showModal(el){ el.classList.add("show"); el.setAttribute("aria-hidden","false"); }
-  function hideModal(el){ el.classList.remove("show"); el.setAttribute("aria-hidden","true"); }
-
-  function isAnyModalOpen() {
-    return (
-      missionModal.classList.contains("show") ||
-      rouletteModal.classList.contains("show") ||
-      finalModal.classList.contains("show") ||
-      cardInfoModal.classList.contains("show") ||
-      specialModal.classList.contains("show")
-    );
-  }
-
-  function setGlobalPause(paused){
-    const now = performance.now();
-    for (const st of activePoints.values()){
-      st.isPaused = paused;
-      st.lastTickAt = now;
-    }
-  }
-
-  function setSpecialArmedUI(isArmed){
-    playerImg.classList.toggle("special-armed", !!isArmed);
-  }
-
-  function normalizeTag(tag){
-    const t = String(tag || "").trim().toLowerCase();
-    if (t === "museos" || t === "museo") return "Museos";
-    if (t === "educación" || t === "educacion") return "Educación";
-    if (t === "producción" || t === "produccion") return "Producción";
-    if (t === "picofino") return "Picofino";
-    if (t === "programación" || t === "programacion") return "Programación";
-    if (t === "diseño" || t === "diseno") return "Diseño";
-    return tag;
-  }
-
-  function computeChance(mission, chosenIds){
-    const missionTag = normalizeTag(mission.internalTag);
-    let p = 0;
-
-    for (const cid of chosenIds){
-      const ch = availableCharacters.find(c => c.id === cid);
-      if (!ch) continue;
-
-      const tags = Array.isArray(ch.tags) ? ch.tags : [ch.tags];
+  { key: "evelyn", name: "Evelyn", src: "images/Evelyn.PNG", alt: "Evelyn" },
+  { key: "albert", name: "Albert", src: "images/Albert.PNG", alt: "Albert" }
+];
       const match = tags.map(normalizeTag).includes(missionTag);
       p += match ? 0.8 : 0.1;
     }
