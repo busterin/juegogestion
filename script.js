@@ -529,6 +529,7 @@ function applyTownPos(){
     applyTownSprite();
     applyTownPos();
         updateTownCamera();
+      tickMercenaryUI();
 
     
         updateMercenaryUI();
@@ -1457,3 +1458,43 @@ setTownWalking(true);
       openMercenaryDialog();
     }
   });
+
+
+  function positionMercenaryTalkIcon(){
+    if (!mercenaryNpc || !mercenaryTalkBtn || !townMap) return;
+    const m = mercenaryNpc.getBoundingClientRect();
+    const mapR = townMap.getBoundingClientRect();
+    const cx = (m.left - mapR.left) + (m.width/2);
+    const cy = (m.top - mapR.top); // parte superior del NPC
+    mercenaryTalkBtn.style.left = `${cx}px`;
+    mercenaryTalkBtn.style.top  = `${cy}px`;
+  }
+
+  function isNearMercenary(){
+    if (!mercenaryNpc || !townPlayer) return false;
+    const p = townPlayer.getBoundingClientRect();
+    const m = mercenaryNpc.getBoundingClientRect();
+    const dx = (p.left + p.width/2) - (m.left + m.width/2);
+    const dy = (p.top + p.height/2) - (m.top + m.height/2);
+    return Math.hypot(dx, dy) < 120;
+  }
+
+  function openMercenaryDialog(){
+    if (!mercenaryDialog) return;
+    mercenaryDialog.classList.remove("hidden");
+  }
+  function closeMercenaryDialog(){
+    mercenaryDialog?.classList.add("hidden");
+  }
+
+
+  function tickMercenaryUI(){
+    if (!storyTownScreen || storyTownScreen.classList.contains("hidden")){
+      return;
+    }
+    // icono siempre visible en el pueblo
+    if (mercenaryTalkBtn){
+      mercenaryTalkBtn.classList.remove("hidden");
+      positionMercenaryTalkIcon();
+    }
+  }
