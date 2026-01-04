@@ -1039,10 +1039,13 @@ function setTownWalking(isWalking){
     const turns = randInt(4,7);
     const finalDeg = turns * 360 + randInt(0,359);
 
-    rouletteWheel.animate(
-      [{ transform:"rotate(0deg)" }, { transform:`rotate(${finalDeg}deg)` }],
-      { duration:1400, easing:"cubic-bezier(.2,.8,.2,1)", fill:"forwards" }
-    );
+    // ✅ Animación ruleta (más compatible que Web Animations API)
+    rouletteWheel.style.transition = "none";
+    rouletteWheel.style.transform = "rotate(0deg)";
+    // fuerza reflow
+    void rouletteWheel.offsetWidth;
+    rouletteWheel.style.transition = "transform 1400ms cubic-bezier(.2,.8,.2,1)";
+    rouletteWheel.style.transform = `rotate(${finalDeg}deg)`;
 
     setTimeout(()=>{
       const win = (forcedWin === null) ? (Math.random() < chance) : forcedWin;
