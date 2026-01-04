@@ -412,6 +412,52 @@ function setTownWalking(isWalking){
     townPlayer.style.top  = `${townY}px`;
   }
 
+
+// ✅ Cámara RPG: sigue al personaje dentro del pueblo (con clamp)
+function updateTownCamera(){
+  const viewport = document.getElementById("townViewport");
+  const world = document.getElementById("townWorld");
+  const map = document.getElementById("townMap");
+  if (!viewport || !world || !map) return;
+
+  const vpW = viewport.clientWidth;
+  const vpH = viewport.clientHeight;
+
+  // tamaño del mundo escalado (por CSS transform scale)
+  const mapRect = map.getBoundingClientRect();
+  // mapRect ya está escalado, pero su left/top está afectado por transforms del padre,
+  // así que usamos offsetWidth/Height * scale aproximado leyendo el computed transform.
+  const cs = getComputedStyle(map);
+  let scale = 1;
+  const tr = cs.transform;
+  if (tr && tr !== "none"){
+    const m = tr.match(/matrix\(([^)]+)\)/);
+    if (m){
+      const parts = m.group(1).split(",").map(p=>parseFloat(p));
+      if (parts.length >= 4 && !isNaN(parts[0])) scale = parts[0];
+    }
+  }
+  const worldW = map.offsetWidth * scale;
+  const worldH = map.offsetHeight * scale;
+
+  // posición del jugador en px dentro del mundo (sin escala)
+  // player usa left/top en %, pero nosotros guardamos townX/townY en px del mapa (sin escala)
+  // Convertimos a coordenadas escaladas para cámara:
+  const px = townX * scale;
+  const py = townY * scale;
+
+  let camX = (vpW/2) - px;
+  let camY = (vpH/2) - py;
+
+  // clamp para no ver fuera del mundo
+  const minX = vpW - worldW;
+  const minY = vpH - worldH;
+  camX = Math.min(0, Math.max(minX, camX));
+  camY = Math.min(0, Math.max(minY, camY));
+
+  world.style.transform = `translate(${camX}px, ${camY}px)`;
+}
+
   function initTownPosition(){
     if (!townMap || !townPlayer) return;
     const r = townMap.getBoundingClientRect();
@@ -425,6 +471,8 @@ function setTownWalking(isWalking){
     townWalkFrame = 1;
     applyTownSprite();
     applyTownPos();
+    updateTownCamera();
+        updateTownCamera();
 
     setTownWalking(true);
     townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
