@@ -345,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ✅ Cámara pueblo
   let townCamX = 0;
   let townCamY = 0;
-  let townScale = 1.45; // debe coincidir con el scale CSS
+    let townScale = 1.6; // debe coincidir con el scale CSS
 
   const TOWN_SPEED_PX = 4.5;      // desktop (teclado) ✅ más rápido
   const TOWN_SPEED_TOUCH = 3.0;   // móvil (tap)
@@ -428,12 +428,30 @@ function setTownWalking(isWalking){
     const worldW = (townMap.offsetWidth || 1) * scale;
     const worldH = (townMap.offsetHeight || 1) * scale;
 
+    // posición del jugador en coords escaladas
     const px = townX * scale;
     const py = townY * scale;
 
-    let camX = (vpW/2) - px;
-    let camY = (vpH/2) - py;
+    // deadzone (zona segura) para que la cámara solo se mueva al acercarse a bordes
+    const dzLeft = vpW * 0.35;
+    const dzRight = vpW * 0.65;
+    const dzTop = vpH * 0.35;
+    const dzBottom = vpH * 0.65;
 
+    // posición del jugador en pantalla con la cámara actual
+    let screenX = px + townCamX;
+    let screenY = py + townCamY;
+
+    let camX = townCamX;
+    let camY = townCamY;
+
+    if (screenX < dzLeft) camX += (dzLeft - screenX);
+    else if (screenX > dzRight) camX -= (screenX - dzRight);
+
+    if (screenY < dzTop) camY += (dzTop - screenY);
+    else if (screenY > dzBottom) camY -= (screenY - dzBottom);
+
+    // clamp para no ver fuera del mundo
     const minX = vpW - worldW;
     const minY = vpH - worldH;
     camX = Math.min(0, Math.max(minX, camX));
