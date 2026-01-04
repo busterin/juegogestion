@@ -902,3 +902,23 @@ background-repeat: no-repeat;
 .story-town .town-dialog-text{
   font-weight: 800;
 }
+
+
+/* === Icono de hablar (Mercenario) === */
+.story-town #storyTownScreen .town-talk-btn{
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(15,26,51,.90);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 6; /* por encima de NPCs y edificios */
+  box-shadow: 0 10px 22px rgba(0,0,0,.35);
+  transform: translate(-50%, -100%);
+}
+.story-town #storyTownScreen .town-talk-btn.hidden{ display:none; }
+.story-town #storyTownScreen .town-talk-btn:active{ transform: translate(-50%, -98%); }
