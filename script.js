@@ -546,8 +546,6 @@ function setTownWalking(isWalking){
     avatarPreviewImg.src = a.src;
     avatarPreviewImg.alt = a.alt;
     avatarPreviewName.textContent = a.name;
-    // ✅ Evelyn: ajustar visual si su PNG tiene mucho padding
-    avatarPreviewImg.classList.toggle("avatar-zoom", a.key === "evelyn");
     dot0?.classList.toggle("active", avatarIndex === 0);
     dot1?.classList.toggle("active", avatarIndex === 1);
     if (direction !== 0) animateCarousel(direction);
