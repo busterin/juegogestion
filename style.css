@@ -841,3 +841,25 @@ background-repeat: no-repeat;
 
 .story-town #storyTownScreen .town-house.pozo{ left: 42%; top: 22%; }
 .story-town #storyTownScreen .town-house.puesto{ left: 50%; top: 68%; }
+
+
+/* === Plaza central === */
+.story-town #storyTownScreen .town-house.taberna{
+  left: 32%;
+  top: 34%;
+}
+.story-town #storyTownScreen .town-house.pozo{
+  left: 44%;
+  top: 38%;
+}
+.story-town #storyTownScreen .town-house.puesto{
+  left: 52%;
+  top: 46%;
+}
+
+/* === Colisiones visuales (debug opcional) === */
+/*
+.story-town #storyTownScreen .collider{
+  outline: 2px dashed rgba(255,0,0,.4);
+}
+*/
