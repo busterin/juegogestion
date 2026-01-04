@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ✅ Cartas (todas) - Buster cambiado a Guerrera.png
   const CARDS = [
-    { id: "card_buster", name: "Risko",  img: "images/Risko.PNG",  text: "Carta de apoyo: aporta claridad y estructura." },
+    { id: "card_buster", name: "Risko",  img: "images/Risko.png",  text: "Carta de apoyo: aporta claridad y estructura." },
     { id: "card_castri", name: "Albert",  img: "images/Mistra.PNG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
     { id: "card_maider", name: "Maider",  img: "images/maider.JPEG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
     { id: "card_celia",  name: "Celia",   img: "images/celia.JPEG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
