@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ✅ Cartas (todas) - Buster cambiado a Guerrera.png
   const CARDS = [
-    { id: "card_buster", name: "Risko",  img: "images/Willard.PNG",  text: "Carta de apoyo: aporta claridad y estructura." },
+    { id: "card_buster", name: "Risko",  img: "images/Risko.png",  text: "Carta de apoyo: aporta claridad y estructura." },
     { id: "card_castri", name: "Albert",  img: "images/Mistra.PNG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
     { id: "card_maider", name: "Friday",  img: "images/Friday.PNG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
     { id: "card_celia",  name: "Eliot",   img: "images/Eliot.PNG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
@@ -1529,3 +1529,28 @@ setTownWalking(true);
     el.addEventListener("click", handler);
     el.addEventListener("touchstart", handler, { passive: true });
   }
+
+
+/* === FIX_INTRO_BUTTONS_RESTORE ===
+   Restaurar funcionamiento de HISTORIA y ARCADE
+   Cambio mínimo: solo re‑asociar eventos
+*/
+(function restoreIntroButtons(){
+  const btnHistoria = document.getElementById("storyBtn");
+  const btnArcade = document.getElementById("introStartBtn");
+
+  if (btnHistoria){
+    btnHistoria.onclick = () => {
+      introScreen.classList.add("hidden");
+      storyTownScreen.classList.remove("hidden");
+      startTown();
+    };
+  }
+
+  if (btnArcade){
+    btnArcade.onclick = () => {
+      introScreen.classList.add("hidden");
+      startScreen.classList.remove("hidden");
+    };
+  }
+})();
