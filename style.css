@@ -733,3 +733,29 @@ background-repeat: no-repeat;
 
 
 
+
+
+/* =========================
+   HISTORIA – PUEBLO FULLSCREEN
+========================= */
+.story-town{
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
+.story-town .topbar,
+.story-town .brand,
+.story-town .hud{
+  display: none !important;
+}
+
+/* el mapa ocupa todo */
+.story-town .stage{
+  padding: 0;
+}
+
+.story-town .map{
+  border-radius: 0;
+  border: none;
+}

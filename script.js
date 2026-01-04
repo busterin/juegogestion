@@ -519,6 +519,7 @@ function setTownWalking(isWalking){
     gameRoot.classList.add("hidden");
 
     storyTownScreen.classList.remove("hidden");
+    document.body.classList.add("story-town");
 
     requestAnimationFrame(()=>{
       initTownPosition();
@@ -1039,19 +1040,10 @@ function setTownWalking(isWalking){
     const turns = randInt(4,7);
     const finalDeg = turns * 360 + randInt(0,359);
 
-    // ✅ Animación ruleta (CSS transition) — aplicada en el siguiente frame para que siempre se vea girar
-    rouletteWheel.style.transition = "none";
-    rouletteWheel.style.transform = "rotate(0deg)";
-    // fuerza reflow
-    void rouletteWheel.offsetWidth;
-
-    requestAnimationFrame(()=>{
-      // un segundo frame suele ser más fiable en algunos móviles
-      requestAnimationFrame(()=>{
-        rouletteWheel.style.transition = "transform 1400ms cubic-bezier(.2,.8,.2,1)";
-        rouletteWheel.style.transform = `rotate(${finalDeg}deg)`;
-      });
-    });
+    rouletteWheel.animate(
+      [{ transform:"rotate(0deg)" }, { transform:`rotate(${finalDeg}deg)` }],
+      { duration:1400, easing:"cubic-bezier(.2,.8,.2,1)", fill:"forwards" }
+    );
 
     setTimeout(()=>{
       const win = (forcedWin === null) ? (Math.random() < chance) : forcedWin;
@@ -1276,6 +1268,7 @@ function setTownWalking(isWalking){
     if (!commitTeam()) return;
     stopTownLoop();
     storyTownScreen.classList.add("hidden");
+    document.body.classList.remove("story-town");
     startGame();
   });
 
@@ -1301,6 +1294,7 @@ function setTownWalking(isWalking){
     mapEl.classList.remove("story-bg");
 
     storyTownScreen.classList.add("hidden");
+    document.body.classList.remove("story-town");
     stopTownLoop();
 
     gameRoot.classList.add("hidden");
