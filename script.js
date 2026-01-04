@@ -122,6 +122,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const storyTownScreen = document.getElementById("storyTownScreen");
   const townMap = document.getElementById("townMap");
   const townPlayer = document.getElementById("townPlayer");
+  const townViewport = document.getElementById("townViewport");
+  const townWorld = document.getElementById("townWorld");
   const storyContinueBtn = document.getElementById("storyContinueBtn");
 
   const gameRoot = document.getElementById("gameRoot");
@@ -186,13 +188,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Avatares (mapa)
   const AVATARS = [
     { key: "evelyn", name: "Evelyn", src: "images/Evelyn.PNG", alt: "Evelyn" },
-    { key: "castri", name: "Castri", src: "images/castri1.PNG", alt: "Castri" },
-    { key: "celia",  name: "Celia",  src: "images/celia1.PNG",  alt: "Celia" },
-    { key: "maider", name: "Maider", src: "images/maider1.png", alt: "Maider" }
-  ].sort((a, b) => {
-    if (a.key === "evelyn") return -1;
-    if (b.key === "evelyn") return 1;
-    return a.name.localeCompare(b.name, "es", { sensitivity: "base" });
+    { key: "albert", name: "Albert", src: "images/Albert.PNG", alt: "Albert" }
+  ];
   });
 
   let avatarIndex = 0;
@@ -415,27 +412,44 @@ function setTownWalking(isWalking){
 
 // ✅ Cámara RPG: sigue al personaje dentro del pueblo (con clamp)
 function updateTownCamera(){
-  const viewport = document.getElementById("townViewport");
-  const world = document.getElementById("townWorld");
-  const map = document.getElementById("townMap");
-  if (!viewport || !world || !map) return;
+  if (!townViewport || !townWorld || !townMap) return;
 
-  const vpW = viewport.clientWidth;
-  const vpH = viewport.clientHeight;
+  const vpW = townViewport.clientWidth;
+  const vpH = townViewport.clientHeight;
 
-  // tamaño del mundo escalado (por CSS transform scale)
-  const mapRect = map.getBoundingClientRect();
-  // mapRect ya está escalado, pero su left/top está afectado por transforms del padre,
-  // así que usamos offsetWidth/Height * scale aproximado leyendo el computed transform.
-  const cs = getComputedStyle(map);
+  // escala (CSS transform) del mapa
+  const cs = getComputedStyle(townMap);
   let scale = 1;
   const tr = cs.transform;
   if (tr && tr !== "none"){
     const m = tr.match(/matrix\(([^)]+)\)/);
     if (m){
-      const parts = m.group(1).split(",").map(p=>parseFloat(p));
-      if (parts.length >= 4 && !isNaN(parts[0])) scale = parts[0];
+      const parts = m[1].split(",").map(p=>parseFloat(p));
+      if (parts.length >= 1 && !isNaN(parts[0])) scale = parts[0];
     }
+  }
+  townScale = scale;
+
+  const worldW = (townMap.offsetWidth || 1) * scale;
+  const worldH = (townMap.offsetHeight || 1) * scale;
+
+  // personaje en coords escaladas
+  const px = townX * scale;
+  const py = townY * scale;
+
+  let camX = (vpW/2) - px;
+  let camY = (vpH/2) - py;
+
+  const minX = vpW - worldW;
+  const minY = vpH - worldH;
+  camX = Math.min(0, Math.max(minX, camX));
+  camY = Math.min(0, Math.max(minY, camY));
+
+  townCamX = camX;
+  townCamY = camY;
+
+  townWorld.style.transform = `translate(${camX}px, ${camY}px)`;
+}
   }
   const worldW = map.offsetWidth * scale;
   const worldH = map.offsetHeight * scale;
@@ -460,9 +474,10 @@ function updateTownCamera(){
 
   function initTownPosition(){
     if (!townMap || !townPlayer) return;
-    const r = townMap.getBoundingClientRect();
-    townX = r.width * 0.50;
-    townY = r.height * 0.72;
+    const w = townMap.offsetWidth || 1;
+    const h = townMap.offsetHeight || 1;
+    townX = w * 0.50;
+    townY = h * 0.72;
     const cl = clampTownToBounds(townX, townY);
     townX = cl.x; townY = cl.y;
     townTargetX = null;
@@ -471,6 +486,7 @@ function updateTownCamera(){
     townWalkFrame = 1;
     applyTownSprite();
     applyTownPos();
+        updateTownCamera();
     updateTownCamera();
         updateTownCamera();
 
@@ -1266,16 +1282,23 @@ function updateTownCamera(){
   });
 
   // HISTORIA: tap/click para moverse
-  townMap?.addEventListener("pointerdown", (e)=>{
-    if (storyTownScreen.classList.contains("hidden")) return;
-    const r = townMap.getBoundingClientRect();
-    const x = e.clientX - r.left;
-    const y = e.clientY - r.top;
+townMap?.addEventListener("pointerdown", (e)=>{
+  if (storyTownScreen.classList.contains("hidden")) return;
+  if (!townViewport) return;
 
-    const cl = clampTownToBounds(x, y);
-    townTargetX = cl.x;
-    townTargetY = cl.y;
-  });
+  const vp = townViewport.getBoundingClientRect();
+  // coordenadas dentro del viewport (pantalla)
+  const vx = e.clientX - vp.left;
+  const vy = e.clientY - vp.top;
+
+  // convertir a coordenadas del mundo (mapa sin escala)
+  const x = (vx - townCamX) / (townScale || 1);
+  const y = (vy - townCamY) / (townScale || 1);
+
+  const cl = clampTownToBounds(x, y);
+  townTargetX = cl.x;
+  townTargetY = cl.y;
+});
 
   // HISTORIA: teclado (PC)
   document.addEventListener("keydown", (e)=>{
