@@ -812,3 +812,17 @@ background-repeat: no-repeat;
     width: 320px;
   }
 }
+
+
+/* === Pueblo: edificios definitivos === */
+.story-town #storyTownScreen .town-house{
+  width: 360px;
+}
+
+.story-town #storyTownScreen .town-house.puerta{ left: 5%; top: 65%; }
+.story-town #storyTownScreen .town-house.casa2a{ left: 18%; top: 15%; }
+.story-town #storyTownScreen .town-house.casa2b{ left: 68%; top: 55%; }
+.story-town #storyTownScreen .town-house.iglesia{ left: 55%; top: 10%; }
+.story-town #storyTownScreen .town-house.taberna{ left: 35%; top: 40%; }
+.story-town #storyTownScreen .town-house.pozo{ left: 40%; top: 20%; }
+.story-town #storyTownScreen .town-house.puesto{ left: 48%; top: 65%; }
