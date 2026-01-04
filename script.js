@@ -122,6 +122,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const storyTownScreen = document.getElementById("storyTownScreen");
   const townMap = document.getElementById("townMap");
   const townPlayer = document.getElementById("townPlayer");
+  const townViewport = document.getElementById("townViewport");
+  const townWorld = document.getElementById("townWorld");
   const storyContinueBtn = document.getElementById("storyContinueBtn");
 
   const gameRoot = document.getElementById("gameRoot");
@@ -340,6 +342,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let townTargetY = null;
   let townRaf = null;
 
+  // ✅ Cámara pueblo
+  let townCamX = 0;
+  let townCamY = 0;
+  let townScale = 1.45; // debe coincidir con el scale CSS
+
   const TOWN_SPEED_PX = 4.5;      // desktop (teclado) ✅ más rápido
   const TOWN_SPEED_TOUCH = 3.0;   // móvil (tap)
 
@@ -410,11 +417,41 @@ function setTownWalking(isWalking){
     townPlayer.style.top  = `${townY}px`;
   }
 
+
+  function updateTownCamera(){
+    if (!townViewport || !townWorld || !townMap) return;
+
+    const vpW = townViewport.clientWidth;
+    const vpH = townViewport.clientHeight;
+
+    const scale = townScale || 1;
+    const worldW = (townMap.offsetWidth || 1) * scale;
+    const worldH = (townMap.offsetHeight || 1) * scale;
+
+    const px = townX * scale;
+    const py = townY * scale;
+
+    let camX = (vpW/2) - px;
+    let camY = (vpH/2) - py;
+
+    const minX = vpW - worldW;
+    const minY = vpH - worldH;
+    camX = Math.min(0, Math.max(minX, camX));
+    camY = Math.min(0, Math.max(minY, camY));
+
+    townCamX = camX;
+    townCamY = camY;
+
+    townWorld.style.transform = `translate(${camX}px, ${camY}px)`;
+  }
+
+
   function initTownPosition(){
     if (!townMap || !townPlayer) return;
-    const r = townMap.getBoundingClientRect();
-    townX = r.width * 0.50;
-    townY = r.height * 0.72;
+    const w = townMap.offsetWidth || 1;
+    const h = townMap.offsetHeight || 1;
+    townX = w * 0.50;
+    townY = h * 0.72;
     const cl = clampTownToBounds(townX, townY);
     townX = cl.x; townY = cl.y;
     townTargetX = null;
@@ -423,6 +460,7 @@ function setTownWalking(isWalking){
     townWalkFrame = 1;
     applyTownSprite();
     applyTownPos();
+        updateTownCamera();
 
     setTownWalking(true);
     townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
@@ -521,6 +559,8 @@ function setTownWalking(isWalking){
 
     requestAnimationFrame(()=>{
       initTownPosition();
+      applyTownPos();
+      updateTownCamera();
       startTownLoop();
     });
   }
@@ -1218,9 +1258,14 @@ function setTownWalking(isWalking){
   // HISTORIA: tap/click para moverse
   townMap?.addEventListener("pointerdown", (e)=>{
     if (storyTownScreen.classList.contains("hidden")) return;
-    const r = townMap.getBoundingClientRect();
-    const x = e.clientX - r.left;
-    const y = e.clientY - r.top;
+    if (!townViewport) return;
+
+    const vp = townViewport.getBoundingClientRect();
+    const vx = e.clientX - vp.left;
+    const vy = e.clientY - vp.top;
+
+    const x = (vx - townCamX) / (townScale || 1);
+    const y = (vy - townCamY) / (townScale || 1);
 
     const cl = clampTownToBounds(x, y);
     townTargetX = cl.x;
