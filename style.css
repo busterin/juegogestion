@@ -845,15 +845,6 @@ background-repeat: no-repeat;
 
 
 
-/* === NPCs del pueblo (tamaño personaje, siempre por debajo de edificios) === */
-.story-town #storyTownScreen .town-npc{
-  position: absolute;
-  width: 96px;           /* mismo orden de tamaño que el jugador */
-  pointer-events: none;
-  z-index: 1;            /* por debajo de edificios */
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
-}
-
 /* Posiciones ajustadas (no encima de edificios) */
 .story-town #storyTownScreen .town-npc.aldeana{ left: 24%; top: 28%; }
 .story-town #storyTownScreen .town-npc.aldeano{ left: 74%; top: 66%; }
@@ -861,3 +852,21 @@ background-repeat: no-repeat;
 .story-town #storyTownScreen .town-npc.mercenario{ left: 46%; top: 50%; }
 .story-town #storyTownScreen .town-npc.sacerdotisa{ left: 62%; top: 22%; }
 .story-town #storyTownScreen .town-npc.vendedora{ left: 56%; top: 78%; }
+
+
+/* === NPCs del pueblo (mismo tamaño que jugador, bien separados) === */
+.story-town #storyTownScreen .town-npc{
+  position: absolute;
+  width: 72px;           /* tamaño similar al personaje */
+  pointer-events: none;
+  z-index: 1;            /* siempre debajo de edificios */
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.35));
+}
+
+/* Posiciones alejadas de edificios */
+.story-town #storyTownScreen .town-npc.aldeana{ left: 12%; top: 30%; }
+.story-town #storyTownScreen .town-npc.aldeano{ left: 80%; top: 72%; }
+.story-town #storyTownScreen .town-npc.guardia{ left: 14%; bottom: 6%; }
+.story-town #storyTownScreen .town-npc.mercenario{ left: 30%; top: 58%; }
+.story-town #storyTownScreen .town-npc.sacerdotisa{ left: 70%; top: 28%; }
+.story-town #storyTownScreen .town-npc.vendedora{ left: 60%; top: 86%; }
