@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Avatares (mapa)
   const AVATARS = [
-    { key: "buster", name: "Buster", src: "images/buster1.PNG", alt: "Buster" },
+    { key: "evelyn", name: "Evelyn", src: "images/Evelyn.PNG", alt: "Evelyn" },
     { key: "castri", name: "Castri", src: "images/castri1.PNG", alt: "Castri" },
     { key: "celia",  name: "Celia",  src: "images/celia1.PNG",  alt: "Celia" },
     { key: "maider", name: "Maider", src: "images/maider1.png", alt: "Maider" }
