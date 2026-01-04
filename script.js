@@ -120,11 +120,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const storyTownScreen = document.getElementById("storyTownScreen");
   const townMap = document.getElementById("townMap");
   const townPlayer = document.getElementById("townPlayer");
+  
   const mercenaryNpc = document.querySelector(".town-npc.mercenario");
+  const mercenaryTalkBtn = document.getElementById("mercenaryTalkBtn");
   const mercenaryDialog = document.getElementById("mercenaryDialog");
   const mercenaryConfirmBtn = document.getElementById("mercenaryConfirmBtn");
-  const mercenaryTalkBtn = document.getElementById("mercenaryTalkBtn");
-  const townViewport = document.getElementById("townViewport");
+const townViewport = document.getElementById("townViewport");
   const townWorld = document.getElementById("townWorld");
   const storyContinueBtn = document.getElementById("storyContinueBtn");
 
@@ -413,7 +414,54 @@ function setTownWalking(isWalking){
     return { x: cx, y: cy };
   }
 
-  function applyTownPos(){
+  
+  function mercenaryIsNear(){
+    if (!mercenaryNpc || !townPlayer) return false;
+    const p = townPlayer.getBoundingClientRect();
+    const m = mercenaryNpc.getBoundingClientRect();
+    const dx = (p.left + p.width/2) - (m.left + m.width/2);
+    const dy = (p.top + p.height/2) - (m.top + m.height/2);
+    return Math.hypot(dx, dy) < 110;
+  }
+
+  function positionMercenaryTalk(){
+    if (!mercenaryNpc || !mercenaryTalkBtn || !townMap) return;
+    const m = mercenaryNpc.getBoundingClientRect();
+    const mapR = townMap.getBoundingClientRect();
+    const cx = (m.left - mapR.left) + (m.width/2);
+    const cy = (m.top - mapR.top);
+    mercenaryTalkBtn.style.left = `${cx}px`;
+    mercenaryTalkBtn.style.top  = `${cy}px`;
+  }
+
+  function openMercenaryDialog(){
+    if (!mercenaryDialog) return;
+    mercenaryDialog.classList.remove("hidden");
+    mercenaryDialog.setAttribute("aria-hidden","false");
+  }
+  function closeMercenaryDialog(){
+    if (!mercenaryDialog) return;
+    mercenaryDialog.classList.add("hidden");
+    mercenaryDialog.setAttribute("aria-hidden","true");
+  }
+
+  function updateMercenaryUI(){
+    if (!mercenaryTalkBtn) return;
+    if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) {
+      mercenaryTalkBtn.classList.add("hidden");
+      closeMercenaryDialog();
+      return;
+    }
+    if (mercenaryIsNear()){
+      positionMercenaryTalk();
+      mercenaryTalkBtn.classList.remove("hidden");
+    } else {
+      mercenaryTalkBtn.classList.add("hidden");
+      closeMercenaryDialog();
+    }
+  }
+
+function applyTownPos(){
     if (!townPlayer) return;
     townPlayer.style.left = `${townX}px`;
     townPlayer.style.top  = `${townY}px`;
@@ -482,7 +530,9 @@ function setTownWalking(isWalking){
     applyTownPos();
         updateTownCamera();
 
-    setTownWalking(true);
+    
+        updateMercenaryUI();
+setTownWalking(true);
     townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
     applyTownSprite();
     clearTimeout(window.__townWalkT);
@@ -1245,70 +1295,165 @@ function setTownWalking(isWalking){
   prevAvatarBtn.addEventListener("click", prevAvatar);
   nextAvatarBtn.addEventListener("click", nextAvatar);
 
+  document.addEventListener("keydown", (e)=>{
+    if (!introScreen.classList.contains("hidden")){
+      if (e.key === "Enter") {
+        gameMode = "arcade";
+        goToStartScreen();
+      }
+      return;
+    }
+    if (!startScreen.classList.contains("hidden")){
+      if (e.key === "ArrowLeft") prevAvatar();
+      if (e.key === "ArrowRight") nextAvatar();
+    }
+  });
+
+  // Avatar -> Team (ARCADE)
+  startBtn.addEventListener("click", ()=>{
+    gameMode = "arcade";
+    selectedTeamCardIds = new Set();
+    teamConfirmBtn.disabled = true;
+    teamCountEl.textContent = "0";
+    teamHint.textContent = "Elige 6 personajes para continuar.";
+    goToTeamScreen();
+  });
+
+  // Confirm team -> Start game
+  teamConfirmBtn.addEventListener("click", ()=>{
+    if (selectedTeamCardIds.size !== 6) return;
+    if (!commitTeam()) return;
+    startGame();
+  });
+
+  // HISTORIA: tap/click para moverse
+  townMap?.addEventListener("pointerdown", (e)=>{
+    if (storyTownScreen.classList.contains("hidden")) return;
+    if (!townViewport) return;
+
+    const vp = townViewport.getBoundingClientRect();
+    const vx = e.clientX - vp.left;
+    const vy = e.clientY - vp.top;
+
+    const x = (vx - townCamX) / (townScale || 1);
+    const y = (vy - townCamY) / (townScale || 1);
+
+    const cl = clampTownToBounds(x, y);
+    townTargetX = cl.x;
+    townTargetY = cl.y;
+  });
+
+  // HISTORIA: teclado (PC)
+  document.addEventListener("keydown", (e)=>{
+    if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) return;
+
+    townTargetX = null;
+    townTargetY = null;
+
+    let dx = 0, dy = 0;
+    if (e.key === "ArrowUp") dy = -TOWN_SPEED_PX;
+    if (e.key === "ArrowDown") dy = +TOWN_SPEED_PX;
+    if (e.key === "ArrowLeft") dx = -TOWN_SPEED_PX;
+    if (e.key === "ArrowRight") dx = +TOWN_SPEED_PX;
+    if (!dx && !dy) return;
+
+    e.preventDefault();
+
+    if (dx > 0) setTownFacing("right");
+    else if (dx < 0) setTownFacing("left");
+    else if (dy > 0) setTownFacing("down");
+    else if (dy < 0) setTownFacing("up");
+
+    townX += dx;
+    townY += dy;
+    const cl = clampTownToBounds(townX, townY);
+    townX = cl.x; townY = cl.y;
+    applyTownPos();
+
+    setTownWalking(true);
+    townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
+    applyTownSprite();
+    clearTimeout(window.__townWalkT);
+    window.__townWalkT = setTimeout(()=>setTownWalking(false), 140);
+  }, { passive:false });
+
+  // HISTORIA: continuar al juego (fortaleza + partida)
+  storyContinueBtn?.addEventListener("click", ()=>{
+    if (!commitTeam()) return;
+    stopTownLoop();
+    storyTownScreen.classList.add("hidden");
+    document.body.classList.remove("story-town");
+    startGame();
+  });
+
+  // Habilidad avatar
+  playerImg.addEventListener("click", openSpecialModal);
+
+  closeModalBtn.addEventListener("click", closeMissionModal);
+  missionModal.addEventListener("click", (e)=>{ if (e.target === missionModal) closeMissionModal(); });
+  confirmBtn.addEventListener("click", confirmMission);
+
+  closeCardInfoBtn.addEventListener("click", closeCardInfo);
+  cardInfoModal.addEventListener("click", (e)=>{ if (e.target === cardInfoModal) closeCardInfo(); });
+
+  closeSpecialBtn.addEventListener("click", cancelSpecial);
+  specialCancelBtn.addEventListener("click", cancelSpecial);
+  specialAcceptBtn.addEventListener("click", acceptSpecial);
+  specialModal.addEventListener("click", (e)=>{ if (e.target === specialModal) cancelSpecial(); });
+
+  playAgainBtn.addEventListener("click", ()=>{
+    resetGame();
+
+    if (missionsHudCard) missionsHudCard.style.display = "";
+    mapEl.classList.remove("story-bg");
+
+    storyTownScreen.classList.add("hidden");
+    document.body.classList.remove("story-town");
+    stopTownLoop();
+
+    gameRoot.classList.add("hidden");
+    introScreen.classList.remove("hidden");
+    startScreen.classList.add("hidden");
+    teamScreen.classList.add("hidden");
+    avatarIndex = 0;
+    renderAvatarCarousel(0);
+  });
+
+  window.addEventListener("resize", ()=>{
+    setAppHeightVar();
+    if (!gameRoot.classList.contains("hidden")) computeNoSpawnRect();
+    if (!storyTownScreen.classList.contains("hidden")) initTownPosition();
+  });
+
+  // init
+  renderAvatarCarousel(0);
+});
+
+  // === Mercenario: interacción ===
+  mercenaryTalkBtn?.addEventListener("click", ()=>{
+    openMercenaryDialog();
+  });
+
   mercenaryConfirmBtn?.addEventListener("click", ()=>{
-    hideMercenaryDialog();
-    // pasar al juego (rejilla) como antes
+    closeMercenaryDialog();
+    // pasar a la rejilla (juego principal)
     storyTownScreen.classList.add("hidden");
     gameRoot.classList.remove("hidden");
     startGame();
   });
 
-
-  function positionMercenaryTalkIcon(){
-    if (!mercenaryNpc || !mercenaryTalkBtn || !townMap) return;
-    const m = mercenaryNpc.getBoundingClientRect();
-    const mapR = townMap.getBoundingClientRect();
-
-    const cx = (m.left - mapR.left) + (m.width/2);
-    const cy = (m.top - mapR.top); // top of npc
-    mercenaryTalkBtn.style.left = `${cx}px`;
-    mercenaryTalkBtn.style.top  = `${cy}px`;
-  }
-
-  function openMercenaryDialog(){
-    if (!mercenaryDialog) return;
-    mercenaryDialog.classList.remove("hidden");
-  }
-
-
-  let townNpcTickInterval = null;
-  function startTownNpcTick(){
-    if (townNpcTickInterval) return;
-    townNpcTickInterval = setInterval(()=>{
-      if (!storyTownScreen || storyTownScreen.classList.contains("hidden")){
-        // ocultar si no estamos en el pueblo
-        if (mercenaryTalkBtn) mercenaryTalkBtn.classList.add("hidden");
-        return;
-      }
-      const near = checkMercenaryProximity();
-      if (mercenaryTalkBtn){
-        if (near) {
-          positionMercenaryTalkIcon();
-          mercenaryTalkBtn.classList.remove("hidden");
-        } else {
-          mercenaryTalkBtn.classList.add("hidden");
-          hideMercenaryDialog();
-        }
-      }
-    }, 120);
-  }
-
-
   document.addEventListener("keydown", (e)=>{
     if (e.key !== "Enter") return;
     if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) return;
 
-    if (!mercenaryDialog?.classList.contains("hidden")){
-      // si el diálogo está abierto, Enter confirma
+    // si diálogo abierto, Enter confirma
+    if (mercenaryDialog && !mercenaryDialog.classList.contains("hidden")){
       mercenaryConfirmBtn?.click();
       return;
     }
 
-    if (checkMercenaryProximity()){
+    // si estamos cerca, Enter abre diálogo
+    if (mercenaryIsNear()){
       openMercenaryDialog();
     }
-  });
-
-  mercenaryTalkBtn?.addEventListener("click", ()=>{
-    openMercenaryDialog();
   });
