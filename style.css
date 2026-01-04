@@ -659,12 +659,13 @@ img{ max-width:100%; height:auto; }
 
 .town-player{
   position:absolute;
+  --flip: 1;
   height: 150px;
   aspect-ratio: 3 / 8; /* mantiene proporción del personaje */
   width: auto;
   left: 50%;
   top: 70%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%) scaleX(var(--flip));
   z-index: 5;
   user-select:none;
   pointer-events:none;
