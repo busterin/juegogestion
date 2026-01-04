@@ -184,6 +184,7 @@ img{ max-width:100%; height:auto; }
   filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
   user-select:none;
   pointer-events:none;
+  transition: transform .15s ease;
 }
 
 .carousel-name{
@@ -727,4 +728,10 @@ background-repeat: no-repeat;
 /* ---------- INTRO BACKGROUND ---------- */
 .intro.intro-bg{
   background: url("images/portadainicio.PNG") center center / cover no-repeat;
+}
+
+
+/* ✅ Ajuste visual para Evelyn en selector */
+.carousel-img.avatar-zoom{
+  transform: scale(1.15);
 }

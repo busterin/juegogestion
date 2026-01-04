@@ -189,7 +189,11 @@ document.addEventListener("DOMContentLoaded", () => {
     { key: "castri", name: "Castri", src: "images/castri1.PNG", alt: "Castri" },
     { key: "celia",  name: "Celia",  src: "images/celia1.PNG",  alt: "Celia" },
     { key: "maider", name: "Maider", src: "images/maider1.png", alt: "Maider" }
-  ].sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
+  ].sort((a, b) => {
+    if (a.key === "evelyn") return -1;
+    if (b.key === "evelyn") return 1;
+    return a.name.localeCompare(b.name, "es", { sensitivity: "base" });
+  });
 
   let avatarIndex = 0;
   let specialUsed = false;
@@ -542,6 +546,8 @@ function setTownWalking(isWalking){
     avatarPreviewImg.src = a.src;
     avatarPreviewImg.alt = a.alt;
     avatarPreviewName.textContent = a.name;
+    // ✅ Evelyn: ajustar visual si su PNG tiene mucho padding
+    avatarPreviewImg.classList.toggle("avatar-zoom", a.key === "evelyn");
     dot0?.classList.toggle("active", avatarIndex === 0);
     dot1?.classList.toggle("active", avatarIndex === 1);
     if (direction !== 0) animateCarousel(direction);
