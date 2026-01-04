@@ -120,6 +120,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const storyTownScreen = document.getElementById("storyTownScreen");
   const townMap = document.getElementById("townMap");
   const townPlayer = document.getElementById("townPlayer");
+  const mercenaryNpc = document.querySelector(".town-npc.mercenario");
+  const mercenaryDialog = document.getElementById("mercenaryDialog");
+  const mercenaryConfirmBtn = document.getElementById("mercenaryConfirmBtn");
   const townViewport = document.getElementById("townViewport");
   const townWorld = document.getElementById("townWorld");
   const storyContinueBtn = document.getElementById("storyContinueBtn");
@@ -1374,3 +1377,38 @@ function setTownWalking(isWalking){
   // init
   renderAvatarCarousel(0);
 });
+
+  function checkMercenaryProximity(){
+    if (!mercenaryNpc || !townPlayer || !mercenaryDialog) return false;
+
+    const p = townPlayer.getBoundingClientRect();
+    const m = mercenaryNpc.getBoundingClientRect();
+
+    const dx = (p.left + p.width/2) - (m.left + m.width/2);
+    const dy = (p.top + p.height/2) - (m.top + m.height/2);
+    const dist = Math.hypot(dx, dy);
+
+    return dist < 120;
+  }
+
+  function showMercenaryDialog(){
+    mercenaryDialog.classList.remove("hidden");
+  }
+  function hideMercenaryDialog(){
+    mercenaryDialog.classList.add("hidden");
+  }
+
+
+  document.addEventListener("keydown", (e)=>{
+    if (e.key === "Enter" && !mercenaryDialog?.classList.contains("hidden")){
+      mercenaryConfirmBtn?.click();
+    }
+  });
+
+  mercenaryConfirmBtn?.addEventListener("click", ()=>{
+    hideMercenaryDialog();
+    // pasar al juego (rejilla) como antes
+    storyTownScreen.classList.add("hidden");
+    gameRoot.classList.remove("hidden");
+    startGame();
+  });
