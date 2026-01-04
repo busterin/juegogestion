@@ -962,3 +962,10 @@ background-repeat: no-repeat;
 .story-town .town-dialog-text{
   font-weight: 800;
 }
+
+/* Icono hablar imagen */
+.talk-icon-img{
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+}

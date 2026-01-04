@@ -66,16 +66,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ✅ Cartas (todas) - Buster cambiado a Guerrera.png
   const CARDS = [
-    { id: "card_buster", name: "Risko",  img: "images/Risko.png",  text: "Carta de apoyo: aporta claridad y estructura." },
+    { id: "card_buster", name: "Risko",  img: "images/Willard.PNG",  text: "Carta de apoyo: aporta claridad y estructura." },
     { id: "card_castri", name: "Albert",  img: "images/Mistra.PNG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
-    { id: "card_maider", name: "Friday",  img: "images/Friday.JPEG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
+    { id: "card_maider", name: "Friday",  img: "images/Friday.PNG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
     { id: "card_celia",  name: "Eliot",   img: "images/Eliot.PNG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
     { id: "card_dre",    name: "Pendergast",     img: "images/Pendergast.PNG",      text: "Carta de apoyo: detecta fallos y los arregla." },
 
-    { id: "card_genio",  name: "Jane",   img: "images/Jane.JPEG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
-    { id: "card_lorena", name: "Willard",  img: "images/Willard.JPEG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
+    { id: "card_genio",  name: "Jane",   img: "images/Jane.PNG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
+    { id: "card_lorena", name: "Willard",  img: "images/Willard.PNG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
     { id: "card_alba",   name: "Lisa",    img: "images/Lisa.PNG",     text: "Carta de apoyo: ejecución rápida y organizada." },
-    { id: "card_mariam", name: "Camus", img: "images/Camus.JPEG",   text: "Carta de apoyo: coordina y aterriza lo pendiente." },
+    { id: "card_mariam", name: "Camus", img: "images/Camus.PNG",   text: "Carta de apoyo: coordina y aterriza lo pendiente." },
     ];
 
   // -------------------------
@@ -541,6 +541,13 @@ setTownWalking(true);
   }
 
   function startTownLoop(){
+  townMap.addEventListener("click", (e)=>{
+    const rect = townMap.getBoundingClientRect();
+    townTarget.x = e.clientX - rect.left;
+    townTarget.y = e.clientY - rect.top;
+    townMoving = true;
+  });
+
     stopTownLoop();
     townActive = true;
 
