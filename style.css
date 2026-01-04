@@ -731,3 +731,10 @@ background-repeat: no-repeat;
 }
 
 
+
+
+/* ✅ Evelyn: escalar solo en el juego (mapa) */
+.buster-img.evelyn-map-scale{
+  transform: scale(2);
+  transform-origin: bottom left;
+}
