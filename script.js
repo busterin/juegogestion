@@ -342,9 +342,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let townTargetY = null;
   let townRaf = null;
 
-  // === Colisiones del pueblo ===
-  const townColliders = [];
-
   // ✅ Cámara pueblo
   let townCamX = 0;
   let townCamY = 0;
@@ -411,9 +408,7 @@ function setTownWalking(isWalking){
 
     const cx = clamp(x, halfW, r.width - halfW);
     const cy = clamp(y, halfH, r.height - halfH);
-    const nx = cx; const ny = cy;
-    if (collidesTown(nx, ny)) return { x, y };
-    return { x: nx, y: ny };
+    return { x: cx, y: cy };
   }
 
   function applyTownPos(){
@@ -585,7 +580,6 @@ function setTownWalking(isWalking){
       initTownPosition();
       applyTownPos();
       updateTownCamera();
-      buildTownColliders();
       startTownLoop();
     });
   }
@@ -1382,28 +1376,3 @@ function setTownWalking(isWalking){
   // init
   renderAvatarCarousel(0);
 });
-
-  function buildTownColliders(){
-    townColliders.length = 0;
-    document.querySelectorAll('#townMap .town-house').forEach(el=>{
-      const r = el.getBoundingClientRect();
-      const mr = townMap.getBoundingClientRect();
-      townColliders.push({
-        x: (r.left - mr.left),
-        y: (r.top - mr.top),
-        w: r.width,
-        h: r.height
-      });
-    });
-  }
-
-  function collidesTown(x, y){
-    const px = x - (townPlayer.offsetWidth/2);
-    const py = y - (townPlayer.offsetHeight/2);
-    const pw = townPlayer.offsetWidth;
-    const ph = townPlayer.offsetHeight;
-
-    return townColliders.some(c=>{
-      return !(px+pw < c.x || px > c.x+c.w || py+ph < c.y || py > c.y+c.h);
-    });
-  }
