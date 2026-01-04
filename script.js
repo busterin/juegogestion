@@ -529,6 +529,7 @@ function setTownWalking(isWalking){
         const cl = clampTownToBounds(townX, townY);
         townX = cl.x; townY = cl.y;
         applyTownPos();
+        updateTownCamera();
 
     setTownWalking(true);
     townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
