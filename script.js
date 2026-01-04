@@ -185,11 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Avatares (mapa)
   const AVATARS = [
-    { key: "evelyn", name: "Evelyn", src: "images/Evelyn.PNG", alt: "Evelyn" },
+  { key: "evelyn", name: "Evelyn", src: "images/Evelyn.PNG", alt: "Evelyn" },
     { key: "castri", name: "Albert", src: "images/Albert.PNG", alt: "Castri" },
-    { key: "celia",  name: "Celia",  src: "images/celia1.PNG",  alt: "Celia" },
-    { key: "maider", name: "Maider", src: "images/maider1.png", alt: "Maider" }
-  ].sort((a, b) => {
+].sort((a, b) => {
     if (a.key === "evelyn") return -1;
     if (b.key === "evelyn") return 1;
     return a.name.localeCompare(b.name, "es", { sensitivity: "base" });
