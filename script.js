@@ -541,8 +541,6 @@ setTownWalking(true);
   }
 
   function startTownLoop(){
-  townMap.addEventListener("click", (e)=>{
-    const rect = townMap.getBoundingClientRect();
     townTarget.x = e.clientX - rect.left;
     townTarget.y = e.clientY - rect.top;
     townMoving = true;
@@ -1504,4 +1502,30 @@ setTownWalking(true);
       mercenaryTalkBtn.classList.remove("hidden");
       positionMercenaryTalkIcon();
     }
+  }
+
+
+  // === Movimiento por tap/click en el pueblo (estable) ===
+  function enableTownPointerMove(){
+    const el = townViewport || townMap;
+    if (!el) return;
+    if (el.__pointerMoveEnabled) return;
+    el.__pointerMoveEnabled = true;
+
+    const handler = (e)=>{
+      // No interferir con botones (por ejemplo, hablar/continuar)
+      const t = e.target;
+      if (t && (t.closest && t.closest('button'))) return;
+
+      const rect = townMap.getBoundingClientRect();
+      const clientX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+      const clientY = (e.touches && e.touches[0]) ? e.touches[0].clientY : e.clientY;
+
+      townTarget.x = clientX - rect.left;
+      townTarget.y = clientY - rect.top;
+      townMoving = true;
+    };
+
+    el.addEventListener("click", handler);
+    el.addEventListener("touchstart", handler, { passive: true });
   }
