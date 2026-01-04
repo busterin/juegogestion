@@ -704,8 +704,7 @@ function setTownWalking(isWalking){
     const a = AVATARS[avatarIndex];
     playerImg.src = a.src;
     playerImg.alt = a.alt;
-    // ✅ Evelyn más grande en el juego (mapa)
-    playerImg.classList.toggle("evelyn-map-scale", a.key === "evelyn");
+
 
     playerImg.style.width = "";
 

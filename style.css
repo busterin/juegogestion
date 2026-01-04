@@ -294,9 +294,9 @@ img{ max-width:100%; height:auto; }
 
 .buster-img{
   position:absolute;
-  left:12px;
-  bottom:12px;
-  width: 150px;
+  left:4px;
+  bottom:4px;
+  width: 300px;
   z-index: 2;
   cursor:pointer;
   pointer-events:auto;
@@ -697,7 +697,7 @@ background-repeat: no-repeat;
   .intro-title{ font-size: clamp(40px, 9vw, 70px); }
 
   .grid{ grid-template-columns: 1fr; }
-  .buster-img{ width: 130px; }
+  .buster-img{ width: 260px; }
 
   .carousel{ grid-template-columns: 48px 1fr 48px; }
   .carousel-btn{ width:48px; height:48px; border-radius: 14px; font-size: 30px; }
@@ -733,8 +733,3 @@ background-repeat: no-repeat;
 
 
 
-/* ✅ Evelyn: escalar solo en el juego (mapa) */
-.buster-img.evelyn-map-scale{
-  transform: scale(2);
-  transform-origin: bottom left;
-}
