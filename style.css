@@ -787,12 +787,10 @@ background-repeat: no-repeat;
 
 /* Mundo más grande + zoom (no se ve todo de golpe) */
 .story-town #storyTownScreen .town-map{
-  width: 3200px;
-  height: 2100px;
+  width: 2000px;
+  height: 1100px;
   transform-origin: 0 0;
   transform: scale(1.6);
-
-  background-size: 16px 16px;
 }
 
 /* Casas más grandes */
