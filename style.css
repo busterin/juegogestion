@@ -646,7 +646,7 @@ img{ max-width:100%; height:auto; }
 
 .town-house{
   position:absolute;
-  width: 160px;
+  width: 200px;
   height: auto;
   user-select:none;
   pointer-events:none;
@@ -659,7 +659,7 @@ img{ max-width:100%; height:auto; }
 
 .town-player{
   position:absolute;
-  height: 120px;
+  height: 150px;
   aspect-ratio: 3 / 8; /* mantiene proporción del personaje */
   width: auto;
   left: 50%;
@@ -719,6 +719,6 @@ background-repeat: no-repeat;
   .teambar-item{ width: 58px; height: 58px; border-radius: 14px; }
   .teambar-img{ border-radius: 14px; }
 
-  .town-player{ height: 110px; aspect-ratio: 3 / 8; width: auto; }
-  .town-house{ width: 150px; }
+  .town-player{ height: 135px; aspect-ratio: 3 / 8; width: auto; }
+  .town-house{ width: 185px; }
 }

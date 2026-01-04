@@ -338,8 +338,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let townTargetY = null;
   let townRaf = null;
 
-  const TOWN_SPEED_PX = 2.4;      // desktop
+  const TOWN_SPEED_PX = 3.0;      // desktop (teclado) ✅ igual que tap
   const TOWN_SPEED_TOUCH = 3.0;   // móvil (tap)
+
+  // ✅ teclado: movimiento continuo con mismas físicas que el tap
+  let townKeys = { up:false, down:false, left:false, right:false };
 
   // ✅ Orientación (3 imágenes sueltas en images2): down/up/side (left = flip del side).
   // En tu imagen (izq->der): frente, (extra), perfil derecha, espalda.
@@ -1223,39 +1226,34 @@ function setTownWalking(isWalking){
     townTargetY = cl.y;
   });
 
-  // HISTORIA: teclado (PC)
-  document.addEventListener("keydown", (e)=>{
-    if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) return;
+  // HISTORIA: teclado (PC) - movimiento continuo
+document.addEventListener("keydown", (e)=>{
+  if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) return;
 
-    townTargetX = null;
-    townTargetY = null;
+  if (e.key === "ArrowUp"){ townKeys.up = true; }
+  else if (e.key === "ArrowDown"){ townKeys.down = true; }
+  else if (e.key === "ArrowLeft"){ townKeys.left = true; }
+  else if (e.key === "ArrowRight"){ townKeys.right = true; }
+  else { return; }
 
-    let dx = 0, dy = 0;
-    if (e.key === "ArrowUp") dy = -TOWN_SPEED_PX;
-    if (e.key === "ArrowDown") dy = +TOWN_SPEED_PX;
-    if (e.key === "ArrowLeft") dx = -TOWN_SPEED_PX;
-    if (e.key === "ArrowRight") dx = +TOWN_SPEED_PX;
-    if (!dx && !dy) return;
+  // al usar teclado, cancelamos target de tap
+  townTargetX = null;
+  townTargetY = null;
 
-    e.preventDefault();
+  e.preventDefault();
+}, { passive:false });
 
-    if (dx > 0) setTownFacing("right");
-    else if (dx < 0) setTownFacing("left");
-    else if (dy > 0) setTownFacing("down");
-    else if (dy < 0) setTownFacing("up");
+document.addEventListener("keyup", (e)=>{
+  if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) return;
 
-    townX += dx;
-    townY += dy;
-    const cl = clampTownToBounds(townX, townY);
-    townX = cl.x; townY = cl.y;
-    applyTownPos();
+  if (e.key === "ArrowUp"){ townKeys.up = false; }
+  else if (e.key === "ArrowDown"){ townKeys.down = false; }
+  else if (e.key === "ArrowLeft"){ townKeys.left = false; }
+  else if (e.key === "ArrowRight"){ townKeys.right = false; }
+  else { return; }
 
-    setTownWalking(true);
-    townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
-    applyTownSprite();
-    clearTimeout(window.__townWalkT);
-    window.__townWalkT = setTimeout(()=>setTownWalking(false), 140);
-  }, { passive:false });
+  e.preventDefault();
+}, { passive:false });
 
   // HISTORIA: continuar al juego (fortaleza + partida)
   storyContinueBtn?.addEventListener("click", ()=>{
