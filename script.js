@@ -120,21 +120,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const storyTownScreen = document.getElementById("storyTownScreen");
   const townMap = document.getElementById("townMap");
 
-  // ✅ Movimiento por click/tap en el pueblo (cambio mínimo)
-  if (townMap && !townMap.__pointerMoveEnabled) {
-    townMap.__pointerMoveEnabled = true;
-    townMap.addEventListener("pointerdown", (e)=>{
-      // No interferir con botones (hablar/continuar)
-      const t = e.target;
-      if (t && t.closest && t.closest("button")) return;
-
-      const rect = townMap.getBoundingClientRect();
-      townTarget.x = e.clientX - rect.left;
-      townTarget.y = e.clientY - rect.top;
-      townMoving = true;
-    });
-  }
-  const townPlayer = document.getElementById("townPlayer");
   
   const mercenaryNpc = document.querySelector(".town-npc.mercenario");
   const mercenaryTalkBtn = document.getElementById("mercenaryTalkBtn");
@@ -1340,6 +1325,23 @@ setTownWalking(true);
     if (selectedTeamCardIds.size !== 6) return;
     if (!commitTeam()) return;
     startGame();
+  });
+
+  // HISTORIA: tap/click para moverse (restaurado)
+  townMap?.addEventListener("pointerdown", (e)=>{
+    if (storyTownScreen.classList.contains("hidden")) return;
+    if (!townViewport) return;
+
+    const vp = townViewport.getBoundingClientRect();
+    const vx = e.clientX - vp.left;
+    const vy = e.clientY - vp.top;
+
+    const x = (vx - townCamX) / (townScale || 1);
+    const y = (vy - townCamY) / (townScale || 1);
+
+    const cl = clampTownToBounds(x, y);
+    townTargetX = cl.x;
+    townTargetY = cl.y;
   });
 
   // HISTORIA: tap/click para moverse
