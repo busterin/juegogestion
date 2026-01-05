@@ -627,6 +627,7 @@ setTownWalking(true);
     gameRoot.classList.add("hidden");
 
     storyTownScreen.classList.remove("hidden");
+    enableTownPointerMove();
     document.body.classList.add("story-town");
 
     requestAnimationFrame(()=>{
@@ -1457,7 +1458,33 @@ setTownWalking(true);
     if (mercenaryIsNear()){
       openMercenaryDialog();
     }
-  });
+  
+  // === Movimiento por tap/click en el pueblo ===
+  function enableTownPointerMove(){
+    const el = townViewport || townMap;
+    if (!el || !townMap) return;
+    if (el.__townPointerMoveEnabled) return;
+    el.__townPointerMoveEnabled = true;
+
+    const handler = (e)=>{
+      const t = e.target;
+      if (t && t.closest && t.closest("button")) return; // no interferir con botones
+
+      const rect = townMap.getBoundingClientRect();
+      const touch = (e.touches && e.touches[0]) ? e.touches[0] : null;
+      const clientX = touch ? touch.clientX : e.clientX;
+      const clientY = touch ? touch.clientY : e.clientY;
+
+      townTarget.x = clientX - rect.left;
+      townTarget.y = clientY - rect.top;
+      townMoving = true;
+    };
+
+    el.addEventListener("click", handler);
+    el.addEventListener("touchstart", handler, { passive: true });
+  }
+
+});
 
 
   function positionMercenaryTalkIcon(){
