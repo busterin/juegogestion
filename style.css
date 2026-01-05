@@ -855,3 +855,7 @@ background-repeat: no-repeat;
   pointer-events: none; /* por ahora, solo decorativo */
   filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
 }
+.story-town #storyTownScreen .town-npc{
+  aspect-ratio: 3 / 8;
+  width: auto;
+}
