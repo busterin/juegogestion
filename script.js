@@ -54,9 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const CHARACTERS = [
     { id: "c1",  name: "Albert",  tags: ["Producción", "Museos"] },
     { id: "c2",  name: "Maider",  tags: ["Museos", "Producción"] },
-    { id: "c3",  name: "Celia",   tags: ["Picofino"] },
+    { id: "c3",  name: "Camus",   tags: ["Picofino"] },
     { id: "c4",  name: "Risko",  tags: ["Educación"] },
-    { id: "c5",  name: "Dre",     tags: ["Programación"] },
+    { id: "c5",  name: "Pendergast",     tags: ["Programación"] },
 
     { id: "c6",  name: "Genio",   tags: ["Producción"] },
     { id: "c7",  name: "Lorena",  tags: ["Diseño"] },
@@ -70,8 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: "card_buster", name: "Risko",  img: "images/Risko.png",  text: "Carta de apoyo: aporta claridad y estructura." },
     { id: "card_castri", name: "Albert",  img: "images/Mistra.PNG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
     { id: "card_maider", name: "Maider",  img: "images/maider.JPEG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
-    { id: "card_celia",  name: "Celia",   img: "images/celia.JPEG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
-    { id: "card_dre",    name: "Dre",     img: "images/dre.JPEG",      text: "Carta de apoyo: detecta fallos y los arregla." },
+    { id: "card_celia",  name: "Camus",   img: "images/Camus.PNG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
+    { id: "card_dre",    name: "Pendergast",     img: "images/Pendergast.PNG",      text: "Carta de apoyo: detecta fallos y los arregla." },
 
     { id: "card_genio",  name: "Genio",   img: "images/genio.JPEG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
     { id: "card_lorena", name: "Lorena",  img: "images/lorena.JPEG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
