@@ -862,7 +862,7 @@ width: auto;
 /* Icono hablar sobre Mercenario */
 .story-town #storyTownScreen .npc-talk-icon{
   position:absolute;
-  top:26px;
+  top:0px;
   left:50%;
   transform: translateX(-50%);
   width:48px;
