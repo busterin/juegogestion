@@ -1375,6 +1375,43 @@ function setTownWalking(isWalking){
 
   // init
   renderAvatarCarousel(0);
+
+
+  // === Mercenario: icono hablar + ENTER cerca (PRUEBA) ===
+  const storyTownScreen = document.getElementById("storyTownScreen");
+  const mercenarioNpc = document.getElementById("npcMercenario");
+  const mercenarioTalkIcon = document.querySelector("#npcMercenario .npc-talk-icon");
+  const mercenarioDialog = document.getElementById("mercenarioDialog");
+
+  function showMercenarioDialog(){
+    if (!mercenarioDialog) return;
+    mercenarioDialog.classList.remove("hidden");
+  }
+
+  // Click / tap en el icono (sin interferir con el click-to-move del mapa)
+  if (mercenarioTalkIcon){
+    mercenarioTalkIcon.addEventListener("pointerdown", (e)=>{
+      e.preventDefault();
+      e.stopPropagation();
+      showMercenarioDialog();
+    });
+  }
+
+  // ENTER cerca del mercenario (solo en pueblo / historia)
+  document.addEventListener("keydown", (e)=>{
+    if (e.key !== "Enter") return;
+    if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) return;
+    if (!mercenarioNpc || !townPlayer) return;
+
+    const m = mercenarioNpc.getBoundingClientRect();
+    const p = townPlayer.getBoundingClientRect();
+    const dx = (m.left + m.width/2) - (p.left + p.width/2);
+    const dy = (m.top + m.height/2) - (p.top + p.height/2);
+    const dist = Math.hypot(dx, dy);
+
+    if (dist < 140) showMercenarioDialog();
+  });
+
 });
 
   // === NPCs: igualar tamaño al personaje controlable ===
@@ -1386,32 +1423,3 @@ function setTownWalking(isWalking){
       el.style.height = h;
     }
   }
-
-
-  // === Dialogo Mercenario (PRUEBA) ===
-  const mercenario = document.getElementById("npcMercenario");
-  const mercenarioDialog = document.getElementById("mercenarioDialog");
-
-  function showMercenarioDialog(){
-    if (!mercenarioDialog) return;
-    mercenarioDialog.classList.remove("hidden");
-  }
-
-  // Click en icono o NPC
-  mercenario?.addEventListener("click", showMercenarioDialog);
-
-  // ENTER cerca del mercenario
-  document.addEventListener("keydown", (e)=>{
-    if (e.key !== "Enter") return;
-    if (!mercenario || !townPlayer) return;
-
-    const m = mercenario.getBoundingClientRect();
-    const p = townPlayer.getBoundingClientRect();
-    const dx = (m.left + m.width/2) - (p.left + p.width/2);
-    const dy = (m.top + m.height/2) - (p.top + p.height/2);
-    const dist = Math.hypot(dx, dy);
-
-    if (dist < 120){
-      showMercenarioDialog();
-    }
-  });
