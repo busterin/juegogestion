@@ -846,13 +846,15 @@ background-repeat: no-repeat;
 /* === NPCs Pueblo === */
 .story-town #storyTownScreen .town-npc{
   position:absolute;
-    aspect-ratio: 3 / 8;
-width: auto;
+  height: 140px;
+  aspect-ratio: 3 / 8;
+  width: auto;
   transform: translate(-50%, -50%);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-  z-index: 2; /* por debajo de edificios */
-  pointer-events: none; /* por ahora, solo decorativo */
+  z-index: 2;
+  pointer-events: none;
   filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
 }
+
