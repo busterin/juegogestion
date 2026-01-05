@@ -53,30 +53,32 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   const CHARACTERS = [
     { id: "c1",  name: "Albert",  tags: ["Producción", "Museos"] },
-    { id: "c2",  name: "Friday",  tags: ["Museos", "Producción"] },
-    { id: "c3",  name: "Eliot",   tags: ["Picofino"] },
+    { id: "c2",  name: "Maider",  tags: ["Museos", "Producción"] },
+    { id: "c3",  name: "Celia",   tags: ["Picofino"] },
     { id: "c4",  name: "Risko",  tags: ["Educación"] },
-    { id: "c5",  name: "Pendergast",     tags: ["Programación"] },
+    { id: "c5",  name: "Dre",     tags: ["Programación"] },
 
-    { id: "c6",  name: "Jane",   tags: ["Producción"] },
-    { id: "c7",  name: "Willard",  tags: ["Diseño"] },
+    { id: "c6",  name: "Genio",   tags: ["Producción"] },
+    { id: "c7",  name: "Lorena",  tags: ["Diseño"] },
     { id: "c8",  name: "Lisa",    tags: ["Producción"] },
-    { id: "c9",  name: "Camus", tags: ["Producción"] },
-    ];
+    { id: "c9",  name: "María M", tags: ["Producción"] },
+    { id: "c10", name: "Voby",    tags: ["Producción"] }
+  ];
 
   // ✅ Cartas (todas) - Buster cambiado a Guerrera.png
   const CARDS = [
     { id: "card_buster", name: "Risko",  img: "images/Risko.png",  text: "Carta de apoyo: aporta claridad y estructura." },
     { id: "card_castri", name: "Albert",  img: "images/Mistra.PNG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
-    { id: "card_maider", name: "Friday",  img: "images/Friday.PNG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
-    { id: "card_celia",  name: "Eliot",   img: "images/Eliot.PNG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
-    { id: "card_dre",    name: "Pendergast",     img: "images/Pendergast.PNG",      text: "Carta de apoyo: detecta fallos y los arregla." },
+    { id: "card_maider", name: "Maider",  img: "images/maider.JPEG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
+    { id: "card_celia",  name: "Celia",   img: "images/celia.JPEG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
+    { id: "card_dre",    name: "Dre",     img: "images/dre.JPEG",      text: "Carta de apoyo: detecta fallos y los arregla." },
 
-    { id: "card_genio",  name: "Jane",   img: "images/Jane.PNG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
-    { id: "card_lorena", name: "Willard",  img: "images/Willard.PNG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
+    { id: "card_genio",  name: "Genio",   img: "images/genio.JPEG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
+    { id: "card_lorena", name: "Lorena",  img: "images/lorena.JPEG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
     { id: "card_alba",   name: "Lisa",    img: "images/Lisa.PNG",     text: "Carta de apoyo: ejecución rápida y organizada." },
-    { id: "card_mariam", name: "Camus", img: "images/Camus.PNG",   text: "Carta de apoyo: coordina y aterriza lo pendiente." },
-    ];
+    { id: "card_mariam", name: "María M", img: "images/mariam.JPEG",   text: "Carta de apoyo: coordina y aterriza lo pendiente." },
+    { id: "card_voby",   name: "Voby",    img: "images/voby.JPEG",     text: "Carta de apoyo: empuja producción y logística." }
+  ];
 
   // -------------------------
   // Tiempos
@@ -120,12 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const storyTownScreen = document.getElementById("storyTownScreen");
   const townMap = document.getElementById("townMap");
   const townPlayer = document.getElementById("townPlayer");
-  
-  const mercenaryNpc = document.querySelector(".town-npc.mercenario");
-  const mercenaryTalkBtn = document.getElementById("mercenaryTalkBtn");
-  const mercenaryDialog = document.getElementById("mercenaryDialog");
-  const mercenaryConfirmBtn = document.getElementById("mercenaryConfirmBtn");
-const townViewport = document.getElementById("townViewport");
+  const townViewport = document.getElementById("townViewport");
   const townWorld = document.getElementById("townWorld");
   const storyContinueBtn = document.getElementById("storyContinueBtn");
 
@@ -414,54 +411,7 @@ function setTownWalking(isWalking){
     return { x: cx, y: cy };
   }
 
-  
-  function mercenaryIsNear(){
-    if (!mercenaryNpc || !townPlayer) return false;
-    const p = townPlayer.getBoundingClientRect();
-    const m = mercenaryNpc.getBoundingClientRect();
-    const dx = (p.left + p.width/2) - (m.left + m.width/2);
-    const dy = (p.top + p.height/2) - (m.top + m.height/2);
-    return Math.hypot(dx, dy) < 110;
-  }
-
-  function positionMercenaryTalk(){
-    if (!mercenaryNpc || !mercenaryTalkBtn || !townMap) return;
-    const m = mercenaryNpc.getBoundingClientRect();
-    const mapR = townMap.getBoundingClientRect();
-    const cx = (m.left - mapR.left) + (m.width/2);
-    const cy = (m.top - mapR.top);
-    mercenaryTalkBtn.style.left = `${cx}px`;
-    mercenaryTalkBtn.style.top  = `${cy}px`;
-  }
-
-  function openMercenaryDialog(){
-    if (!mercenaryDialog) return;
-    mercenaryDialog.classList.remove("hidden");
-    mercenaryDialog.setAttribute("aria-hidden","false");
-  }
-  function closeMercenaryDialog(){
-    if (!mercenaryDialog) return;
-    mercenaryDialog.classList.add("hidden");
-    mercenaryDialog.setAttribute("aria-hidden","true");
-  }
-
-  function updateMercenaryUI(){
-    if (!mercenaryTalkBtn) return;
-    if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) {
-      mercenaryTalkBtn.classList.add("hidden");
-      closeMercenaryDialog();
-      return;
-    }
-    if (mercenaryIsNear()){
-      positionMercenaryTalk();
-      mercenaryTalkBtn.classList.remove("hidden");
-    } else {
-      mercenaryTalkBtn.classList.add("hidden");
-      closeMercenaryDialog();
-    }
-  }
-
-function applyTownPos(){
+  function applyTownPos(){
     if (!townPlayer) return;
     townPlayer.style.left = `${townX}px`;
     townPlayer.style.top  = `${townY}px`;
@@ -529,11 +479,8 @@ function applyTownPos(){
     applyTownSprite();
     applyTownPos();
         updateTownCamera();
-      tickMercenaryUI();
 
-    
-        updateMercenaryUI();
-setTownWalking(true);
+    setTownWalking(true);
     townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
     applyTownSprite();
     clearTimeout(window.__townWalkT);
@@ -1327,14 +1274,12 @@ setTownWalking(true);
     startGame();
   });
 
-  // HISTORIA: tap/click para moverse (viewport + fallback en mapa)
-  const __townPointerHandler = (e)=>{
+  // HISTORIA: tap/click para moverse
+  townMap?.addEventListener("pointerdown", (e)=>{
     if (storyTownScreen.classList.contains("hidden")) return;
+    if (!townViewport) return;
 
-    const vpEl = townViewport || townMap;
-    if (!vpEl) return;
-
-    const vp = vpEl.getBoundingClientRect();
+    const vp = townViewport.getBoundingClientRect();
     const vx = e.clientX - vp.left;
     const vy = e.clientY - vp.top;
 
@@ -1344,9 +1289,7 @@ setTownWalking(true);
     const cl = clampTownToBounds(x, y);
     townTargetX = cl.x;
     townTargetY = cl.y;
-  };
-  townViewport?.addEventListener("pointerdown", __townPointerHandler);
-  townMap?.addEventListener("pointerdown", __townPointerHandler);
+  });
 
   // HISTORIA: teclado (PC)
   document.addEventListener("keydown", (e)=>{
@@ -1433,72 +1376,3 @@ setTownWalking(true);
   // init
   renderAvatarCarousel(0);
 });
-
-  // === Mercenario: interacción ===
-  mercenaryTalkBtn?.addEventListener("click", ()=>{
-    openMercenaryDialog();
-  });
-
-  mercenaryConfirmBtn?.addEventListener("click", ()=>{
-    closeMercenaryDialog();
-    // pasar a la rejilla (juego principal)
-    storyTownScreen.classList.add("hidden");
-    gameRoot.classList.remove("hidden");
-    startGame();
-  });
-
-  document.addEventListener("keydown", (e)=>{
-    if (e.key !== "Enter") return;
-    if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) return;
-
-    // si diálogo abierto, Enter confirma
-    if (mercenaryDialog && !mercenaryDialog.classList.contains("hidden")){
-      mercenaryConfirmBtn?.click();
-      return;
-    }
-
-    // si estamos cerca, Enter abre diálogo
-    if (mercenaryIsNear()){
-      openMercenaryDialog();
-    }
-  });
-
-
-  function positionMercenaryTalkIcon(){
-    if (!mercenaryNpc || !mercenaryTalkBtn || !townMap) return;
-    const m = mercenaryNpc.getBoundingClientRect();
-    const mapR = townMap.getBoundingClientRect();
-    const cx = (m.left - mapR.left) + (m.width/2);
-    const cy = (m.top - mapR.top); // parte superior del NPC
-    mercenaryTalkBtn.style.left = `${cx}px`;
-    mercenaryTalkBtn.style.top  = `${cy}px`;
-  }
-
-  function isNearMercenary(){
-    if (!mercenaryNpc || !townPlayer) return false;
-    const p = townPlayer.getBoundingClientRect();
-    const m = mercenaryNpc.getBoundingClientRect();
-    const dx = (p.left + p.width/2) - (m.left + m.width/2);
-    const dy = (p.top + p.height/2) - (m.top + m.height/2);
-    return Math.hypot(dx, dy) < 120;
-  }
-
-  function openMercenaryDialog(){
-    if (!mercenaryDialog) return;
-    mercenaryDialog.classList.remove("hidden");
-  }
-  function closeMercenaryDialog(){
-    mercenaryDialog?.classList.add("hidden");
-  }
-
-
-  function tickMercenaryUI(){
-    if (!storyTownScreen || storyTownScreen.classList.contains("hidden")){
-      return;
-    }
-    // icono siempre visible en el pueblo
-    if (mercenaryTalkBtn){
-      mercenaryTalkBtn.classList.remove("hidden");
-      positionMercenaryTalkIcon();
-    }
-  }
