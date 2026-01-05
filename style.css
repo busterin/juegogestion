@@ -184,7 +184,6 @@ img{ max-width:100%; height:auto; }
   filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
   user-select:none;
   pointer-events:none;
-  transition: transform .15s ease;
 }
 
 .carousel-name{
@@ -294,9 +293,9 @@ img{ max-width:100%; height:auto; }
 
 .buster-img{
   position:absolute;
-  left:4px;
-  bottom:4px;
-  width: 300px;
+  left:12px;
+  bottom:12px;
+  width: 120px;
   z-index: 2;
   cursor:pointer;
   pointer-events:auto;
@@ -647,7 +646,7 @@ img{ max-width:100%; height:auto; }
 
 .town-house{
   position:absolute;
-  width: 200px;
+  width: 160px;
   height: auto;
   user-select:none;
   pointer-events:none;
@@ -660,33 +659,28 @@ img{ max-width:100%; height:auto; }
 
 .town-player{
   position:absolute;
-  --flip: 1;
-  height: 150px;
-  aspect-ratio: 3 / 8; /* mantiene proporción del personaje */
-  width: auto;
+  width: 96px;
+  height: 96px;
   left: 50%;
   top: 70%;
-  transform: translate(-50%,-50%) scaleX(var(--flip));
+  transform: translate(-50%,-50%);
   z-index: 5;
   user-select:none;
   pointer-events:none;
   filter: drop-shadow(0 16px 24px rgba(0,0,0,.5));
 
-  /* ✅ ahora usamos 3 PNG sueltos (sin spritesheet) */
-  background-image: url("images2/riskopueblo_down_1.png");
-background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+  /* Sprite sheet (1 archivo, 4 columnas) */
+  background-image: url("images2/riskopueblo.PNG");
+  background-repeat: no-repeat;
+  background-size: 400% 100%;
+  background-position: 0% 50%;
 }
 
-/* Direcciones (left = flip del side) */
-.town-player.face-down{ --flip: 1; }
-.town-player.face-right{ --flip: 1; }
-.town-player.face-left{ --flip: -1; }
-.town-player.face-up{ --flip: 1; }
-
-
-
+/* Direcciones: down=col1, right=col3, up=col4. left = flip del right */
+.town-player.face-down{ background-position: 0% 50%; transform: translate(-50%,-50%) scaleX(1); }
+.town-player.face-right{ background-position: 66.666% 50%; transform: translate(-50%,-50%) scaleX(1); }
+.town-player.face-left{ background-position: 66.666% 50%; transform: translate(-50%,-50%) scaleX(-1); }
+.town-player.face-up{ background-position: 100% 50%; transform: translate(-50%,-50%) scaleX(1); }
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 520px){
@@ -697,7 +691,7 @@ background-repeat: no-repeat;
   .intro-title{ font-size: clamp(40px, 9vw, 70px); }
 
   .grid{ grid-template-columns: 1fr; }
-  .buster-img{ width: 260px; }
+  .buster-img{ width: 100px; }
 
   .carousel{ grid-template-columns: 48px 1fr 48px; }
   .carousel-btn{ width:48px; height:48px; border-radius: 14px; font-size: 30px; }
@@ -721,123 +715,6 @@ background-repeat: no-repeat;
   .teambar-item{ width: 58px; height: 58px; border-radius: 14px; }
   .teambar-img{ border-radius: 14px; }
 
-  .town-player{ height: 135px; aspect-ratio: 3 / 8; width: auto; }
-  .town-house{ width: 185px; }
+  .town-player{ width: 92px; height: 92px; }
+  .town-house{ width: 150px; }
 }
-
-/* ---------- INTRO BACKGROUND ---------- */
-.intro.intro-bg{
-  background: url("images/portadainicio.PNG") center center / cover no-repeat;
-}
-
-
-
-
-
-
-/* =========================
-   HISTORIA – PUEBLO FULLSCREEN
-========================= */
-.story-town{
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-}
-
-.story-town .topbar,
-.story-town .brand,
-.story-town .hud{
-  display: none !important;
-}
-
-/* el mapa ocupa todo */
-.story-town .stage{
-  padding: 0;
-}
-
-.story-town .map{
-  border-radius: 0;
-  border: none;
-}
-
-
-
-/* =========================
-   HISTORIA – Zoom RPG en el pueblo (cámara)
-   (solo afecta a la sección del pueblo)
-========================= */
-.story-town #storyTownScreen .town-viewport{
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.story-town #storyTownScreen .town-world{
-  position: absolute;
-  left: 0;
-  top: 0;
-  will-change: transform;
-}
-
-/* Mundo más grande + zoom (no se ve todo de golpe) */
-
-/* Casas más grandes */
-
-
-/* Mundo más grande + zoom (no se ve todo de golpe) */
-.story-town #storyTownScreen .town-map{
-  width: 2000px;
-  height: 1100px;
-  transform-origin: 0 0;
-  transform: scale(1.6);
-}
-
-/* Casas más grandes */
-.story-town #storyTownScreen .town-house{
-  width: 420px;
-}
-
-/* Posicionamiento extra de casas */
-.story-town #storyTownScreen .town-house.h4{ left: 58%; top: 22%; }
-.story-town #storyTownScreen .town-house.h5{ left: 30%; top: 46%; }
-
-@media (max-width: 520px){
-  .story-town #storyTownScreen .town-map{
-    width: 2200px;
-    height: 1500px;
-    transform: scale(1.5);
-  }
-  .story-town #storyTownScreen .town-house{
-    width: 320px;
-  }
-}
-
-
-
-
-/* === Pueblo: afinado de escala y posiciones === */
-.story-town #storyTownScreen .town-house{
-  width: 520px; /* edificios grandes por defecto */
-}
-
-/* Excepciones más pequeñas */
-.story-town #storyTownScreen .town-house.pozo,
-.story-town #storyTownScreen .town-house.puesto{
-  width: 280px;
-}
-
-/* Posiciones */
-.story-town #storyTownScreen .town-house.puerta{
-  left: 2%;
-  bottom: 2%;
-  top: auto;
-}
-
-.story-town #storyTownScreen .town-house.casa2a{ left: 18%; top: 12%; }
-.story-town #storyTownScreen .town-house.iglesia{ left: 55%; top: 6%; }
-.story-town #storyTownScreen .town-house.taberna{ left: 34%; top: 38%; }
-.story-town #storyTownScreen .town-house.casa2b{ left: 68%; top: 56%; }
-
-.story-town #storyTownScreen .town-house.pozo{ left: 42%; top: 22%; }
-.story-town #storyTownScreen .town-house.puesto{ left: 50%; top: 68%; }
