@@ -1386,3 +1386,32 @@ function setTownWalking(isWalking){
       el.style.height = h;
     }
   }
+
+
+  // === Dialogo Mercenario (PRUEBA) ===
+  const mercenario = document.getElementById("npcMercenario");
+  const mercenarioDialog = document.getElementById("mercenarioDialog");
+
+  function showMercenarioDialog(){
+    if (!mercenarioDialog) return;
+    mercenarioDialog.classList.remove("hidden");
+  }
+
+  // Click en icono o NPC
+  mercenario?.addEventListener("click", showMercenarioDialog);
+
+  // ENTER cerca del mercenario
+  document.addEventListener("keydown", (e)=>{
+    if (e.key !== "Enter") return;
+    if (!mercenario || !townPlayer) return;
+
+    const m = mercenario.getBoundingClientRect();
+    const p = townPlayer.getBoundingClientRect();
+    const dx = (m.left + m.width/2) - (p.left + p.width/2);
+    const dy = (m.top + m.height/2) - (p.top + p.height/2);
+    const dist = Math.hypot(dx, dy);
+
+    if (dist < 120){
+      showMercenarioDialog();
+    }
+  });
