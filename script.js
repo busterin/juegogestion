@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ✅ HISTORIA: PUEBLO
   const storyTownScreen = document.getElementById("storyTownScreen");
   const townMap = document.getElementById("townMap");
-
+  const townPlayer = document.getElementById("townPlayer");
   
   const mercenaryNpc = document.querySelector(".town-npc.mercenario");
   const mercenaryTalkBtn = document.getElementById("mercenaryTalkBtn");
@@ -1327,12 +1327,14 @@ setTownWalking(true);
     startGame();
   });
 
-  // HISTORIA: tap/click para moverse (restaurado)
-  townMap?.addEventListener("pointerdown", (e)=>{
+  // HISTORIA: tap/click para moverse (viewport + fallback en mapa)
+  const __townPointerHandler = (e)=>{
     if (storyTownScreen.classList.contains("hidden")) return;
-    if (!townViewport) return;
 
-    const vp = townViewport.getBoundingClientRect();
+    const vpEl = townViewport || townMap;
+    if (!vpEl) return;
+
+    const vp = vpEl.getBoundingClientRect();
     const vx = e.clientX - vp.left;
     const vy = e.clientY - vp.top;
 
@@ -1342,24 +1344,9 @@ setTownWalking(true);
     const cl = clampTownToBounds(x, y);
     townTargetX = cl.x;
     townTargetY = cl.y;
-  });
-
-  // HISTORIA: tap/click para moverse
-  townMap?.addEventListener("pointerdown", (e)=>{
-    if (storyTownScreen.classList.contains("hidden")) return;
-    if (!townViewport) return;
-
-    const vp = townViewport.getBoundingClientRect();
-    const vx = e.clientX - vp.left;
-    const vy = e.clientY - vp.top;
-
-    const x = (vx - townCamX) / (townScale || 1);
-    const y = (vy - townCamY) / (townScale || 1);
-
-    const cl = clampTownToBounds(x, y);
-    townTargetX = cl.x;
-    townTargetY = cl.y;
-  });
+  };
+  townViewport?.addEventListener("pointerdown", __townPointerHandler);
+  townMap?.addEventListener("pointerdown", __townPointerHandler);
 
   // HISTORIA: teclado (PC)
   document.addEventListener("keydown", (e)=>{
