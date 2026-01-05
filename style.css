@@ -721,7 +721,7 @@ background-repeat: no-repeat;
   .teambar-item{ width: 58px; height: 58px; border-radius: 14px; }
   .teambar-img{ border-radius: 14px; }
 
-  .town-player{ height: 135px; aspect-ratio: 3 / 8; width: auto; }
+  .town-player{ height: 180px; aspect-ratio: 3 / 8; width: auto; }
   .town-house{ width: 185px; }
 }
 
