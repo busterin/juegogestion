@@ -120,6 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const storyTownScreen = document.getElementById("storyTownScreen");
   const townMap = document.getElementById("townMap");
   const townPlayer = document.getElementById("townPlayer");
+  const townNpcs = Array.from(document.querySelectorAll("#townMap .town-npc"));
   const townViewport = document.getElementById("townViewport");
   const townWorld = document.getElementById("townWorld");
   const storyContinueBtn = document.getElementById("storyContinueBtn");
@@ -1366,6 +1367,7 @@ function setTownWalking(isWalking){
   });
 
   window.addEventListener("resize", ()=>{
+    syncTownNpcSizes();
     setAppHeightVar();
     if (!gameRoot.classList.contains("hidden")) computeNoSpawnRect();
     if (!storyTownScreen.classList.contains("hidden")) initTownPosition();
@@ -1374,3 +1376,13 @@ function setTownWalking(isWalking){
   // init
   renderAvatarCarousel(0);
 });
+
+  // === NPCs: igualar tamaño al personaje controlable ===
+  function syncTownNpcSizes(){
+    if (!townPlayer) return;
+    const h = getComputedStyle(townPlayer).height;
+    if (!h) return;
+    for (const el of townNpcs){
+      el.style.height = h;
+    }
+  }
