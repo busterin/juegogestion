@@ -721,7 +721,7 @@ background-repeat: no-repeat;
   .teambar-item{ width: 58px; height: 58px; border-radius: 14px; }
   .teambar-img{ border-radius: 14px; }
 
-  .town-player{ height: 180px; aspect-ratio: 3 / 8; width: auto; }
+  .town-player{ height: 135px; aspect-ratio: 3 / 8; width: auto; }
   .town-house{ width: 185px; }
 }
 
@@ -846,15 +846,14 @@ background-repeat: no-repeat;
 /* === NPCs Pueblo === */
 .story-town #storyTownScreen .town-npc{
   position:absolute;
-  height: 180px;
-  aspect-ratio: 3 / 8;
-  width: auto;
+  height: 140px;
+    aspect-ratio: 3 / 8;
+width: auto;
   transform: translate(-50%, -50%);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-  z-index: 2;
-  pointer-events: none;
+  z-index: 2; /* por debajo de edificios */
+  pointer-events: none; /* por ahora, solo decorativo */
   filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
 }
-
