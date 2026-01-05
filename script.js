@@ -541,11 +541,6 @@ setTownWalking(true);
   }
 
   function startTownLoop(){
-    townTarget.x = e.clientX - rect.left;
-    townTarget.y = e.clientY - rect.top;
-    townMoving = true;
-  });
-
     stopTownLoop();
     townActive = true;
 
@@ -1503,54 +1498,3 @@ setTownWalking(true);
       positionMercenaryTalkIcon();
     }
   }
-
-
-  // === Movimiento por tap/click en el pueblo (estable) ===
-  function enableTownPointerMove(){
-    const el = townViewport || townMap;
-    if (!el) return;
-    if (el.__pointerMoveEnabled) return;
-    el.__pointerMoveEnabled = true;
-
-    const handler = (e)=>{
-      // No interferir con botones (por ejemplo, hablar/continuar)
-      const t = e.target;
-      if (t && (t.closest && t.closest('button'))) return;
-
-      const rect = townMap.getBoundingClientRect();
-      const clientX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
-      const clientY = (e.touches && e.touches[0]) ? e.touches[0].clientY : e.clientY;
-
-      townTarget.x = clientX - rect.left;
-      townTarget.y = clientY - rect.top;
-      townMoving = true;
-    };
-
-    el.addEventListener("click", handler);
-    el.addEventListener("touchstart", handler, { passive: true });
-  }
-
-
-/* === FIX_INTRO_BUTTONS_RESTORE ===
-   Restaurar funcionamiento de HISTORIA y ARCADE
-   Cambio mínimo: solo re‑asociar eventos
-*/
-(function restoreIntroButtons(){
-  const btnHistoria = document.getElementById("storyBtn");
-  const btnArcade = document.getElementById("introStartBtn");
-
-  if (btnHistoria){
-    btnHistoria.onclick = () => {
-      introScreen.classList.add("hidden");
-      storyTownScreen.classList.remove("hidden");
-      startTown();
-    };
-  }
-
-  if (btnArcade){
-    btnArcade.onclick = () => {
-      introScreen.classList.add("hidden");
-      startScreen.classList.remove("hidden");
-    };
-  }
-})();
