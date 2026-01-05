@@ -846,7 +846,8 @@ background-repeat: no-repeat;
 /* === NPCs Pueblo === */
 .story-town #storyTownScreen .town-npc{
   position:absolute;
-  width: auto;
+    aspect-ratio: 3 / 8;
+width: auto;
   transform: translate(-50%, -50%);
   background-repeat: no-repeat;
   background-size: contain;
