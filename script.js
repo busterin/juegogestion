@@ -58,12 +58,11 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: "c4",  name: "Risko",  tags: ["Educación"] },
     { id: "c5",  name: "Pendergast",     tags: ["Programación"] },
 
-    { id: "c6",  name: "Genio",   tags: ["Producción"] },
-    { id: "c7",  name: "Lorena",  tags: ["Diseño"] },
+    { id: "c6",  name: "Friday",   tags: ["Producción"] },
+    { id: "c7",  name: "Jane",  tags: ["Diseño"] },
     { id: "c8",  name: "Lisa",    tags: ["Producción"] },
     { id: "c9",  name: "María M", tags: ["Producción"] },
-    { id: "c10", name: "Voby",    tags: ["Producción"] }
-  ];
+    ];
 
   // ✅ Cartas (todas) - Buster cambiado a Guerrera.png
   const CARDS = [
@@ -73,12 +72,11 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: "card_celia",  name: "Camus",   img: "images/Camus.PNG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
     { id: "card_dre",    name: "Pendergast",     img: "images/Pendergast.PNG",      text: "Carta de apoyo: detecta fallos y los arregla." },
 
-    { id: "card_genio",  name: "Genio",   img: "images/genio.JPEG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
-    { id: "card_lorena", name: "Lorena",  img: "images/lorena.JPEG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
+    { id: "card_genio",  name: "Friday",   img: "images/Friday.PNG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
+    { id: "card_lorena", name: "Jane",  img: "images/Jane.PNG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
     { id: "card_alba",   name: "Lisa",    img: "images/Lisa.PNG",     text: "Carta de apoyo: ejecución rápida y organizada." },
     { id: "card_mariam", name: "María M", img: "images/mariam.JPEG",   text: "Carta de apoyo: coordina y aterriza lo pendiente." },
-    { id: "card_voby",   name: "Voby",    img: "images/voby.JPEG",     text: "Carta de apoyo: empuja producción y logística." }
-  ];
+    ];
 
   // -------------------------
   // Tiempos
