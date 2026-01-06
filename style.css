@@ -945,3 +945,16 @@ width: auto;
   left: 78%;
   top: 54%;    /* antes 62% */
 }
+/* === Ajuste fino final de casas === */
+
+/* Casa junto a la iglesia → mucho más abajo (misma columna) */
+.story-town #storyTownScreen .town-house.casa2b{
+  left: 64%;
+  top: 30%;   /* antes 18% */
+}
+
+/* Casa de la zona inferior → mover más a la izquierda */
+.story-town #storyTownScreen .town-house.casa2a{
+  left: 68%;  /* antes 78% */
+  top: 54%;
+}
