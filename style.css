@@ -862,11 +862,11 @@ width: auto;
 /* Icono hablar sobre Mercenario */
 .story-town #storyTownScreen .npc-talk-icon{
   position:absolute;
-  top:0px;
+  top:-26px;
   left:50%;
   transform: translateX(-50%);
-  width:50px;
-  height:50px;
+  width:24px;
+  height:24px;
   background: url("images2/iconohablar.png") no-repeat center / contain;
   pointer-events:none;
 }
@@ -890,3 +890,11 @@ width: auto;
   z-index: 999;
 }
 .mercenario-dialog.hidden{ display:none; }
+
+
+/* Mercenario: permitir click/tap (sin afectar al resto de NPCs) */
+.story-town #storyTownScreen #npcMercenario{
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 3; /* por encima de suelo, bajo edificios */
+}
