@@ -1413,22 +1413,6 @@ function setTownWalking(isWalking){
   } catch (err) {
     console.warn("Mercenario dialog skipped:", err);
   }
-  
-  // === Cerrar dialogo Mercenario (ESC o click fuera) ===
-  function hideMercenarioDialogSafe(){
-    if (!mercenarioDialog) return;
-    mercenarioDialog.classList.add("hidden");
-  }
-
-  document.addEventListener("keydown", (e)=>{
-    if (e.key === "Escape") hideMercenarioDialogSafe();
-  });
-
-  document.addEventListener("pointerdown", (e)=>{
-    if (!mercenarioDialog || mercenarioDialog.classList.contains("hidden")) return;
-    if (!mercenarioDialog.contains(e.target)) hideMercenarioDialogSafe();
-  });
-
   // === END Mercenario ===
 
 });

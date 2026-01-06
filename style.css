@@ -144,8 +144,8 @@ img{ max-width:100%; height:auto; }
 }
 
 .carousel-btn{
-  width:64px;
-  height:64px;
+  width:56px;
+  height:56px;
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.06);
@@ -200,8 +200,8 @@ img{ max-width:100%; height:auto; }
   gap: 8px;
 }
 .dot-indicator{
-  width:64px;
-  height:64px;
+  width: 10px;
+  height: 10px;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.20);
   background: rgba(255,255,255,.10);
@@ -233,8 +233,7 @@ img{ max-width:100%; height:auto; }
 
 .brand{ display:flex; gap:10px; align-items:center; min-width: 220px; }
 .brand .dot{
-  width:64px;
-  height:64px; border-radius:50%;
+  width:12px; height:12px; border-radius:50%;
   background: var(--danger);
   box-shadow: 0 0 18px rgba(255,59,59,.7);
   animation: blink 1.2s infinite;
@@ -335,8 +334,8 @@ img{ max-width:100%; height:auto; }
 }
 
 .teambar-item{
-  width:64px;
-  height:64px;
+  width: 64px;
+  height: 64px;
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.06);
@@ -367,8 +366,7 @@ img{ max-width:100%; height:auto; }
 /* ---------- POINTS ---------- */
 .point{
   position:absolute;
-  width:64px;
-  height:64px;
+  width:16px; height:16px;
   border-radius:50%;
   background: var(--danger);
   box-shadow: 0 0 0 0 rgba(255,59,59,.55);
@@ -439,8 +437,8 @@ img{ max-width:100%; height:auto; }
   background: rgba(255,255,255,.08);
   color: var(--text);
   border-radius: 12px;
-  width:64px;
-  height:64px;
+  width: 38px;
+  height: 38px;
   cursor:pointer;
   border: 1px solid rgba(255,255,255,.12);
 }
@@ -702,8 +700,7 @@ background-repeat: no-repeat;
   .buster-img{ width: 260px; }
 
   .carousel{ grid-template-columns: 48px 1fr 48px; }
-  .carousel-btn{ width:64px;
-  height:64px; border-radius: 14px; font-size: 30px; }
+  .carousel-btn{ width:48px; height:48px; border-radius: 14px; font-size: 30px; }
 
   .carousel-img{
     height: 150px;
@@ -721,8 +718,7 @@ background-repeat: no-repeat;
     max-height: calc(100dvh - 28px);
   }
 
-  .teambar-item{ width:64px;
-  height:64px; border-radius: 14px; }
+  .teambar-item{ width: 58px; height: 58px; border-radius: 14px; }
   .teambar-img{ border-radius: 14px; }
 
   .town-player{ height: 135px; aspect-ratio: 3 / 8; width: auto; }
@@ -791,8 +787,8 @@ background-repeat: no-repeat;
 
 /* Mundo más grande + zoom (no se ve todo de golpe) */
 .story-town #storyTownScreen .town-map{
-  width:64px;
-  height:64px;
+  width: 2000px;
+  height: 1100px;
   transform-origin: 0 0;
   transform: scale(1.6);
 }
@@ -808,8 +804,8 @@ background-repeat: no-repeat;
 
 @media (max-width: 520px){
   .story-town #storyTownScreen .town-map{
-    width:64px;
-  height:64px;
+    width: 2200px;
+    height: 1500px;
     transform: scale(1.5);
   }
   .story-town #storyTownScreen .town-house{
@@ -869,8 +865,8 @@ width: auto;
   top:-26px;
   left:50%;
   transform: translateX(-50%);
-  width:64px;
-  height:64px;
+  width:24px;
+  height:24px;
   background: url("images2/iconohablar.png") no-repeat center / contain;
   pointer-events:none;
 }
