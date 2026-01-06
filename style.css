@@ -846,7 +846,7 @@ background-repeat: no-repeat;
 /* === NPCs Pueblo === */
 .story-town #storyTownScreen .town-npc{
   position:absolute;
-  height: 140px;
+  height: 180px;
     aspect-ratio: 3 / 8;
 width: auto;
   transform: translate(-50%, -50%);
@@ -957,4 +957,18 @@ width: auto;
 .story-town #storyTownScreen .town-house.casa2a{
   left: 68%;  /* antes 78% */
   top: 54%;
+}
+/* === Ajuste taberna e iglesia === */
+
+/* Taberna → más a la izquierda y más arriba */
+.story-town #storyTownScreen .town-house.taberna{
+  left: 22%;   /* antes ~30% */
+  top: 34%;    /* antes ~42% */
+}
+
+/* Iglesia → más a la derecha y más grande */
+.story-town #storyTownScreen .town-house.iglesia{
+  left: 78%;   /* antes ~72% */
+  top: 10%;
+  width: 620px;  /* aumento de tamaño */
 }
