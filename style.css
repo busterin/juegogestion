@@ -896,5 +896,5 @@ width: auto;
 .story-town #storyTownScreen #npcMercenario{
   pointer-events: auto;
   cursor: pointer;
-  z-index: 3; /* por encima de suelo, bajo edificios */
+  z-index: 3;
 }
