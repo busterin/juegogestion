@@ -1007,15 +1007,15 @@ width: auto;
 /* Iglesia → un poco más arriba y a la izquierda
    (encajar en la parcela vacía sin vegetación) */
 .story-town #storyTownScreen .town-house.iglesia{
-  left: 84%;   /* antes más a la derecha */
+  left: 64%;   /* antes más a la derecha */
   top: 6%;     /* antes más abajo */
 }
 
 /* Casas → bajarlas ligeramente para alinearlas mejor con parcelas */
 .story-town #storyTownScreen .town-house.casa2a{
-  top: 58%;    /* antes 54% */
+  top: 68%;    /* antes 54% */
 }
 
 .story-town #storyTownScreen .town-house.casa2b{
-  top: 24%;    /* antes 30% */
+  top: 34%;    /* antes 30% */
 }
