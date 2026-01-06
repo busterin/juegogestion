@@ -932,3 +932,16 @@ width: auto;
   left: 58%;
   top: 18%;
 }
+/* === Ajuste fino de casas (evitar solapes) === */
+
+/* Casa junto a la iglesia → mover más a la derecha para no superponerse */
+.story-town #storyTownScreen .town-house.casa2b{
+  left: 64%;   /* antes 58% */
+  top: 18%;
+}
+
+/* Casa que subimos desde la esquina inferior derecha → aún más arriba */
+.story-town #storyTownScreen .town-house.casa2a{
+  left: 78%;
+  top: 54%;    /* antes 62% */
+}
