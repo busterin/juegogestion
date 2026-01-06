@@ -837,11 +837,7 @@ background-repeat: no-repeat;
 .story-town #storyTownScreen .town-house.casa2a{ left: 18%; top: 12%; }
 .story-town #storyTownScreen .town-house.iglesia{ left: 55%; top: 6%; }
 .story-town #storyTownScreen .town-house.taberna{ left: 34%; top: 38%; }
-.story-town #storyTownScreen .town-house.casa2b{
-  left: 18%;
-  top: 68%;
-}
-
+.story-town #storyTownScreen .town-house.casa2b{ left: 68%; top: 56%; }
 
 .story-town #storyTownScreen .town-house.pozo{ left: 42%; top: 22%; }
 .story-town #storyTownScreen .town-house.puesto{ left: 50%; top: 68%; }
@@ -901,4 +897,15 @@ width: auto;
   pointer-events: auto;
   cursor: pointer;
   z-index: 3;
+}
+
+
+/* === Pueblo: fondo único con zoom por tamaño === */
+.story-town #storyTownScreen .town-map{
+  background:
+    linear-gradient(0deg, rgba(11,18,32,.30), rgba(11,18,32,.30)),
+    url("images2/pueblo1.PNG");
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-size: 100% 100%;
 }
