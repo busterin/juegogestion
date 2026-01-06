@@ -837,7 +837,11 @@ background-repeat: no-repeat;
 .story-town #storyTownScreen .town-house.casa2a{ left: 18%; top: 12%; }
 .story-town #storyTownScreen .town-house.iglesia{ left: 55%; top: 6%; }
 .story-town #storyTownScreen .town-house.taberna{ left: 34%; top: 38%; }
-.story-town #storyTownScreen .town-house.casa2b{ left: 68%; top: 56%; }
+.story-town #storyTownScreen .town-house.casa2b{
+  left: 18%;
+  top: 68%;
+}
+
 
 .story-town #storyTownScreen .town-house.pozo{ left: 42%; top: 22%; }
 .story-town #storyTownScreen .town-house.puesto{ left: 50%; top: 68%; }
