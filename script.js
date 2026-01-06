@@ -1243,7 +1243,8 @@ function setTownWalking(isWalking){
   nextAvatarBtn.addEventListener("click", nextAvatar);
 
   document.addEventListener("keydown", (e)=>{
-    if (!introScreen.classList.contains("hidden")){
+      if (e.key === "Escape") { hideMercenarioDialogSafe(); return; }
+if (!introScreen.classList.contains("hidden")){
       if (e.key === "Enter") {
         gameMode = "arcade";
         goToStartScreen();
@@ -1388,7 +1389,12 @@ function setTownWalking(isWalking){
       mercenarioDialog.classList.remove("hidden");
     }
 
-    if (mercenarioNpc) {
+    
+    function hideMercenarioDialogSafe(){
+      if (!mercenarioDialog) return;
+      mercenarioDialog.classList.add("hidden");
+    }
+if (mercenarioNpc) {
       mercenarioNpc.addEventListener("pointerdown", (e)=>{
         e.preventDefault();
         e.stopPropagation();
@@ -1413,6 +1419,14 @@ function setTownWalking(isWalking){
   } catch (err) {
     console.warn("Mercenario dialog skipped:", err);
   }
+  
+    // Click/tap fuera del cuadro: cerrar (solo si está abierto)
+    document.addEventListener("pointerdown", (e)=>{
+      if (!mercenarioDialog || mercenarioDialog.classList.contains("hidden")) return;
+      if (e.target && mercenarioDialog.contains(e.target)) return;
+      hideMercenarioDialogSafe();
+    });
+
   // === END Mercenario ===
 
 });
