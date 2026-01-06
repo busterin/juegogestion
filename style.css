@@ -983,7 +983,7 @@ width: auto;
 /* 2) Guardia junto a la puerta */
 .story-town #storyTownScreen #npcGuardia.town-npc{
   left: 12%;
-  top: 14%;
+  top: 74%;
 }
 
 /* 3) Aldeana cerca de la casa más cercana a la iglesia */
@@ -1007,7 +1007,7 @@ width: auto;
 /* Iglesia → un poco más arriba y a la izquierda
    (encajar en la parcela vacía sin vegetación) */
 .story-town #storyTownScreen .town-house.iglesia{
-  left: 74%;   /* antes más a la derecha */
+  left: 84%;   /* antes más a la derecha */
   top: 6%;     /* antes más abajo */
 }
 
@@ -1017,5 +1017,5 @@ width: auto;
 }
 
 .story-town #storyTownScreen .town-house.casa2b{
-  top: 34%;    /* antes 30% */
+  top: 24%;    /* antes 30% */
 }
