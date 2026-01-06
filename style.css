@@ -909,3 +909,11 @@ width: auto;
   background-position: top left;
   background-size: 100% 100%;
 }
+
+
+/* === Ajuste puerta: esquina superior izquierda === */
+.story-town #storyTownScreen .town-house.puerta{
+  left: 6%;
+  top: 6%;
+  bottom: auto;
+}
