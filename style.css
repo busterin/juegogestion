@@ -972,3 +972,33 @@ width: auto;
   top: 10%;
   width: 620px;  /* aumento de tamaño */
 }
+/* === Ajustes NPCs + quitar icono hablar === */
+
+/* 1) Aldeanos (Aldeana + Aldeano) a height 180 */
+.story-town #storyTownScreen #npcAldeana.town-npc,
+.story-town #storyTownScreen #npcAldeano.town-npc{
+  height: 180px;
+}
+
+/* 2) Guardia junto a la puerta */
+.story-town #storyTownScreen #npcGuardia.town-npc{
+  left: 12%;
+  top: 14%;
+}
+
+/* 3) Aldeana cerca de la casa más cercana a la iglesia */
+.story-town #storyTownScreen #npcAldeana.town-npc{
+  left: 68%;
+  top: 36%;
+}
+
+/* 4) Mercenario un poco más cerca de la taberna */
+.story-town #storyTownScreen #npcMercenario.town-npc{
+  left: 28%;
+  top: 40%;
+}
+
+/* 5) Quitar iconohablar del mercenario (solo ocultarlo) */
+.story-town #storyTownScreen #npcMercenario .npc-talk-icon{
+  display: none !important;
+}
