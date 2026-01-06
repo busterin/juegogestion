@@ -1386,6 +1386,32 @@ if (!introScreen.classList.contains("hidden")){
 
     function showMercenarioDialogSafe(){
       if (!mercenarioDialog) return;
+
+      // Contenido del diálogo (texto + botón)
+      mercenarioDialog.innerHTML = `
+        <div class="merc-text">Evelyn, ¿estás lista para una nueva misión?</div>
+        <div class="modal-actions end" style="margin-top:10px;">
+          <button id="mercStartMissionBtn" class="btn" type="button">Comenzar misión</button>
+        </div>
+      `;
+
+      const btn = mercenarioDialog.querySelector("#mercStartMissionBtn");
+      if (btn){
+        btn.addEventListener("click", (e)=>{
+          e.preventDefault();
+          e.stopPropagation();
+
+          // Ir al juego (rejilla) en modo historia
+          try {
+            if (typeof commitTeam === "function") commitTeam();
+            if (typeof storyTownScreen !== "undefined" && storyTownScreen) storyTownScreen.classList.add("hidden");
+            if (typeof startGame === "function") startGame();
+          } catch (err) {
+            console.warn("Start mission failed:", err);
+          }
+        }, { once:true });
+      }
+
       mercenarioDialog.classList.remove("hidden");
     }
 
