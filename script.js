@@ -1377,50 +1377,42 @@ function setTownWalking(isWalking){
   renderAvatarCarousel(0);
 
 
-  // === Mercenario: diálogo (click en mercenario o icono) + ENTER cerca ===
-  const mercNpc = document.getElementById("npcMercenario");
-  const mercIcon = document.querySelector("#npcMercenario .npc-talk-icon");
-  const mercDialog = document.getElementById("mercenarioDialog");
+  // === Mercenario: dialogo seguro (NO bloquea botones) ===
+  try {
+    const storyTownScreen = document.getElementById("storyTownScreen");
+    const mercenarioNpc = document.getElementById("npcMercenario");
+    const mercenarioDialog = document.getElementById("mercenarioDialog");
 
-  function showMercDialog(){
-    if (!mercDialog) return;
-    mercDialog.classList.remove("hidden");
-  }
+    function showMercenarioDialogSafe(){
+      if (!mercenarioDialog) return;
+      mercenarioDialog.classList.remove("hidden");
+    }
 
-  // Click / tap en el mercenario (el icono tiene pointer-events:none, así que el click también llega aquí)
-  if (mercNpc){
-    mercNpc.addEventListener("pointerdown", (e)=>{
-      e.preventDefault();
-      e.stopPropagation();
-      showMercDialog();
+    if (mercenarioNpc) {
+      mercenarioNpc.addEventListener("pointerdown", (e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        showMercenarioDialogSafe();
+      });
+    }
+
+    document.addEventListener("keydown", (e)=>{
+      if (e.key !== "Enter") return;
+      if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) return;
+      if (!mercenarioNpc || !window.townPlayer) return;
+
+      const m = mercenarioNpc.getBoundingClientRect();
+      const p = window.townPlayer.getBoundingClientRect();
+
+      const dx = (m.left + m.width/2) - (p.left + p.width/2);
+      const dy = (m.top + m.height/2) - (p.top + p.height/2);
+      const dist = Math.hypot(dx, dy);
+
+      if (dist <= 140) showMercenarioDialogSafe();
     });
+  } catch (err) {
+    console.warn("Mercenario dialog skipped:", err);
   }
-
-  // Soporte adicional si algún día haces el icono clickable
-  if (mercIcon){
-    mercIcon.addEventListener("pointerdown", (e)=>{
-      e.preventDefault();
-      e.stopPropagation();
-      showMercDialog();
-    });
-  }
-
-  // ENTER cerca del mercenario (solo cuando el pueblo está visible)
-  document.addEventListener("keydown", (e)=>{
-    if (e.key !== "Enter") return;
-
-    const townScreen = document.getElementById("storyTownScreen");
-    if (!townScreen || townScreen.classList.contains("hidden")) return;
-    if (!mercNpc || !townPlayer) return;
-
-    const m = mercNpc.getBoundingClientRect();
-    const p = townPlayer.getBoundingClientRect();
-    const dx = (m.left + m.width/2) - (p.left + p.width/2);
-    const dy = (m.top + m.height/2) - (p.top + p.height/2);
-    const dist = Math.hypot(dx, dy);
-
-    if (dist <= 140) showMercDialog();
-  });
   // === END Mercenario ===
 
 });
