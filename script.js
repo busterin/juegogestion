@@ -1376,17 +1376,53 @@ function setTownWalking(isWalking){
   // init
   renderAvatarCarousel(0);
 
-  // === Mercenario: dialogo seguro por click en icono ===
+
+
+  // === Mercenario: dialogo (click icono o NPC) + ENTER cerca ===
+  const storyTownScreen = document.getElementById("storyTownScreen");
+  const mercenarioNpc = document.getElementById("npcMercenario");
   const mercenarioIcon = document.querySelector("#npcMercenario .npc-talk-icon");
   const mercenarioDialog = document.getElementById("mercenarioDialog");
 
-  if (mercenarioIcon && mercenarioDialog){
+  function showMercenarioDialog(){
+    if (!mercenarioDialog) return;
+    mercenarioDialog.classList.remove("hidden");
+  }
+
+  // Click / tap en NPC (el icono tiene pointer-events:none, así que el click cae aquí)
+  if (mercenarioNpc){
+    mercenarioNpc.addEventListener("pointerdown", (e)=>{
+      // Evita que el click-to-move del mapa consuma este click
+      e.preventDefault();
+      e.stopPropagation();
+      showMercenarioDialog();
+    });
+  }
+
+  // Por si en algún momento el icono pasa a ser clickable, también lo soportamos
+  if (mercenarioIcon){
     mercenarioIcon.addEventListener("pointerdown", (e)=>{
       e.preventDefault();
       e.stopPropagation();
-      mercenarioDialog.classList.remove("hidden");
+      showMercenarioDialog();
     });
   }
+
+  // ENTER cerca del mercenario (solo cuando el pueblo está visible)
+  document.addEventListener("keydown", (e)=>{
+    if (e.key !== "Enter") return;
+    if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) return;
+    if (!mercenarioNpc || !townPlayer) return;
+
+    const m = mercenarioNpc.getBoundingClientRect();
+    const p = townPlayer.getBoundingClientRect();
+
+    const dx = (m.left + m.width/2) - (p.left + p.width/2);
+    const dy = (m.top + m.height/2) - (p.top + p.height/2);
+    const dist = Math.hypot(dx, dy);
+
+    if (dist <= 140) showMercenarioDialog();
+  });
 
 });
 
