@@ -917,3 +917,18 @@ width: auto;
   top: 6%;
   bottom: auto;
 }
+/* === Ajuste casas según nuevas parcelas === */
+
+/* Casa que estaba en la esquina inferior derecha:
+   la subimos a la parcela vacía */
+.story-town #storyTownScreen .town-house.casa2a{
+  left: 78%;
+  top: 62%;
+}
+
+/* Casa que estaba junto a la puerta:
+   se mueve al lado de la iglesia */
+.story-town #storyTownScreen .town-house.casa2b{
+  left: 58%;
+  top: 18%;
+}
