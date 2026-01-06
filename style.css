@@ -1002,3 +1002,20 @@ width: auto;
 .story-town #storyTownScreen #npcMercenario .npc-talk-icon{
   display: none !important;
 }
+/* === Ajuste fino iglesia y casas === */
+
+/* Iglesia → un poco más arriba y a la izquierda
+   (encajar en la parcela vacía sin vegetación) */
+.story-town #storyTownScreen .town-house.iglesia{
+  left: 74%;   /* antes más a la derecha */
+  top: 6%;     /* antes más abajo */
+}
+
+/* Casas → bajarlas ligeramente para alinearlas mejor con parcelas */
+.story-town #storyTownScreen .town-house.casa2a{
+  top: 58%;    /* antes 54% */
+}
+
+.story-town #storyTownScreen .town-house.casa2b{
+  top: 34%;    /* antes 30% */
+}
