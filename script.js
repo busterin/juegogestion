@@ -53,32 +53,30 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------
   const CHARACTERS = [
     { id: "c1",  name: "Albert",  tags: ["Producción", "Museos"] },
-    { id: "c2",  name: "Maider",  tags: ["Museos", "Producción"] },
-    { id: "c3",  name: "Celia",   tags: ["Picofino"] },
+    { id: "c2",  name: "Eliot",  tags: ["Museos", "Producción"] },
+    { id: "c3",  name: "Camus",   tags: ["Picofino"] },
     { id: "c4",  name: "Risko",  tags: ["Educación"] },
-    { id: "c5",  name: "Dre",     tags: ["Programación"] },
+    { id: "c5",  name: "Pendergast",     tags: ["Programación"] },
 
-    { id: "c6",  name: "Genio",   tags: ["Producción"] },
-    { id: "c7",  name: "Lorena",  tags: ["Diseño"] },
+    { id: "c6",  name: "Friday",   tags: ["Producción"] },
+    { id: "c7",  name: "Jane",  tags: ["Diseño"] },
     { id: "c8",  name: "Lisa",    tags: ["Producción"] },
-    { id: "c9",  name: "María M", tags: ["Producción"] },
-    { id: "c10", name: "Voby",    tags: ["Producción"] }
-  ];
+    { id: "c9",  name: "Willard", tags: ["Producción"] },
+    ];
 
   // ✅ Cartas (todas) - Buster cambiado a Guerrera.png
   const CARDS = [
     { id: "card_buster", name: "Risko",  img: "images/Risko.png",  text: "Carta de apoyo: aporta claridad y estructura." },
     { id: "card_castri", name: "Albert",  img: "images/Mistra.PNG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
-    { id: "card_maider", name: "Maider",  img: "images/maider.JPEG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
-    { id: "card_celia",  name: "Celia",   img: "images/celia.JPEG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
-    { id: "card_dre",    name: "Dre",     img: "images/dre.JPEG",      text: "Carta de apoyo: detecta fallos y los arregla." },
+    { id: "card_maider", name: "Eliot",  img: "images/Eliot.PNG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
+    { id: "card_celia",  name: "Camus",   img: "images/Camus.PNG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
+    { id: "card_dre",    name: "Pendergast",     img: "images/Pendergast.PNG",      text: "Carta de apoyo: detecta fallos y los arregla." },
 
-    { id: "card_genio",  name: "Genio",   img: "images/genio.JPEG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
-    { id: "card_lorena", name: "Lorena",  img: "images/lorena.JPEG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
+    { id: "card_genio",  name: "Friday",   img: "images/Friday.PNG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
+    { id: "card_lorena", name: "Jane",  img: "images/Jane.PNG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
     { id: "card_alba",   name: "Lisa",    img: "images/Lisa.PNG",     text: "Carta de apoyo: ejecución rápida y organizada." },
-    { id: "card_mariam", name: "María M", img: "images/mariam.JPEG",   text: "Carta de apoyo: coordina y aterriza lo pendiente." },
-    { id: "card_voby",   name: "Voby",    img: "images/voby.JPEG",     text: "Carta de apoyo: empuja producción y logística." }
-  ];
+    { id: "card_mariam", name: "Willard", img: "images/Willard.PNG",   text: "Carta de apoyo: coordina y aterriza lo pendiente." },
+    ];
 
   // -------------------------
   // Tiempos
@@ -122,6 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const storyTownScreen = document.getElementById("storyTownScreen");
   const townMap = document.getElementById("townMap");
   const townPlayer = document.getElementById("townPlayer");
+  const townNpcs = Array.from(document.querySelectorAll("#townMap .town-npc"));
   const townViewport = document.getElementById("townViewport");
   const townWorld = document.getElementById("townWorld");
   const storyContinueBtn = document.getElementById("storyContinueBtn");
@@ -1244,7 +1243,8 @@ function setTownWalking(isWalking){
   nextAvatarBtn.addEventListener("click", nextAvatar);
 
   document.addEventListener("keydown", (e)=>{
-    if (!introScreen.classList.contains("hidden")){
+      if (e.key === "Escape") { hideMercenarioDialogSafe(); return; }
+if (!introScreen.classList.contains("hidden")){
       if (e.key === "Enter") {
         gameMode = "arcade";
         goToStartScreen();
@@ -1368,6 +1368,7 @@ function setTownWalking(isWalking){
   });
 
   window.addEventListener("resize", ()=>{
+    syncTownNpcSizes();
     setAppHeightVar();
     if (!gameRoot.classList.contains("hidden")) computeNoSpawnRect();
     if (!storyTownScreen.classList.contains("hidden")) initTownPosition();
@@ -1375,4 +1376,93 @@ function setTownWalking(isWalking){
 
   // init
   renderAvatarCarousel(0);
+
+
+  // === Mercenario: dialogo seguro (NO bloquea botones) ===
+  try {
+    const storyTownScreen = document.getElementById("storyTownScreen");
+    const mercenarioNpc = document.getElementById("npcMercenario");
+    const mercenarioDialog = document.getElementById("mercenarioDialog");
+
+    function showMercenarioDialogSafe(){
+      if (!mercenarioDialog) return;
+
+      // Contenido del diálogo (texto + botón)
+      mercenarioDialog.innerHTML = `
+        <div class="merc-text">Evelyn, ¿estás lista para una nueva misión?</div>
+        <div class="modal-actions end" style="margin-top:10px;">
+          <button id="mercStartMissionBtn" class="btn" type="button">Comenzar misión</button>
+        </div>
+      `;
+
+      const btn = mercenarioDialog.querySelector("#mercStartMissionBtn");
+      if (btn){
+        btn.addEventListener("click", (e)=>{
+          e.preventDefault();
+          e.stopPropagation();
+
+          // Ir al juego (rejilla) en modo historia
+          try {
+            if (typeof commitTeam === "function") commitTeam();
+            if (typeof storyTownScreen !== "undefined" && storyTownScreen) storyTownScreen.classList.add("hidden");
+            if (typeof startGame === "function") startGame();
+          } catch (err) {
+            console.warn("Start mission failed:", err);
+          }
+        }, { once:true });
+      }
+
+      mercenarioDialog.classList.remove("hidden");
+    }
+
+    
+    function hideMercenarioDialogSafe(){
+      if (!mercenarioDialog) return;
+      mercenarioDialog.classList.add("hidden");
+    }
+if (mercenarioNpc) {
+      mercenarioNpc.addEventListener("pointerdown", (e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        showMercenarioDialogSafe();
+      });
+    }
+
+    document.addEventListener("keydown", (e)=>{
+      if (e.key !== "Enter") return;
+      if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) return;
+      if (!mercenarioNpc || !window.townPlayer) return;
+
+      const m = mercenarioNpc.getBoundingClientRect();
+      const p = window.townPlayer.getBoundingClientRect();
+
+      const dx = (m.left + m.width/2) - (p.left + p.width/2);
+      const dy = (m.top + m.height/2) - (p.top + p.height/2);
+      const dist = Math.hypot(dx, dy);
+
+      if (dist <= 140) showMercenarioDialogSafe();
+    });
+  } catch (err) {
+    console.warn("Mercenario dialog skipped:", err);
+  }
+  
+    // Click/tap fuera del cuadro: cerrar (solo si está abierto)
+    document.addEventListener("pointerdown", (e)=>{
+      if (!mercenarioDialog || mercenarioDialog.classList.contains("hidden")) return;
+      if (e.target && mercenarioDialog.contains(e.target)) return;
+      hideMercenarioDialogSafe();
+    });
+
+  // === END Mercenario ===
+
 });
+
+  // === NPCs: igualar tamaño al personaje controlable ===
+  function syncTownNpcSizes(){
+    if (!townPlayer) return;
+    const h = getComputedStyle(townPlayer).height;
+    if (!h) return;
+    for (const el of townNpcs){
+      el.style.height = h;
+    }
+  }
