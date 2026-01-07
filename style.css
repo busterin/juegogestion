@@ -841,3 +841,174 @@ background-repeat: no-repeat;
 
 .story-town #storyTownScreen .town-house.pozo{ left: 42%; top: 22%; }
 .story-town #storyTownScreen .town-house.puesto{ left: 50%; top: 68%; }
+
+
+/* === NPCs Pueblo === */
+.story-town #storyTownScreen .town-npc{
+  position:absolute;
+  height: 180px;
+    aspect-ratio: 3 / 8;
+width: auto;
+  transform: translate(-50%, -50%);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  z-index: 2; /* por debajo de edificios */
+  pointer-events: none; /* por ahora, solo decorativo */
+  filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
+}
+
+
+/* Icono hablar sobre Mercenario */
+.story-town #storyTownScreen .npc-talk-icon{
+  position:absolute;
+  top:-26px;
+  left:50%;
+  transform: translateX(-50%);
+  width:24px;
+  height:24px;
+  background: url("images2/iconohablar.png") no-repeat center / contain;
+  pointer-events:none;
+}
+
+
+/* Dialogo Mercenario */
+.mercenario-dialog{
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  width: min(680px, calc(100% - 28px));
+  background: linear-gradient(180deg, rgba(15,26,51,.98), rgba(14,23,48,.98));
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.45);
+  padding: 14px 16px;
+  color: var(--text);
+  font-weight: 900;
+  text-align: left;
+  z-index: 999;
+}
+.mercenario-dialog.hidden{ display:none; }
+
+
+/* Mercenario: permitir click/tap (sin afectar al resto de NPCs) */
+.story-town #storyTownScreen #npcMercenario{
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 3;
+}
+
+
+/* === Pueblo: fondo único con zoom por tamaño === */
+.story-town #storyTownScreen .town-map{
+  background:
+    linear-gradient(0deg, rgba(11,18,32,.30), rgba(11,18,32,.30)),
+    url("images2/pueblo1.PNG");
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-size: 100% 100%;
+}
+
+
+/* =========================================================
+   PUEBLO (Story): POSICIONES UNIFICADAS
+   - Edificios (.town-house.*)
+   - NPCs (#npc*.town-npc)
+   - Ocultar icono hablar mercenario
+   ========================================================= */
+
+/* --- EDIFICIOS --- */
+
+/* Puerta: esquina superior izquierda */
+.story-town #storyTownScreen .town-house.puerta{
+  left: 6%;
+  top: 6%;
+  bottom: auto;
+}
+
+/* Taberna: más a la izquierda y arriba */
+.story-town #storyTownScreen .town-house.taberna{
+  left: 22%;
+  top: 34%;
+}
+
+/* Iglesia: ligeramente arriba/izquierda para parcela sin vegetación + más grande */
+.story-town #storyTownScreen .town-house.iglesia{
+  left: 66%;
+  top: 6%;
+  width: 620px;
+}
+
+/* Casas: posiciones actuales */
+.story-town #storyTownScreen .town-house.casa2a{
+  left: 68%;
+  top: 68%;
+}
+
+.story-town #storyTownScreen .town-house.casa2b{
+  left: 64%;
+  top: 37%;
+}
+
+/* Si tienes pozo/puesto, déjalos aquí también (ajusta si hace falta)
+.story-town #storyTownScreen .town-house.pozo{ left: ??%; top: ??%; }
+.story-town #storyTownScreen .town-house.puesto{ left: ??%; top: ??%; }
+*/
+
+
+/* --- NPCs --- */
+
+/* Aldeanos: altura 180 */
+.story-town #storyTownScreen #npcAldeana.town-npc,
+.story-town #storyTownScreen #npcAldeano.town-npc{
+  height: 180px;
+}
+
+/* Guardia: junto a la puerta (OJO: tenías top:74% en el texto pegado; aquí lo pongo cerca de la puerta) */
+.story-town #storyTownScreen #npcGuardia.town-npc{
+  left: 12%;
+  top: -30%;
+}
+
+/* Aldeana: cerca de la casa más próxima a la iglesia */
+.story-town #storyTownScreen #npcAldeana.town-npc{
+  left: 68%;
+  top: 36%;
+}
+
+/* Mercenario: un poco más cerca de la taberna */
+.story-town #storyTownScreen #npcMercenario.town-npc{
+  left: 28%;
+  top: 40%;
+}
+
+/* (Opcional) Coloca aquí el resto si los tienes:
+.story-town #storyTownScreen #npcSacerdotisa.town-npc{ left: ??%; top: ??%; }
+.story-town #storyTownScreen #npcVendedora.town-npc{ left: ??%; top: ??%; }
+*/
+
+
+/* --- ICONO HABLAR (Mercenario) --- */
+
+/* Ocultar icono hablar del mercenario (solo ocultarlo) */
+.story-town #storyTownScreen #npcMercenario .npc-talk-icon{
+  display: none !important;
+}
+
+/* Guardia: forzar que respete top/left (evita que herede bottom) */
+.story-town #storyTownScreen #npcGuardia.town-npc{
+  position: absolute;
+  left: 12%;
+  top: 14%;
+  bottom: auto !important;
+}
+/* Guardia: localizar por imagen (por si el id no coincide) */
+.story-town #storyTownScreen .town-npc[style*="Guardia.PNG"],
+.story-town #storyTownScreen .town-npc[style*="guardia.PNG"],
+.story-town #storyTownScreen .town-npc[style*="GUARDIA.PNG"]{
+  position: absolute;
+  left: 12%;
+  top: 14%;
+  bottom: auto !important;
+}
