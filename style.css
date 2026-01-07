@@ -1003,3 +1003,12 @@ width: auto;
   top: 14%;
   bottom: auto !important;
 }
+/* Guardia: localizar por imagen (por si el id no coincide) */
+.story-town #storyTownScreen .town-npc[style*="Guardia.PNG"],
+.story-town #storyTownScreen .town-npc[style*="guardia.PNG"],
+.story-town #storyTownScreen .town-npc[style*="GUARDIA.PNG"]{
+  position: absolute;
+  left: 12%;
+  top: 14%;
+  bottom: auto !important;
+}
