@@ -718,8 +718,3 @@ img{ max-width:100%; height:auto; }
   .town-player{ width: 92px; height: 92px; }
   .town-house{ width: 150px; }
 }
-
-/* Guardia del pueblo */
-.story-town #storyTownScreen #npcGuardia.town-npc{
-  height: 180px;
-}
