@@ -911,111 +911,87 @@ width: auto;
 }
 
 
-/* === Ajuste puerta: esquina superior izquierda === */
+/* =========================================================
+   PUEBLO (Story): POSICIONES UNIFICADAS
+   - Edificios (.town-house.*)
+   - NPCs (#npc*.town-npc)
+   - Ocultar icono hablar mercenario
+   ========================================================= */
+
+/* --- EDIFICIOS --- */
+
+/* Puerta: esquina superior izquierda */
 .story-town #storyTownScreen .town-house.puerta{
   left: 6%;
   top: 6%;
   bottom: auto;
 }
-/* === Ajuste casas según nuevas parcelas === */
 
-/* Casa que estaba en la esquina inferior derecha:
-   la subimos a la parcela vacía */
+/* Taberna: más a la izquierda y arriba */
+.story-town #storyTownScreen .town-house.taberna{
+  left: 22%;
+  top: 34%;
+}
+
+/* Iglesia: ligeramente arriba/izquierda para parcela sin vegetación + más grande */
+.story-town #storyTownScreen .town-house.iglesia{
+  left: 64%;
+  top: 6%;
+  width: 620px;
+}
+
+/* Casas: posiciones actuales */
 .story-town #storyTownScreen .town-house.casa2a{
-  left: 78%;
-  top: 62%;
+  left: 68%;
+  top: 68%;
 }
 
-/* Casa que estaba junto a la puerta:
-   se mueve al lado de la iglesia */
-.story-town #storyTownScreen .town-house.casa2b{
-  left: 58%;
-  top: 18%;
-}
-/* === Ajuste fino de casas (evitar solapes) === */
-
-/* Casa junto a la iglesia → mover más a la derecha para no superponerse */
-.story-town #storyTownScreen .town-house.casa2b{
-  left: 64%;   /* antes 58% */
-  top: 18%;
-}
-
-/* Casa que subimos desde la esquina inferior derecha → aún más arriba */
-.story-town #storyTownScreen .town-house.casa2a{
-  left: 78%;
-  top: 54%;    /* antes 62% */
-}
-/* === Ajuste fino final de casas === */
-
-/* Casa junto a la iglesia → mucho más abajo (misma columna) */
 .story-town #storyTownScreen .town-house.casa2b{
   left: 64%;
-  top: 30%;   /* antes 18% */
+  top: 34%;
 }
 
-/* Casa de la zona inferior → mover más a la izquierda */
-.story-town #storyTownScreen .town-house.casa2a{
-  left: 68%;  /* antes 78% */
-  top: 54%;
-}
-/* === Ajuste taberna e iglesia === */
+/* Si tienes pozo/puesto, déjalos aquí también (ajusta si hace falta)
+.story-town #storyTownScreen .town-house.pozo{ left: ??%; top: ??%; }
+.story-town #storyTownScreen .town-house.puesto{ left: ??%; top: ??%; }
+*/
 
-/* Taberna → más a la izquierda y más arriba */
-.story-town #storyTownScreen .town-house.taberna{
-  left: 22%;   /* antes ~30% */
-  top: 34%;    /* antes ~42% */
-}
 
-/* Iglesia → más a la derecha y más grande */
-.story-town #storyTownScreen .town-house.iglesia{
-  left: 78%;   /* antes ~72% */
-  top: 10%;
-  width: 620px;  /* aumento de tamaño */
-}
-/* === Ajustes NPCs + quitar icono hablar === */
+/* --- NPCs --- */
 
-/* 1) Aldeanos (Aldeana + Aldeano) a height 180 */
+/* Aldeanos: altura 180 */
 .story-town #storyTownScreen #npcAldeana.town-npc,
 .story-town #storyTownScreen #npcAldeano.town-npc{
   height: 180px;
 }
 
-/* 2) Guardia junto a la puerta */
+/* Guardia: junto a la puerta (OJO: tenías top:74% en el texto pegado; aquí lo pongo cerca de la puerta) */
 .story-town #storyTownScreen #npcGuardia.town-npc{
   left: 12%;
-  top: 74%;
+  top: 14%;
 }
 
-/* 3) Aldeana cerca de la casa más cercana a la iglesia */
+/* Aldeana: cerca de la casa más próxima a la iglesia */
 .story-town #storyTownScreen #npcAldeana.town-npc{
   left: 68%;
   top: 36%;
 }
 
-/* 4) Mercenario un poco más cerca de la taberna */
+/* Mercenario: un poco más cerca de la taberna */
 .story-town #storyTownScreen #npcMercenario.town-npc{
   left: 28%;
   top: 40%;
 }
 
-/* 5) Quitar iconohablar del mercenario (solo ocultarlo) */
+/* (Opcional) Coloca aquí el resto si los tienes:
+.story-town #storyTownScreen #npcSacerdotisa.town-npc{ left: ??%; top: ??%; }
+.story-town #storyTownScreen #npcVendedora.town-npc{ left: ??%; top: ??%; }
+*/
+
+
+/* --- ICONO HABLAR (Mercenario) --- */
+
+/* Ocultar icono hablar del mercenario (solo ocultarlo) */
 .story-town #storyTownScreen #npcMercenario .npc-talk-icon{
   display: none !important;
-}
-/* === Ajuste fino iglesia y casas === */
-
-/* Iglesia → un poco más arriba y a la izquierda
-   (encajar en la parcela vacía sin vegetación) */
-.story-town #storyTownScreen .town-house.iglesia{
-  left: 64%;   /* antes más a la derecha */
-  top: 6%;     /* antes más abajo */
-}
-
-/* Casas → bajarlas ligeramente para alinearlas mejor con parcelas */
-.story-town #storyTownScreen .town-house.casa2a{
-  top: 68%;    /* antes 54% */
-}
-
-.story-town #storyTownScreen .town-house.casa2b{
-  top: 34%;    /* antes 30% */
 }
