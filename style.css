@@ -995,3 +995,11 @@ width: auto;
 .story-town #storyTownScreen #npcMercenario .npc-talk-icon{
   display: none !important;
 }
+
+/* Guardia: forzar que respete top/left (evita que herede bottom) */
+.story-town #storyTownScreen #npcGuardia.town-npc{
+  position: absolute;
+  left: 12%;
+  top: 14%;
+  bottom: auto !important;
+}
