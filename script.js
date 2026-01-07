@@ -52,30 +52,30 @@ document.addEventListener("DOMContentLoaded", () => {
   // ✅ PERSONAJES (múltiples etiquetas)
   // -------------------------
   const CHARACTERS = [
-    { id: "c1",  name: "Castri",  tags: ["Producción", "Museos"] },
+    { id: "c1",  name: "Albert",  tags: ["Producción", "Museos"] },
     { id: "c2",  name: "Maider",  tags: ["Museos", "Producción"] },
     { id: "c3",  name: "Celia",   tags: ["Picofino"] },
-    { id: "c4",  name: "Buster",  tags: ["Educación"] },
+    { id: "c4",  name: "Risko",  tags: ["Educación"] },
     { id: "c5",  name: "Dre",     tags: ["Programación"] },
 
     { id: "c6",  name: "Genio",   tags: ["Producción"] },
     { id: "c7",  name: "Lorena",  tags: ["Diseño"] },
-    { id: "c8",  name: "Alba",    tags: ["Producción"] },
+    { id: "c8",  name: "Lisa",    tags: ["Producción"] },
     { id: "c9",  name: "María M", tags: ["Producción"] },
     { id: "c10", name: "Voby",    tags: ["Producción"] }
   ];
 
   // ✅ Cartas (todas) - Buster cambiado a Guerrera.png
   const CARDS = [
-    { id: "card_buster", name: "Buster",  img: "images/Guerrera.png",  text: "Carta de apoyo: aporta claridad y estructura." },
-    { id: "card_castri", name: "Castri",  img: "images/castri.JPEG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
+    { id: "card_buster", name: "Risko",  img: "images/Risko.png",  text: "Carta de apoyo: aporta claridad y estructura." },
+    { id: "card_castri", name: "Albert",  img: "images/Mistra.PNG",   text: "Carta de apoyo: coordinación y ejecución con criterio." },
     { id: "card_maider", name: "Maider",  img: "images/maider.JPEG",   text: "Carta de apoyo: mirada de sala y ajuste fino." },
     { id: "card_celia",  name: "Celia",   img: "images/celia.JPEG",    text: "Carta de apoyo: resuelve operativa con rapidez." },
     { id: "card_dre",    name: "Dre",     img: "images/dre.JPEG",      text: "Carta de apoyo: detecta fallos y los arregla." },
 
     { id: "card_genio",  name: "Genio",   img: "images/genio.JPEG",    text: "Carta de apoyo: saca tareas adelante con recursos limitados." },
     { id: "card_lorena", name: "Lorena",  img: "images/lorena.JPEG",   text: "Carta de apoyo: mejora presentación, orden y estética." },
-    { id: "card_alba",   name: "Alba",    img: "images/alba.JPEG",     text: "Carta de apoyo: ejecución rápida y organizada." },
+    { id: "card_alba",   name: "Lisa",    img: "images/Lisa.PNG",     text: "Carta de apoyo: ejecución rápida y organizada." },
     { id: "card_mariam", name: "María M", img: "images/mariam.JPEG",   text: "Carta de apoyo: coordina y aterriza lo pendiente." },
     { id: "card_voby",   name: "Voby",    img: "images/voby.JPEG",     text: "Carta de apoyo: empuja producción y logística." }
   ];
@@ -122,6 +122,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const storyTownScreen = document.getElementById("storyTownScreen");
   const townMap = document.getElementById("townMap");
   const townPlayer = document.getElementById("townPlayer");
+  const townViewport = document.getElementById("townViewport");
+  const townWorld = document.getElementById("townWorld");
   const storyContinueBtn = document.getElementById("storyContinueBtn");
 
   const gameRoot = document.getElementById("gameRoot");
@@ -185,11 +187,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Avatares (mapa)
   const AVATARS = [
-    { key: "buster", name: "Buster", src: "images/buster1.PNG", alt: "Buster" },
-    { key: "castri", name: "Castri", src: "images/castri1.PNG", alt: "Castri" },
-    { key: "celia",  name: "Celia",  src: "images/celia1.PNG",  alt: "Celia" },
-    { key: "maider", name: "Maider", src: "images/maider1.png", alt: "Maider" }
-  ].sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
+  { key: "evelyn", name: "Evelyn", src: "images/Evelyn.PNG", alt: "Evelyn" },
+    { key: "castri", name: "Albert", src: "images/Albert.PNG", alt: "Castri" },
+].sort((a, b) => {
+    if (a.key === "evelyn") return -1;
+    if (b.key === "evelyn") return 1;
+    return a.name.localeCompare(b.name, "es", { sensitivity: "base" });
+  });
 
   let avatarIndex = 0;
   let specialUsed = false;
@@ -338,16 +342,55 @@ document.addEventListener("DOMContentLoaded", () => {
   let townTargetY = null;
   let townRaf = null;
 
-  const TOWN_SPEED_PX = 2.4;      // desktop
+  // ✅ Cámara pueblo
+  let townCamX = 0;
+  let townCamY = 0;
+    let townScale = 1.6; // debe coincidir con el scale CSS
+
+  const TOWN_SPEED_PX = 4.5;      // desktop (teclado) ✅ más rápido
   const TOWN_SPEED_TOUCH = 3.0;   // móvil (tap)
 
-  // ✅ Orientación (sprite sheet 4 posiciones en un solo archivo: images2/riskopueblo.PNG)
+  // ✅ Orientación (3 imágenes sueltas en images2): down/up/side (left = flip del side).
   // En tu imagen (izq->der): frente, (extra), perfil derecha, espalda.
   let townFacing = "down";
+// ✅ Animación caminar (4 frames por dirección, PNG en images2)
+const TOWN_WALK_FRAMES = 4;
+const TOWN_WALK_FRAME_MS = 120; // velocidad de animación
+let townWalkFrame = 1;
+let townWalkLastAt = 0;
+let townIsWalking = false;
+
+function townSpriteKeyForFacing(dir){
+  if (dir === "up") return "up";
+  if (dir === "down") return "down";
+  return "side";
+}
+
+function applyTownSprite(){
+  if (!townPlayer) return;
+  const key = townSpriteKeyForFacing(townFacing);
+  townPlayer.style.backgroundImage = `url("images2/riskopueblo_${key}_${townWalkFrame}.png")`;
+}
+
+function setTownWalking(isWalking){
+  townIsWalking = !!isWalking;
+  if (!townPlayer) return;
+  // (sin bobbing) mantenemos solo frames
+  if (!townIsWalking){
+    townWalkFrame = 1;
+    townWalkLastAt = 0;
+    applyTownSprite();
+  } else {
+    // al empezar a andar, fuerza sprite actualizado
+    if (!townWalkLastAt) townWalkLastAt = performance.now();
+    applyTownSprite();
+  }
+}
   function setTownFacing(dir){
     if (!townPlayer) return;
     if (dir === townFacing) return;
     townFacing = dir;
+    applyTownSprite();
 
     townPlayer.classList.remove("face-up","face-down","face-left","face-right");
     if (dir === "up") townPlayer.classList.add("face-up");
@@ -374,17 +417,74 @@ document.addEventListener("DOMContentLoaded", () => {
     townPlayer.style.top  = `${townY}px`;
   }
 
+
+  function updateTownCamera(){
+    if (!townViewport || !townWorld || !townMap) return;
+
+    const vpW = townViewport.clientWidth;
+    const vpH = townViewport.clientHeight;
+
+    const scale = townScale || 1;
+    const worldW = (townMap.offsetWidth || 1) * scale;
+    const worldH = (townMap.offsetHeight || 1) * scale;
+
+    // posición del jugador en coords escaladas
+    const px = townX * scale;
+    const py = townY * scale;
+
+    // deadzone (zona segura) para que la cámara solo se mueva al acercarse a bordes
+    const dzLeft = vpW * 0.35;
+    const dzRight = vpW * 0.65;
+    const dzTop = vpH * 0.35;
+    const dzBottom = vpH * 0.65;
+
+    // posición del jugador en pantalla con la cámara actual
+    let screenX = px + townCamX;
+    let screenY = py + townCamY;
+
+    let camX = townCamX;
+    let camY = townCamY;
+
+    if (screenX < dzLeft) camX += (dzLeft - screenX);
+    else if (screenX > dzRight) camX -= (screenX - dzRight);
+
+    if (screenY < dzTop) camY += (dzTop - screenY);
+    else if (screenY > dzBottom) camY -= (screenY - dzBottom);
+
+    // clamp para no ver fuera del mundo
+    const minX = vpW - worldW;
+    const minY = vpH - worldH;
+    camX = Math.min(0, Math.max(minX, camX));
+    camY = Math.min(0, Math.max(minY, camY));
+
+    townCamX = camX;
+    townCamY = camY;
+
+    townWorld.style.transform = `translate(${camX}px, ${camY}px)`;
+  }
+
+
   function initTownPosition(){
     if (!townMap || !townPlayer) return;
-    const r = townMap.getBoundingClientRect();
-    townX = r.width * 0.50;
-    townY = r.height * 0.72;
+    const w = townMap.offsetWidth || 1;
+    const h = townMap.offsetHeight || 1;
+    townX = w * 0.50;
+    townY = h * 0.72;
     const cl = clampTownToBounds(townX, townY);
     townX = cl.x; townY = cl.y;
     townTargetX = null;
     townTargetY = null;
     setTownFacing("down");
+    townWalkFrame = 1;
+    applyTownSprite();
     applyTownPos();
+        updateTownCamera();
+
+    setTownWalking(true);
+    townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
+    applyTownSprite();
+    clearTimeout(window.__townWalkT);
+    window.__townWalkT = setTimeout(()=>setTownWalking(false), 140);
   }
 
   function startTownLoop(){
@@ -401,6 +501,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const ax = Math.abs(dx);
         const ay = Math.abs(dy);
+        const now = performance.now();
+        if (!townWalkLastAt) townWalkLastAt = now;
+        if (now - townWalkLastAt >= TOWN_WALK_FRAME_MS){
+          townWalkLastAt = now;
+          townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
+          applyTownSprite();
+        }
+
         if (ax > ay){
           setTownFacing(dx >= 0 ? "right" : "left");
         } else {
@@ -421,6 +529,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const cl = clampTownToBounds(townX, townY);
         townX = cl.x; townY = cl.y;
         applyTownPos();
+        updateTownCamera();
+
+    setTownWalking(true);
+    townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
+    applyTownSprite();
+    clearTimeout(window.__townWalkT);
+    window.__townWalkT = setTimeout(()=>setTownWalking(false), 140);
       }
 
       townRaf = requestAnimationFrame(step);
@@ -459,9 +574,12 @@ document.addEventListener("DOMContentLoaded", () => {
     gameRoot.classList.add("hidden");
 
     storyTownScreen.classList.remove("hidden");
+    document.body.classList.add("story-town");
 
     requestAnimationFrame(()=>{
       initTownPosition();
+      applyTownPos();
+      updateTownCamera();
       startTownLoop();
     });
   }
@@ -644,6 +762,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const a = AVATARS[avatarIndex];
     playerImg.src = a.src;
     playerImg.alt = a.alt;
+
 
     playerImg.style.width = "";
 
@@ -1158,9 +1277,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // HISTORIA: tap/click para moverse
   townMap?.addEventListener("pointerdown", (e)=>{
     if (storyTownScreen.classList.contains("hidden")) return;
-    const r = townMap.getBoundingClientRect();
-    const x = e.clientX - r.left;
-    const y = e.clientY - r.top;
+    if (!townViewport) return;
+
+    const vp = townViewport.getBoundingClientRect();
+    const vx = e.clientX - vp.left;
+    const vy = e.clientY - vp.top;
+
+    const x = (vx - townCamX) / (townScale || 1);
+    const y = (vy - townCamY) / (townScale || 1);
 
     const cl = clampTownToBounds(x, y);
     townTargetX = cl.x;
@@ -1193,6 +1317,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const cl = clampTownToBounds(townX, townY);
     townX = cl.x; townY = cl.y;
     applyTownPos();
+
+    setTownWalking(true);
+    townWalkFrame = (townWalkFrame % TOWN_WALK_FRAMES) + 1;
+    applyTownSprite();
+    clearTimeout(window.__townWalkT);
+    window.__townWalkT = setTimeout(()=>setTownWalking(false), 140);
   }, { passive:false });
 
   // HISTORIA: continuar al juego (fortaleza + partida)
@@ -1200,6 +1330,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!commitTeam()) return;
     stopTownLoop();
     storyTownScreen.classList.add("hidden");
+    document.body.classList.remove("story-town");
     startGame();
   });
 
@@ -1225,6 +1356,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mapEl.classList.remove("story-bg");
 
     storyTownScreen.classList.add("hidden");
+    document.body.classList.remove("story-town");
     stopTownLoop();
 
     gameRoot.classList.add("hidden");
