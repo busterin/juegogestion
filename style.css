@@ -184,7 +184,6 @@ img{ max-width:100%; height:auto; }
   filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
   user-select:none;
   pointer-events:none;
-  transition: transform .15s ease;
 }
 
 .carousel-name{
@@ -294,9 +293,9 @@ img{ max-width:100%; height:auto; }
 
 .buster-img{
   position:absolute;
-  left:4px;
-  bottom:4px;
-  width: 300px;
+  left:12px;
+  bottom:12px;
+  width: 120px;
   z-index: 2;
   cursor:pointer;
   pointer-events:auto;
@@ -647,7 +646,7 @@ img{ max-width:100%; height:auto; }
 
 .town-house{
   position:absolute;
-  width: 200px;
+  width: 160px;
   height: auto;
   user-select:none;
   pointer-events:none;
@@ -660,33 +659,28 @@ img{ max-width:100%; height:auto; }
 
 .town-player{
   position:absolute;
-  --flip: 1;
-  height: 150px;
-  aspect-ratio: 3 / 8; /* mantiene proporción del personaje */
-  width: auto;
+  width: 96px;
+  height: 96px;
   left: 50%;
   top: 70%;
-  transform: translate(-50%,-50%) scaleX(var(--flip));
+  transform: translate(-50%,-50%);
   z-index: 5;
   user-select:none;
   pointer-events:none;
   filter: drop-shadow(0 16px 24px rgba(0,0,0,.5));
 
-  /* ✅ ahora usamos 3 PNG sueltos (sin spritesheet) */
-  background-image: url("images2/riskopueblo_down_1.png");
-background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+  /* Sprite sheet (1 archivo, 4 columnas) */
+  background-image: url("images2/riskopueblo.PNG");
+  background-repeat: no-repeat;
+  background-size: 400% 100%;
+  background-position: 0% 50%;
 }
 
-/* Direcciones (left = flip del side) */
-.town-player.face-down{ --flip: 1; }
-.town-player.face-right{ --flip: 1; }
-.town-player.face-left{ --flip: -1; }
-.town-player.face-up{ --flip: 1; }
-
-
-
+/* Direcciones: down=col1, right=col3, up=col4. left = flip del right */
+.town-player.face-down{ background-position: 0% 50%; transform: translate(-50%,-50%) scaleX(1); }
+.town-player.face-right{ background-position: 66.666% 50%; transform: translate(-50%,-50%) scaleX(1); }
+.town-player.face-left{ background-position: 66.666% 50%; transform: translate(-50%,-50%) scaleX(-1); }
+.town-player.face-up{ background-position: 100% 50%; transform: translate(-50%,-50%) scaleX(1); }
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 520px){
@@ -697,7 +691,7 @@ background-repeat: no-repeat;
   .intro-title{ font-size: clamp(40px, 9vw, 70px); }
 
   .grid{ grid-template-columns: 1fr; }
-  .buster-img{ width: 260px; }
+  .buster-img{ width: 100px; }
 
   .carousel{ grid-template-columns: 48px 1fr 48px; }
   .carousel-btn{ width:48px; height:48px; border-radius: 14px; font-size: 30px; }
@@ -721,294 +715,11 @@ background-repeat: no-repeat;
   .teambar-item{ width: 58px; height: 58px; border-radius: 14px; }
   .teambar-img{ border-radius: 14px; }
 
-  .town-player{ height: 135px; aspect-ratio: 3 / 8; width: auto; }
-  .town-house{ width: 185px; }
+  .town-player{ width: 92px; height: 92px; }
+  .town-house{ width: 150px; }
 }
 
-/* ---------- INTRO BACKGROUND ---------- */
-.intro.intro-bg{
-  background: url("images/portadainicio.PNG") center center / cover no-repeat;
-}
-
-
-
-
-
-
-/* =========================
-   HISTORIA – PUEBLO FULLSCREEN
-========================= */
-.story-town{
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-}
-
-.story-town .topbar,
-.story-town .brand,
-.story-town .hud{
-  display: none !important;
-}
-
-/* el mapa ocupa todo */
-.story-town .stage{
-  padding: 0;
-}
-
-.story-town .map{
-  border-radius: 0;
-  border: none;
-}
-
-
-
-/* =========================
-   HISTORIA – Zoom RPG en el pueblo (cámara)
-   (solo afecta a la sección del pueblo)
-========================= */
-.story-town #storyTownScreen .town-viewport{
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.story-town #storyTownScreen .town-world{
-  position: absolute;
-  left: 0;
-  top: 0;
-  will-change: transform;
-}
-
-/* Mundo más grande + zoom (no se ve todo de golpe) */
-
-/* Casas más grandes */
-
-
-/* Mundo más grande + zoom (no se ve todo de golpe) */
-.story-town #storyTownScreen .town-map{
-  width: 2000px;
-  height: 1100px;
-  transform-origin: 0 0;
-  transform: scale(1.6);
-}
-
-/* Casas más grandes */
-.story-town #storyTownScreen .town-house{
-  width: 420px;
-}
-
-/* Posicionamiento extra de casas */
-.story-town #storyTownScreen .town-house.h4{ left: 58%; top: 22%; }
-.story-town #storyTownScreen .town-house.h5{ left: 30%; top: 46%; }
-
-@media (max-width: 520px){
-  .story-town #storyTownScreen .town-map{
-    width: 2200px;
-    height: 1500px;
-    transform: scale(1.5);
-  }
-  .story-town #storyTownScreen .town-house{
-    width: 320px;
-  }
-}
-
-
-
-
-/* === Pueblo: afinado de escala y posiciones === */
-.story-town #storyTownScreen .town-house{
-  width: 520px; /* edificios grandes por defecto */
-}
-
-/* Excepciones más pequeñas */
-.story-town #storyTownScreen .town-house.pozo,
-.story-town #storyTownScreen .town-house.puesto{
-  width: 280px;
-}
-
-/* Posiciones */
-.story-town #storyTownScreen .town-house.puerta{
-  left: 2%;
-  bottom: 2%;
-  top: auto;
-}
-
-.story-town #storyTownScreen .town-house.casa2a{ left: 18%; top: 12%; }
-.story-town #storyTownScreen .town-house.iglesia{ left: 55%; top: 6%; }
-.story-town #storyTownScreen .town-house.taberna{ left: 34%; top: 38%; }
-.story-town #storyTownScreen .town-house.casa2b{ left: 68%; top: 56%; }
-
-.story-town #storyTownScreen .town-house.pozo{ left: 42%; top: 22%; }
-.story-town #storyTownScreen .town-house.puesto{ left: 50%; top: 68%; }
-
-
-/* === NPCs Pueblo === */
-.story-town #storyTownScreen .town-npc{
-  position:absolute;
-  height: 180px;
-    aspect-ratio: 3 / 8;
-width: auto;
-  transform: translate(-50%, -50%);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  z-index: 2; /* por debajo de edificios */
-  pointer-events: none; /* por ahora, solo decorativo */
-  filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
-}
-
-
-/* Icono hablar sobre Mercenario */
-.story-town #storyTownScreen .npc-talk-icon{
-  position:absolute;
-  top:-26px;
-  left:50%;
-  transform: translateX(-50%);
-  width:24px;
-  height:24px;
-  background: url("images2/iconohablar.png") no-repeat center / contain;
-  pointer-events:none;
-}
-
-
-/* Dialogo Mercenario */
-.mercenario-dialog{
-  position: fixed;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
-  width: min(680px, calc(100% - 28px));
-  background: linear-gradient(180deg, rgba(15,26,51,.98), rgba(14,23,48,.98));
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 18px;
-  box-shadow: 0 18px 50px rgba(0,0,0,.45);
-  padding: 14px 16px;
-  color: var(--text);
-  font-weight: 900;
-  text-align: left;
-  z-index: 999;
-}
-.mercenario-dialog.hidden{ display:none; }
-
-
-/* Mercenario: permitir click/tap (sin afectar al resto de NPCs) */
-.story-town #storyTownScreen #npcMercenario{
-  pointer-events: auto;
-  cursor: pointer;
-  z-index: 3;
-}
-
-
-/* === Pueblo: fondo único con zoom por tamaño === */
-.story-town #storyTownScreen .town-map{
-  background:
-    linear-gradient(0deg, rgba(11,18,32,.30), rgba(11,18,32,.30)),
-    url("images2/pueblo1.PNG");
-  background-repeat: no-repeat;
-  background-position: top left;
-  background-size: 100% 100%;
-}
-
-
-/* =========================================================
-   PUEBLO (Story): POSICIONES UNIFICADAS
-   - Edificios (.town-house.*)
-   - NPCs (#npc*.town-npc)
-   - Ocultar icono hablar mercenario
-   ========================================================= */
-
-/* --- EDIFICIOS --- */
-
-/* Puerta: esquina superior izquierda */
-.story-town #storyTownScreen .town-house.puerta{
-  left: 6%;
-  top: 6%;
-  bottom: auto;
-}
-
-/* Taberna: más a la izquierda y arriba */
-.story-town #storyTownScreen .town-house.taberna{
-  left: 22%;
-  top: 34%;
-}
-
-/* Iglesia: ligeramente arriba/izquierda para parcela sin vegetación + más grande */
-.story-town #storyTownScreen .town-house.iglesia{
-  left: 66%;
-  top: 6%;
-  width: 620px;
-}
-
-/* Casas: posiciones actuales */
-.story-town #storyTownScreen .town-house.casa2a{
-  left: 68%;
-  top: 68%;
-}
-
-.story-town #storyTownScreen .town-house.casa2b{
-  left: 64%;
-  top: 37%;
-}
-
-/* Si tienes pozo/puesto, déjalos aquí también (ajusta si hace falta)
-.story-town #storyTownScreen .town-house.pozo{ left: ??%; top: ??%; }
-.story-town #storyTownScreen .town-house.puesto{ left: ??%; top: ??%; }
-*/
-
-
-/* --- NPCs --- */
-
-/* Aldeanos: altura 180 */
-.story-town #storyTownScreen #npcAldeana.town-npc,
-.story-town #storyTownScreen #npcAldeano.town-npc{
-  height: 180px;
-}
-
-/* Guardia: junto a la puerta (OJO: tenías top:74% en el texto pegado; aquí lo pongo cerca de la puerta) */
+/* Guardia del pueblo */
 .story-town #storyTownScreen #npcGuardia.town-npc{
-  left: 12%;
-  top: -30%;
-}
-
-/* Aldeana: cerca de la casa más próxima a la iglesia */
-.story-town #storyTownScreen #npcAldeana.town-npc{
-  left: 68%;
-  top: 36%;
-}
-
-/* Mercenario: un poco más cerca de la taberna */
-.story-town #storyTownScreen #npcMercenario.town-npc{
-  left: 28%;
-  top: 40%;
-}
-
-/* (Opcional) Coloca aquí el resto si los tienes:
-.story-town #storyTownScreen #npcSacerdotisa.town-npc{ left: ??%; top: ??%; }
-.story-town #storyTownScreen #npcVendedora.town-npc{ left: ??%; top: ??%; }
-*/
-
-
-/* --- ICONO HABLAR (Mercenario) --- */
-
-/* Ocultar icono hablar del mercenario (solo ocultarlo) */
-.story-town #storyTownScreen #npcMercenario .npc-talk-icon{
-  display: none !important;
-}
-
-/* Guardia: forzar que respete top/left (evita que herede bottom) */
-.story-town #storyTownScreen #npcGuardia.town-npc{
-  position: absolute;
-  left: 12%;
-  top: 14%;
-  bottom: auto !important;
-}
-/* Guardia: localizar por imagen (por si el id no coincide) */
-.story-town #storyTownScreen .town-npc[style*="Guardia.PNG"],
-.story-town #storyTownScreen .town-npc[style*="guardia.PNG"],
-.story-town #storyTownScreen .town-npc[style*="GUARDIA.PNG"]{
-  position: absolute;
-  left: 12%;
-  top: 14%;
-  bottom: auto !important;
+  height: 180px;
 }
