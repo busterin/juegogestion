@@ -936,7 +936,7 @@ width: auto;
 /* Iglesia: ligeramente arriba/izquierda para parcela sin vegetación + más grande */
 .story-town #storyTownScreen .town-house.iglesia{
   left: 66%;
-  top: 6%;
+  top: 5%;
   width: 620px;
 }
 
@@ -948,7 +948,7 @@ width: auto;
 
 .story-town #storyTownScreen .town-house.casa2b{
   left: 64%;
-  top: 28%;
+  top: 38%;
 }
 
 /* Si tienes pozo/puesto, déjalos aquí también (ajusta si hace falta)
