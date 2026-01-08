@@ -842,17 +842,51 @@ background-repeat: no-repeat;
 .story-town #storyTownScreen .town-house.pozo{ left: 42%; top: 22%; }
 .story-town #storyTownScreen .town-house.puesto{ left: 50%; top: 68%; }
 
-/* === Pueblo: reducir zoom SOLO en móvil === */
-@media (max-width: 520px){
-  /* Si el pueblo usa variable de zoom, la bajamos */
-  .story-town #storyTownScreen{
-    --townZoom: 0.72;
-  }
 
-  /* Si el pueblo usa un wrapper con transform: scale(...) */
-  .story-town #storyTownScreen .town-viewport,
-  .story-town #storyTownScreen #townViewport{
-    transform: scale(0.72) !important;
-    transform-origin: top left !important;
-  }
+/* === NPCs Pueblo === */
+.story-town #storyTownScreen .town-npc{
+  position:absolute;
+  height: 140px;
+    aspect-ratio: 3 / 8;
+width: auto;
+  transform: translate(-50%, -50%);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  z-index: 2; /* por debajo de edificios */
+  pointer-events: none; /* por ahora, solo decorativo */
+  filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
 }
+
+
+/* Icono hablar sobre Mercenario */
+.story-town #storyTownScreen .npc-talk-icon{
+  position:absolute;
+  top:-26px;
+  left:50%;
+  transform: translateX(-50%);
+  width:24px;
+  height:24px;
+  background: url("images2/iconohablar.png") no-repeat center / contain;
+  pointer-events:none;
+}
+
+
+/* Dialogo Mercenario */
+.mercenario-dialog{
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  width: min(680px, calc(100% - 28px));
+  background: linear-gradient(180deg, rgba(15,26,51,.98), rgba(14,23,48,.98));
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.45);
+  padding: 14px 16px;
+  color: var(--text);
+  font-weight: 900;
+  text-align: left;
+  z-index: 999;
+}
+.mercenario-dialog.hidden{ display:none; }
