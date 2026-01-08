@@ -793,6 +793,15 @@ background-repeat: no-repeat;
   transform: scale(1.6);
 }
 
+/* === Pueblo: móvil con zoom menor (SIN romper NPCs) === */
+@media (max-width: 520px){
+  .story-town #storyTownScreen .town-map{
+    width: 1600px;
+    height: 900px;
+  }
+}
+
+
 /* Casas más grandes */
 .story-town #storyTownScreen .town-house{
   width: 420px;
