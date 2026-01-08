@@ -1243,7 +1243,8 @@ function setTownWalking(isWalking){
   nextAvatarBtn.addEventListener("click", nextAvatar);
 
   document.addEventListener("keydown", (e)=>{
-    if (!introScreen.classList.contains("hidden")){
+      if (e.key === "Escape") { hideMercenarioDialogSafe(); return; }
+if (!introScreen.classList.contains("hidden")){
       if (e.key === "Enter") {
         gameMode = "arcade";
         goToStartScreen();
@@ -1376,17 +1377,83 @@ function setTownWalking(isWalking){
   // init
   renderAvatarCarousel(0);
 
-  // === Mercenario: dialogo seguro por click en icono ===
-  const mercenarioIcon = document.querySelector("#npcMercenario .npc-talk-icon");
-  const mercenarioDialog = document.getElementById("mercenarioDialog");
 
-  if (mercenarioIcon && mercenarioDialog){
-    mercenarioIcon.addEventListener("pointerdown", (e)=>{
-      e.preventDefault();
-      e.stopPropagation();
+  // === Mercenario: dialogo seguro (NO bloquea botones) ===
+  try {
+    const storyTownScreen = document.getElementById("storyTownScreen");
+    const mercenarioNpc = document.getElementById("npcMercenario");
+    const mercenarioDialog = document.getElementById("mercenarioDialog");
+
+    function showMercenarioDialogSafe(){
+      if (!mercenarioDialog) return;
+
+      // Contenido del diálogo (texto + botón)
+      mercenarioDialog.innerHTML = `
+        <div class="merc-text">Evelyn, ¿estás lista para una nueva misión?</div>
+        <div class="modal-actions end" style="margin-top:10px;">
+          <button id="mercStartMissionBtn" class="btn" type="button">Comenzar misión</button>
+        </div>
+      `;
+
+      const btn = mercenarioDialog.querySelector("#mercStartMissionBtn");
+      if (btn){
+        btn.addEventListener("click", (e)=>{
+          e.preventDefault();
+          e.stopPropagation();
+
+          // Ir al juego (rejilla) en modo historia
+          try {
+            if (typeof commitTeam === "function") commitTeam();
+            if (typeof storyTownScreen !== "undefined" && storyTownScreen) storyTownScreen.classList.add("hidden");
+            if (typeof startGame === "function") startGame();
+          } catch (err) {
+            console.warn("Start mission failed:", err);
+          }
+        }, { once:true });
+      }
+
       mercenarioDialog.classList.remove("hidden");
+    }
+
+    
+    function hideMercenarioDialogSafe(){
+      if (!mercenarioDialog) return;
+      mercenarioDialog.classList.add("hidden");
+    }
+if (mercenarioNpc) {
+      mercenarioNpc.addEventListener("pointerdown", (e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        showMercenarioDialogSafe();
+      });
+    }
+
+    document.addEventListener("keydown", (e)=>{
+      if (e.key !== "Enter") return;
+      if (!storyTownScreen || storyTownScreen.classList.contains("hidden")) return;
+      if (!mercenarioNpc || !window.townPlayer) return;
+
+      const m = mercenarioNpc.getBoundingClientRect();
+      const p = window.townPlayer.getBoundingClientRect();
+
+      const dx = (m.left + m.width/2) - (p.left + p.width/2);
+      const dy = (m.top + m.height/2) - (p.top + p.height/2);
+      const dist = Math.hypot(dx, dy);
+
+      if (dist <= 140) showMercenarioDialogSafe();
     });
+  } catch (err) {
+    console.warn("Mercenario dialog skipped:", err);
   }
+  
+    // Click/tap fuera del cuadro: cerrar (solo si está abierto)
+    document.addEventListener("pointerdown", (e)=>{
+      if (!mercenarioDialog || mercenarioDialog.classList.contains("hidden")) return;
+      if (e.target && mercenarioDialog.contains(e.target)) return;
+      hideMercenarioDialogSafe();
+    });
+
+  // === END Mercenario ===
 
 });
 
